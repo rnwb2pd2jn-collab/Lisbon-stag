@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benjie's Stag — Lisbon 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* Portuguese flag palette */
+    --green:       #006600;
+    --green-mid:   #1a5c2a;
+    --green-light: #e8f2ea;
+    --green-dim:   #006600.18;
+    --red:         #cc0000;
+    --red-light:   #fdf0f0;
+    --gold:        #c9a84c;
+    --gold-light:  #fdf6e8;
+    --gold-dim:    #c9a84c22;
+    /* Neutrals — light theme */
+    --bg:          #f7f5f0;
+    --surface:     #ffffff;
+    --surface2:    #f2ede4;
+    --border:      #ddd5c0;
+    --border-mid:  #c8bfae;
+    --text:        #1a1410;
+    --text-mid:    #4a3f30;
+    --text-soft:   #7a6f60;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(160deg, #00550a 0%, #004d08 45%, #8a0000 100%);
+    padding: 52px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 32px;
+    background: var(--bg);
+    border-radius: 32px 32px 0 0;
+  }
+  .hero-emoji { font-size: 52px; display: block; margin-bottom: 12px; animation: bob 4s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+  .eyebrow { font-size: 10px; letter-spacing: 4px; color: #a8d8a8; font-weight: 600; text-transform: uppercase; margin-bottom: 10px; }
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(36px, 10vw, 54px); font-weight: 900; line-height: 1.0; color: #fff; margin-bottom: 8px; }
+  h1 em { color: #f5d060; font-style: normal; }
+  .hero-sub { font-size: 14px; color: #a8c8a8; line-height: 1.6; }
+
+  /* ── PLAN STRIP ── */
+  .plan-wrap { padding: 28px 20px 24px; max-width: 560px; margin: 0 auto; }
+  .section-label {
+    font-size: 9px; letter-spacing: 4px; color: var(--green-mid);
+    text-transform: uppercase; font-weight: 700; margin-bottom: 18px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::before, .section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  .plan-days { display: grid; gap: 0; }
+  .plan-day {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 0;
+  }
+
+  /* Left column: date */
+  .plan-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2px;
+  }
+  .plan-date-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 1px var(--green);
+    z-index: 1;
+    margin-top: 4px;
+  }
+  .plan-date-line {
+    width: 2px;
+    flex: 1;
+    background: var(--border);
+    margin: 3px 0;
+  }
+  .plan-day:last-child .plan-date-line { display: none; }
+
+  /* Right column: content */
+  .plan-content { padding: 0 0 20px 14px; }
+  .plan-day-label {
+    font-size: 11px; font-weight: 700; color: var(--green-mid);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;
+  }
+  .plan-event { font-size: 13.5px; color: var(--text-mid); line-height: 1.65; margin-bottom: 3px; }
+  .plan-event b { color: var(--text); font-weight: 600; }
+  .plan-event i { font-style: normal; color: var(--text-soft); }
+  .vtag {
+    display: inline-block;
+    background: #cc00001a;
+    color: var(--red);
+    border: 1px solid #cc000033;
+    font-size: 9px; font-weight: 700; letter-spacing: .8px;
+    text-transform: uppercase; padding: 1px 7px; border-radius: 99px;
+    margin-left: 4px; vertical-align: middle;
+  }
+
+  /* ── VOTE SECTION ── */
+  .vote-wrap { padding: 4px 20px 0; max-width: 560px; margin: 0 auto; }
+  .vote-banner {
+    background: linear-gradient(135deg, var(--green-light), #fff8e8);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .vote-banner-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; color: var(--text); font-weight: 700; margin-bottom: 4px;
+  }
+  .vote-banner-sub { font-size: 13px; color: var(--text-soft); }
+
+  .q-block { margin-bottom: 24px; }
+  .q-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--border);
+  }
+  .q-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--green); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; flex-shrink: 0;
+  }
+  .q-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .q-sub { font-size: 12px; color: var(--text-soft); margin-top: 1px; }
+
+  /* ── OPTION CARDS ── */
+  .opt {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 9px;
+    cursor: pointer;
+    transition: border-color .15s, background .15s, transform .1s;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .opt:hover { border-color: var(--border-mid); background: #faf8f4; }
+  .opt:active { transform: scale(0.985); }
+  .opt.selected { border-color: var(--green); background: var(--green-light); }
+  .opt.selected .radio { background: var(--green); border-color: var(--green); }
+  .opt.selected .radio::after { opacity: 1; }
+  .opt.selected .opt-title { color: var(--green-mid); }
+
+  .radio {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid var(--border-mid);
+    flex-shrink: 0; margin-top: 3px;
+    transition: all .14s; position: relative;
+  }
+  .radio::after {
+    content: ''; position: absolute; inset: 4px;
+    background: #fff; border-radius: 50%;
+    opacity: 0; transition: opacity .14s;
+  }
+
+  .opt-body { flex: 1; }
+  .opt-title {
+    font-size: 14px; font-weight: 600; color: var(--text);
+    display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 4px;
+  }
+  .opt-desc { font-size: 13px; color: var(--text-soft); line-height: 1.55; }
+  .pills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 9px; }
+  .pill {
+    font-size: 11px; color: var(--text-soft);
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 99px; padding: 2px 9px;
+  }
+  .badge {
+    font-size: 9px; font-weight: 700; letter-spacing: .8px;
+    text-transform: uppercase; padding: 2px 8px; border-radius: 99px;
+  }
+  .badge-green { background: #00660015; color: var(--green); border: 1px solid #00660030; }
+  .badge-red   { background: #cc000015; color: var(--red);   border: 1px solid #cc000030; }
+
+  /* ── NAME ── */
+  .name-block { margin-bottom: 16px; }
+  .field-label {
+    display: block; font-size: 10px; letter-spacing: 2.5px;
+    color: var(--text-soft); text-transform: uppercase; font-weight: 600; margin-bottom: 8px;
+  }
+  input {
+    width: 100%;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 16px;
+    color: var(--text);
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color .15s;
+  }
+  input:focus { border-color: var(--green); }
+  input::placeholder { color: var(--border-mid); }
+
+  /* ── SUBMIT ── */
+  .sub-wrap { padding-bottom: 52px; }
+  button {
+    width: 100%; padding: 15px;
+    background: linear-gradient(135deg, #006600, #004d00);
+    border: none; border-radius: 12px;
+    color: #fff; font-size: 16px; font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer; transition: opacity .15s, transform .1s;
+    letter-spacing: .3px;
+    box-shadow: 0 4px 16px #00660033;
+  }
+  button:hover { opacity: .92; }
+  button:active { transform: scale(0.98); opacity: .88; }
+  button:disabled { opacity: .3; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* ── DONE ── */
+  #done { display: none; padding: 64px 20px 60px; text-align: center; max-width: 520px; margin: 0 auto; }
+  #done.show { display: block; }
+  .done-icon { font-size: 56px; margin-bottom: 18px; }
+  .done-title { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--text); margin-bottom: 8px; }
+  .done-sub { font-size: 14px; color: var(--text-soft); line-height: 1.6; margin-bottom: 28px; }
+  .done-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 4px 18px; text-align: left;
+  }
+  .done-row {
+    padding: 12px 0; border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  }
+  .done-row:last-child { border-bottom: none; }
+  .done-q { font-size: 12px; color: var(--text-soft); }
+  .done-a { font-size: 13px; color: var(--green-mid); font-weight: 700; text-align: right; }
+
+  .footer { text-align: center; font-size: 11px; color: var(--border); padding: 0 20px 32px; }
+
+  /* ── DIVIDER ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 0 0 24px; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-emoji">🇵🇹</span>
+  <div class="eyebrow">Lisbon · 6–11 May 2026</div>
+  <h1>Benjie's<br><em>Stag Do</em></h1>
+  <p class="hero-sub">Plan's looking good — just need a few answers from you.</p>
+</div>
+
+<!-- PLAN -->
+<div class="plan-wrap">
+  <div class="section-label">The Weekend</div>
+  <div class="plan-days">
+
+    <div class="plan-day">
+      <div class="plan-date"><div class="plan-date-dot"></div><div class="plan-date-line"></div></div>
+      <div class="plan-content">
+        <div class="plan-day-label">Wed 6 May</div>
+        <div class="plan-event"><b>Harry arrives.</b> <i>Early recon — hotel, bars, the square.</i></div>
+      </div>
+    </div>
+
+    <div class="plan-day">
+      <div class="plan-date"><div class="plan-date-dot"></div><div class="plan-date-line"></div></div>
+      <div class="plan-content">
+        <div class="plan-day-label">Thu 7 May</div>
+        <div class="plan-event"><b>Harry & Benjie — Sintra day trip.</b> <i>Port tasting & lunch at Bar do Binho, meander the historic centre.</i></div>
+        <div class="plan-event" style="margin-top:4px"><b>Evening:</b> <i>Laurie & Amon arrive 21:35. Late drinks on Praça das Flores.</i> 🍹</div>
+      </div>
+    </div>
+
+    <div class="plan-day">
+      <div class="plan-date"><div class="plan-date-dot"></div><div class="plan-date-line"></div></div>
+      <div class="plan-content">
+        <div class="plan-day-label">Fri 8 May — Full group</div>
+        <div class="plan-event"><b>Breakfast together</b> <i>at Pão de Canela on the square.</i></div>
+        <div class="plan-event" style="margin-top:4px"><b>Morning split:</b> <i>Climbing at Escala25 under the 25 de Abril bridge</i><span class="vtag">vote ①</span> <i>or LX Factory market — 5 min apart.</i></div>
+        <div class="plan-event" style="margin-top:4px"><b>Lunch together</b> <i>at LX Factory.</i></div>
+        <div class="plan-event" style="margin-top:4px"><b>Afternoon:</b> <i>Beer tasting tuk tuk tour — craft beers & brewery visit</i><span class="vtag" style="background:#00660015;color:#006600;border:1px solid #00660030">booked ✓</span> <i>or private yacht on the Tagus.</i><span class="vtag">vote ②</span></div>
+        <div class="plan-event" style="margin-top:4px"><b>Evening:</b> <i>Group dinner in Bairro Alto, then 5-stop bar crawl ending at Pink Street.</i> 🍻</div>
+      </div>
+    </div>
+
+    <div class="plan-day">
+      <div class="plan-date"><div class="plan-date-dot"></div><div class="plan-date-line"></div></div>
+      <div class="plan-content">
+        <div class="plan-day-label">Sat 9 May — Big day</div>
+        <div class="plan-event"><b>Brunch</b> <i>at Dear Breakfast.</i></div>
+        <div class="plan-event" style="margin-top:4px"><b>Costa da Caparica beach day:</b> <i>Surf lesson, beach sports & volleyball on the sand.</i></div>
+        <div class="plan-event" style="margin-top:4px"><b>Lunch</b> <i>at Restaurante Praia do Rei — local grilled fish, sea terrace, institution since 1990.</i></div>
+        <div class="plan-event" style="margin-top:4px"><b>Afternoon:</b> <i>Beach club on the Praia do Rei stretch — sunbeds, cocktails, DJ sets.</i></div>
+        <div class="plan-event" style="margin-top:4px"><b>Big night:</b> <i>Pre-drinks, stag dinner, rooftop cocktails + VIP club.</i> 🎉</div>
+      </div>
+    </div>
+
+    <div class="plan-day">
+      <div class="plan-date"><div class="plan-date-dot"></div><div class="plan-date-line"></div></div>
+      <div class="plan-content">
+        <div class="plan-day-label">Sun 10 May — Easy Sunday</div>
+        <div class="plan-event"><b>Own pace.</b> <i>Brunch spots near the hotel. Departures from 15:30.</i></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- VOTES -->
+<div class="vote-wrap">
+
+  <div class="vote-banner">
+    <div class="vote-banner-title">Two things to vote on</div>
+    <div class="vote-banner-sub">Takes 60 seconds — Harry confirms everything after.</div>
+  </div>
+
+  <div id="form">
+
+    <!-- Q1 -->
+    <div class="q-block">
+      <div class="q-header">
+        <div class="q-num">1</div>
+        <div>
+          <div class="q-title">Are you up for climbing? 🧗</div>
+          <div class="q-sub">Fri 8 May · ~11:00 · others explore LX Factory meanwhile</div>
+        </div>
+      </div>
+
+      <div class="opt" onclick="pick(1,this,'Yes — I\'m climbing')">
+        <div class="radio"></div>
+        <div class="opt-body">
+          <div class="opt-title">💪 Yes, I'm in <span class="badge badge-green">Option A</span></div>
+          <div class="opt-desc">Escala25 — outdoor sport climbing on the pillars of the 25 de Abril bridge. 12m walls, all levels welcome. Genuinely spectacular setting.</div>
+          <div class="pills">
+            <span class="pill">⏱ ~2hrs</span>
+            <span class="pill">💰 ~€12pp</span>
+            <span class="pill">🌉 Under the bridge</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt" onclick="pick(1,this,'No — I\'ll do LX Factory')">
+        <div class="radio"></div>
+        <div class="opt-body">
+          <div class="opt-title">🏭 Not for me — LX Factory <span class="badge badge-red">Option B</span></div>
+          <div class="opt-desc">Explore LX Factory instead — independent shops, street art, coffee, market stalls. 5 min walk from Escala25 so the group reunites easily.</div>
+          <div class="pills">
+            <span class="pill">☕ Markets & coffee</span>
+            <span class="pill">📍 Alcântara</span>
+            <span class="pill">🚶 5 min from Escala25</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <hr>
+
+    <!-- Q2 -->
+    <div class="q-block">
+      <div class="q-header">
+        <div class="q-num">2</div>
+        <div>
+          <div class="q-title">Friday afternoon activity 🍺⛵</div>
+          <div class="q-sub">Fri 8 May · ~15:00 · after group lunch at LX Factory · tuk tuk currently booked but can swap</div>
+        </div>
+      </div>
+
+      <div class="opt" onclick="pick(2,this,'Beer Tasting Tuk Tour')">
+        <div class="radio"></div>
+        <div class="opt-body">
+          <div class="opt-title">🍺 Beer Tasting Tuk Tour <span class="badge badge-green">Currently booked</span></div>
+          <div class="opt-desc">Guided tuk tuk tour of Lisbon's craft beer scene — multiple stops plus an exclusive brewery visit. Two tuk tuks for the group. Ref #76.</div>
+          <div class="pills">
+            <span class="pill">⏱ 2h30</span>
+            <span class="pill">🚜 Tuk tuk</span>
+            <span class="pill">🍺 Brewery visit</span>
+            <span class="pill">💰 TBC pp</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt" onclick="pick(2,this,'Private Yacht — Splash Lisbon')">
+        <div class="radio"></div>
+        <div class="opt-body">
+          <div class="opt-title">⛵ Private Yacht Charter <span class="badge badge-red">Alternative</span></div>
+          <div class="opt-desc">Private all-inclusive sail on the Tagus for the group. Drinks included, views of the 25 de Abril bridge and Belém Tower.</div>
+          <div class="pills">
+            <span class="pill">⏱ 3hr sail</span>
+            <span class="pill">🍹 All inclusive</span>
+            <span class="pill">⚓ Tagus River</span>
+            <span class="pill">💰 ~€75pp</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAME -->
+    <div class="name-block">
+      <label class="field-label" for="name">Your name</label>
+      <input type="text" id="name" placeholder="e.g. Laurie" autocomplete="off">
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="sub-wrap">
+      <button id="btn" disabled onclick="submit()">Send my votes 🍻</button>
+    </div>
+
+  </div><!-- /form -->
+
+  <!-- DONE -->
+  <div id="done">
+    <div class="done-icon">🥂</div>
+    <div class="done-title">See you in Lisbon</div>
+    <p class="done-sub" id="done-sub"></p>
+    <div class="done-card" id="done-card"></div>
+    <p style="font-size:12px;color:var(--border);margin-top:20px">🇵🇹 Benjie's Stag Do · May 2026</p>
+  </div>
+
+</div><!-- /vote-wrap -->
+
+<div class="footer">Organised by Harry · Benjie's Stag Do · Lisbon 2026</div>
+
+<script>
+  const v = {1:null, 2:null};
+  const labels = {1:'Climbing (Fri morning)', 2:'Friday afternoon'};
+
+  function pick(q, el, val) {
+    el.closest('.q-block').querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    v[q] = val;
+    check();
+  }
+
+  function check() {
+    const name = document.getElementById('name').value.trim();
+    document.getElementById('btn').disabled = !(Object.values(v).every(x => x !== null) && name.length > 0);
+  }
+
+  document.getElementById('name').addEventListener('input', check);
+
+  async function submit() {
+    const name = document.getElementById('name').value.trim();
+
+    // Send to Formspree
+    try {
+      await fetch('https://formspree.io/f/mlgavygg', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          name: name,
+          climbing: v[1],
+          friday_afternoon: v[2],
+        })
+      });
+    } catch(e) {
+      // Fail silently — still show confirmation to user
+      console.error('Formspree error:', e);
+    }
+
+    // Show confirmation screen regardless
+    document.getElementById('form').style.display = 'none';
+    document.getElementById('done').classList.add('show');
+    document.getElementById('done-sub').textContent =
+      `Cheers ${name} — Harry's got your picks. Final call coming to the group shortly.`;
+    document.getElementById('done-card').innerHTML = Object.entries(labels).map(([q, lbl]) =>
+      `<div class="done-row"><div class="done-q">${lbl}</div><div class="done-a">${v[q]}</div></div>`
+    ).join('');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+</script>
+</body>
+</html>
