@@ -7,133 +7,931 @@
 <title>Lisbon Stag Do — Benjie 2026</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { background: #f7f5f0; -webkit-font-smoothing: antialiased; }
-  button { cursor: pointer; }
-  ::-webkit-scrollbar { height: 4px; width: 4px; }
-  ::-webkit-scrollbar-track { background: #f0ebe0; }
-  ::-webkit-scrollbar-thumb { background: #c0b8a4; border-radius: 99px; }
-</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 </head>
 <body>
 <div id="root"></div>
-<script type="text/babel">
-const { useState } = React;
+<script>
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
+const {
+  useState
+} = React;
 
 // ── DATA ─────────────────────────────────────────────────────────────────────
 
-const CREW = [
-{ id:1, name:“Benjie”, role:“groom”, arrival:“Thu 7 May, ~10:50”, departure:“Sun 10 May, ~18:50”, flightIn:{flight:“TAP (TBC)”,from:“LHR”,to:“LIS”,dep:“~Morning”,arr:“~10:50”,date:“Thu 7 May”}, flightOut:{flight:“TAP (TBC)”,from:“LIS”,to:“LHR”,dep:“~18:50”,arr:“~21:30”,date:“Sun 10 May”}, notes:“Groom 💍”, confirmed:true },
-{ id:2, name:“Harry”, role:“organiser”, arrival:“Wed 6 May, 07:25”, departure:“Mon 11 May, 10:00”, flightIn:{flight:“EY99”,from:“AUH”,to:“LIS”,dep:“02:05”,arr:“07:25”,date:“Wed 6 May”,terminal:“Terminal 1”}, flightOut:{flight:“TP1352”,from:“LIS”,to:“LHR”,dep:“10:00”,arr:“12:45”,date:“Mon 11 May”,note:“Last check-in 09:00 · Then TP6919 LHR T4→AUH dep 14:45”}, notes:“Arrives first, leaves last. Returns to Abu Dhabi via LHR.”, confirmed:true },
-{ id:3, name:“Laurie”, role:“guest”, arrival:“Thu 7 May, 21:35”, departure:“Sun 10 May, 18:50”, flightIn:{flight:“TP1357”,from:“LHR”,to:“LIS”,dep:“18:45”,arr:“21:35”,date:“Thu 7 May”}, flightOut:{flight:“BA507”,from:“LIS”,to:“LHR”,dep:“18:50”,arr:“21:35”,date:“Sun 10 May”,terminal:“LIS T1 → LHR T5”}, notes:””, confirmed:true },
-{ id:4, name:“Amon”, role:“guest”, arrival:“Thu 7 May, 21:35”, departure:“Sun 10 May, 18:50”, flightIn:{flight:“TP1357”,from:“LHR”,to:“LIS”,dep:“18:45”,arr:“21:35”,date:“Thu 7 May”}, flightOut:{flight:“BA507”,from:“LIS”,to:“LHR”,dep:“18:50”,arr:“21:35”,date:“Sun 10 May”,terminal:“LIS T1 → LHR T5”}, notes:””, confirmed:true },
-{ id:5, name:“Paul (PeeWee)”, role:“guest”, arrival:“Fri 8 May, 11:55”, departure:“Sun 10 May, 17:20”, flightIn:{flight:“easyJet TBC”,from:“MAN”,to:“LIS”,dep:“09:00”,arr:“11:55”,date:“Fri 8 May”}, flightOut:{flight:“Ryanair TBC”,from:“LIS”,to:“MAN”,dep:“17:20”,arr:“20:10”,date:“Sun 10 May”}, notes:“From Manchester.”, confirmed:true },
-{ id:6, name:“John (Gilmore)”, role:“guest”, arrival:“Fri 8 May, 09:25”, departure:“Sun 10 May, 18:50”, flightIn:{flight:“EZY3321”,from:“EDI”,to:“LIS”,dep:“06:05”,arr:“09:25”,date:“Fri 8 May”,terminal:“LIS Terminal 1”,note:“Booking ref: KCMWVK5”}, flightOut:{flight:“EZY3322”,from:“LIS”,to:“EDI”,dep:“18:50”,arr:“22:05”,date:“Sun 10 May”,terminal:“LIS Terminal 1”}, notes:“Flying from Edinburgh.”, confirmed:true },
-{ id:7, name:“Rob”, role:“guest”, arrival:””, departure:””, flightIn:null, flightOut:null, notes:“TBC — may be joining”, confirmed:false },
-];
-
-const ROOMS = [
-{ id:1, guests:[“Harry”,“Benjie”], type:“Double/Twin with Balcony”, bookingId:“9853893567”, checkIn:“Wed 6 May”, checkOut:“Sun 10 May”, nights:4, roomCost:500, cityTax:32, total:532, deposit:266, depositDue:“✅ Paid”, status:“deposit_paid”, warning:“⚠️ Harry leaves Mon 11 May — checkout needs extending or luggage storage arranging!” },
-{ id:2, guests:[“Laurie”,“Amon”], type:“Superior Double/Twin”, bookingId:“3909162628”, checkIn:“Thu 7 May”, checkOut:“Sun 10 May”, nights:3, roomCost:345, cityTax:24, total:369, deposit:184.50, depositDue:“✅ Paid”, status:“deposit_paid”, warning:null },
-{ id:3, guests:[“Paul (PeeWee)”,“John (Gilmore)”], type:“Superior Double/Twin”, bookingId:“4258295389”, checkIn:“Fri 8 May”, checkOut:“Sun 10 May”, nights:2, roomCost:230, cityTax:16, total:246, deposit:123, depositDue:“✅ Paid”, status:“deposit_paid”, warning:null },
-];
-
-const CONTACTS = [
-{ category:“🏨 Hotel”, name:“Flores Guest House”, role:“Accommodation”, address:“Rua de São Marçal 30, Misericórdia, Lisbon”, phone:”+351 213 461 884”, email:“welcome@floresguesthouse.com”, web:“https://www.floresguesthouse.com”, maps:“https://maps.google.com/?q=Rua+de+São+Marçal+30+Lisbon”, booked:true, note:“Contact 48hrs before arrival for check-in instructions. No lift — walk-up only.” },
-{ category:“🍷 Port Tasting”, name:“Bar do Binho”, role:“Thu 7 May, 13:00 — ✅ Booked”, address:“Praça da República 2, Sintra (opposite National Palace)”, phone:”+351 21 924 1790”, email:“bar.do.binho.sintra@gmail.com”, web:“https://bardobinho.wordpress.com”, maps:“https://maps.google.com/?q=Bar+do+Binho+Sintra”, booked:true, note:“Bailey Family booking · 2 pax · Paulo Cruz / Carlos Alves” },
-{ category:“🧗 Climbing”, name:“Escala25”, role:“Fri 8 May ~11:00 — ⚠️ Needs booking”, address:“Under the 25 de Abril Bridge, Alcântara, Lisbon”, phone:”+351 964 129 244”, email:“contact@escala25.com”, web:“https://escala25.com”, maps:“https://maps.google.com/?q=Escala25+Lisbon”, booked:false, note:“Day pass ~€10–12pp. Book in advance — can sell out. Open Fri 10am–8pm.” },
-{ category:“🍺 Beer Tour”, name:“Lisbon Tuk Tuk Tours”, role:“Fri 8 May 15:00 — ✅ Booked · Ref #76”, address:“Rua São Sebastião da Pedra 53A, 1050-206 Lisboa”, phone:”+351 213 918 090”, email:“geral@lisbontuktuktours.pt”, web:“https://www.lisbontuktuktours.com/en/programa/11/beer-tasting-tuk”, maps:“https://maps.google.com/?q=Rua+São+Sebastião+da+Pedra+53A+Lisbon”, booked:true, note:“Beer Tasting Tuk · 2h30 · 6 passengers · Booking ref #76 · 2 tuk tuks · Craft beer tastings + brewery visit” },
-{ category:“🚨 Emergency”, name:“Emergency Services”, role:“Portugal emergency number”, address:””, phone:“112”, email:””, web:””, maps:””, booked:true, note:”” },
-{ category:“🚨 Emergency”, name:“UK Embassy Lisbon”, role:“Consular assistance”, address:””, phone:”+351 21 392 4000”, email:””, web:“https://www.gov.uk/world/organisations/british-embassy-lisbon”, maps:””, booked:true, note:”” },
-{ category:“🚨 Emergency”, name:“Hospital de São José”, role:“Nearest A&E”, address:“Rua José António Serrano, Lisbon”, phone:””, email:””, web:””, maps:“https://maps.google.com/?q=Hospital+de+São+José+Lisbon”, booked:true, note:”” },
-{ category:“🚕 Transport”, name:“Uber / Bolt”, role:“Recommended city transport”, address:””, phone:””, email:””, web:“https://www.uber.com”, maps:””, booked:true, note:“Airport → hotel ~€20, ~20 min. Hotel → Sintra ~€35–45. Always cheaper than taxis.” },
-{ category:“✈️ Flight Tracking”, name:“FlightRadar24”, role:“Live flight tracking”, address:””, phone:””, email:””, web:“https://www.flightradar24.com”, maps:””, booked:true, note:“Use flight numbers from the Flights tab to track on the day.” },
-];
-
-const FLIGHTS_IN = [
-{ name:“Harry”, flight:“EY99”, route:“AUH → LIS”, datetime:“Wed 6 May · dep 02:05 · arr 07:25 (T1)”, status:“confirmed” },
-{ name:“Benjie”, flight:“TAP TBC”, route:“LHR → LIS”, datetime:“Thu 7 May · arr ~10:50”, status:“tbc” },
-{ name:“Laurie + Amon”, flight:“TP1357”, route:“LHR → LIS”, datetime:“Thu 7 May · dep 18:45 · arr 21:35”, status:“confirmed” },
-{ name:“John (Gilmore)”, flight:“EZY3321”, route:“EDI → LIS”, datetime:“Fri 8 May · dep 06:05 · arr 09:25 (T1)”, status:“confirmed”, note:“Ref: KCMWVK5” },
-{ name:“Paul (PeeWee)”, flight:“easyJet TBC”, route:“MAN → LIS”, datetime:“Fri 8 May · dep 09:00 · arr 11:55”, status:“confirmed” },
-{ name:“Rob”, flight:“TBC”, route:“TBC”, datetime:“TBC”, status:“tbc” },
-];
-
-const FLIGHTS_OUT = [
-{ name:“Paul (PeeWee)”, flight:“Ryanair TBC”, route:“LIS → MAN”, datetime:“Sun 10 May · dep 17:20 · arr 20:10”, status:“confirmed” },
-{ name:“Benjie”, flight:“TAP TBC”, route:“LIS → LHR”, datetime:“Sun 10 May · dep ~18:50”, status:“tbc” },
-{ name:“Laurie + Amon”, flight:“BA507”, route:“LIS → LHR”, datetime:“Sun 10 May · dep 18:50 · arr 21:35 (LHR T5)”, status:“confirmed” },
-{ name:“John (Gilmore)”, flight:“EZY3322”, route:“LIS → EDI”, datetime:“Sun 10 May · dep 18:50 · arr 22:05 (LIS T1)”, status:“confirmed”, note:“Ref: KCMWVK5” },
-{ name:“Harry”, flight:“TP1352”, route:“LIS → LHR”, datetime:“Mon 11 May · dep 10:00 · arr 12:45 (LHR T2)”, status:“confirmed”, note:“Then TP6919 LHR T4→AUH dep 14:45” },
-];
-
-const DAYS = [
-{ date:“2026-05-06”, label:“Wed 6 May”, theme:“Harry Arrives — Early Recon” },
-{ date:“2026-05-07”, label:“Thu 7 May”, theme:“Sintra Day — Harry & Benjie” },
-{ date:“2026-05-08”, label:“Fri 8 May”, theme:“Full Group Assembles” },
-{ date:“2026-05-09”, label:“Sat 9 May”, theme:“Surf + Big Night Out” },
-{ date:“2026-05-10”, label:“Sun 10 May”, theme:“Easy Sunday + Farewell” },
-{ date:“2026-05-11”, label:“Mon 11 May”, theme:“Harry Departs” },
-];
-
-const EVENT_TYPES = [“🍽️ Dinner”,“🍻 Drinks”,“🏄 Activity”,“🚌 Transfer”,“✈️ Travel”,“🏊 Pool/Beach”,“🎉 Party”,“👁️ Sightseeing”,“⛵ Boat”,“🛏️ Free Time”,“🍷 Tasting”];
-
+const CREW = [{
+id: 1,
+name: “Benjie”,
+role: “groom”,
+arrival: “Thu 7 May, ~10:50”,
+departure: “Sun 10 May, ~18:50”,
+flightIn: {
+flight: “TAP (TBC)”,
+from: “LHR”,
+to: “LIS”,
+dep: “~Morning”,
+arr: “~10:50”,
+date: “Thu 7 May”
+},
+flightOut: {
+flight: “TAP (TBC)”,
+from: “LIS”,
+to: “LHR”,
+dep: “~18:50”,
+arr: “~21:30”,
+date: “Sun 10 May”
+},
+notes: “Groom 💍”,
+confirmed: true
+}, {
+id: 2,
+name: “Harry”,
+role: “organiser”,
+arrival: “Wed 6 May, 07:25”,
+departure: “Mon 11 May, 10:00”,
+flightIn: {
+flight: “EY99”,
+from: “AUH”,
+to: “LIS”,
+dep: “02:05”,
+arr: “07:25”,
+date: “Wed 6 May”,
+terminal: “Terminal 1”
+},
+flightOut: {
+flight: “TP1352”,
+from: “LIS”,
+to: “LHR”,
+dep: “10:00”,
+arr: “12:45”,
+date: “Mon 11 May”,
+note: “Last check-in 09:00 · Then TP6919 LHR T4→AUH dep 14:45”
+},
+notes: “Arrives first, leaves last. Returns to Abu Dhabi via LHR.”,
+confirmed: true
+}, {
+id: 3,
+name: “Laurie”,
+role: “guest”,
+arrival: “Thu 7 May, 21:35”,
+departure: “Sun 10 May, 18:50”,
+flightIn: {
+flight: “TP1357”,
+from: “LHR”,
+to: “LIS”,
+dep: “18:45”,
+arr: “21:35”,
+date: “Thu 7 May”
+},
+flightOut: {
+flight: “BA507”,
+from: “LIS”,
+to: “LHR”,
+dep: “18:50”,
+arr: “21:35”,
+date: “Sun 10 May”,
+terminal: “LIS T1 → LHR T5”
+},
+notes: “”,
+confirmed: true
+}, {
+id: 4,
+name: “Amon”,
+role: “guest”,
+arrival: “Thu 7 May, 21:35”,
+departure: “Sun 10 May, 18:50”,
+flightIn: {
+flight: “TP1357”,
+from: “LHR”,
+to: “LIS”,
+dep: “18:45”,
+arr: “21:35”,
+date: “Thu 7 May”
+},
+flightOut: {
+flight: “BA507”,
+from: “LIS”,
+to: “LHR”,
+dep: “18:50”,
+arr: “21:35”,
+date: “Sun 10 May”,
+terminal: “LIS T1 → LHR T5”
+},
+notes: “”,
+confirmed: true
+}, {
+id: 5,
+name: “Paul (PeeWee)”,
+role: “guest”,
+arrival: “Fri 8 May, 11:55”,
+departure: “Sun 10 May, 17:20”,
+flightIn: {
+flight: “easyJet TBC”,
+from: “MAN”,
+to: “LIS”,
+dep: “09:00”,
+arr: “11:55”,
+date: “Fri 8 May”
+},
+flightOut: {
+flight: “Ryanair TBC”,
+from: “LIS”,
+to: “MAN”,
+dep: “17:20”,
+arr: “20:10”,
+date: “Sun 10 May”
+},
+notes: “From Manchester.”,
+confirmed: true
+}, {
+id: 6,
+name: “John (Gilmore)”,
+role: “guest”,
+arrival: “Fri 8 May, 09:25”,
+departure: “Sun 10 May, 18:50”,
+flightIn: {
+flight: “EZY3321”,
+from: “EDI”,
+to: “LIS”,
+dep: “06:05”,
+arr: “09:25”,
+date: “Fri 8 May”,
+terminal: “LIS Terminal 1”,
+note: “Booking ref: KCMWVK5”
+},
+flightOut: {
+flight: “EZY3322”,
+from: “LIS”,
+to: “EDI”,
+dep: “18:50”,
+arr: “22:05”,
+date: “Sun 10 May”,
+terminal: “LIS Terminal 1”
+},
+notes: “Flying from Edinburgh.”,
+confirmed: true
+}, {
+id: 7,
+name: “Rob”,
+role: “guest”,
+arrival: “”,
+departure: “”,
+flightIn: null,
+flightOut: null,
+notes: “TBC — may be joining”,
+confirmed: false
+}];
+const ROOMS = [{
+id: 1,
+guests: [“Harry”, “Benjie”],
+type: “Double/Twin with Balcony”,
+bookingId: “9853893567”,
+checkIn: “Wed 6 May”,
+checkOut: “Sun 10 May”,
+nights: 4,
+roomCost: 500,
+cityTax: 32,
+total: 532,
+deposit: 266,
+depositDue: “✅ Paid”,
+status: “deposit_paid”,
+warning: “⚠️ Harry leaves Mon 11 May — checkout needs extending or luggage storage arranging!”
+}, {
+id: 2,
+guests: [“Laurie”, “Amon”],
+type: “Superior Double/Twin”,
+bookingId: “3909162628”,
+checkIn: “Thu 7 May”,
+checkOut: “Sun 10 May”,
+nights: 3,
+roomCost: 345,
+cityTax: 24,
+total: 369,
+deposit: 184.50,
+depositDue: “✅ Paid”,
+status: “deposit_paid”,
+warning: null
+}, {
+id: 3,
+guests: [“Paul (PeeWee)”, “John (Gilmore)”],
+type: “Superior Double/Twin”,
+bookingId: “4258295389”,
+checkIn: “Fri 8 May”,
+checkOut: “Sun 10 May”,
+nights: 2,
+roomCost: 230,
+cityTax: 16,
+total: 246,
+deposit: 123,
+depositDue: “✅ Paid”,
+status: “deposit_paid”,
+warning: null
+}];
+const CONTACTS = [{
+category: “🏨 Hotel”,
+name: “Flores Guest House”,
+role: “Accommodation”,
+address: “Rua de São Marçal 30, Misericórdia, Lisbon”,
+phone: “+351 213 461 884”,
+email: “welcome@floresguesthouse.com”,
+web: “https://www.floresguesthouse.com”,
+maps: “https://maps.google.com/?q=Rua+de+São+Marçal+30+Lisbon”,
+booked: true,
+note: “Contact 48hrs before arrival for check-in instructions. No lift — walk-up only.”
+}, {
+category: “🍷 Port Tasting”,
+name: “Bar do Binho”,
+role: “Thu 7 May, 13:00 — ✅ Booked”,
+address: “Praça da República 2, Sintra (opposite National Palace)”,
+phone: “+351 21 924 1790”,
+email: “bar.do.binho.sintra@gmail.com”,
+web: “https://bardobinho.wordpress.com”,
+maps: “https://maps.google.com/?q=Bar+do+Binho+Sintra”,
+booked: true,
+note: “Bailey Family booking · 2 pax · Paulo Cruz / Carlos Alves”
+}, {
+category: “🧗 Climbing”,
+name: “Escala25”,
+role: “Fri 8 May ~11:00 — ⚠️ Needs booking”,
+address: “Under the 25 de Abril Bridge, Alcântara, Lisbon”,
+phone: “+351 964 129 244”,
+email: “contact@escala25.com”,
+web: “https://escala25.com”,
+maps: “https://maps.google.com/?q=Escala25+Lisbon”,
+booked: false,
+note: “Day pass ~€10–12pp. Book in advance — can sell out. Open Fri 10am–8pm.”
+}, {
+category: “🍺 Beer Tour”,
+name: “Lisbon Tuk Tuk Tours”,
+role: “Fri 8 May 15:00 — ✅ Booked · Ref #76”,
+address: “Rua São Sebastião da Pedra 53A, 1050-206 Lisboa”,
+phone: “+351 213 918 090”,
+email: “geral@lisbontuktuktours.pt”,
+web: “https://www.lisbontuktuktours.com/en/programa/11/beer-tasting-tuk”,
+maps: “https://maps.google.com/?q=Rua+São+Sebastião+da+Pedra+53A+Lisbon”,
+booked: true,
+note: “Beer Tasting Tuk · 2h30 · 6 passengers · Booking ref #76 · 2 tuk tuks · Craft beer tastings + brewery visit”
+}, {
+category: “🚨 Emergency”,
+name: “Emergency Services”,
+role: “Portugal emergency number”,
+address: “”,
+phone: “112”,
+email: “”,
+web: “”,
+maps: “”,
+booked: true,
+note: “”
+}, {
+category: “🚨 Emergency”,
+name: “UK Embassy Lisbon”,
+role: “Consular assistance”,
+address: “”,
+phone: “+351 21 392 4000”,
+email: “”,
+web: “https://www.gov.uk/world/organisations/british-embassy-lisbon”,
+maps: “”,
+booked: true,
+note: “”
+}, {
+category: “🚨 Emergency”,
+name: “Hospital de São José”,
+role: “Nearest A&E”,
+address: “Rua José António Serrano, Lisbon”,
+phone: “”,
+email: “”,
+web: “”,
+maps: “https://maps.google.com/?q=Hospital+de+São+José+Lisbon”,
+booked: true,
+note: “”
+}, {
+category: “🚕 Transport”,
+name: “Uber / Bolt”,
+role: “Recommended city transport”,
+address: “”,
+phone: “”,
+email: “”,
+web: “https://www.uber.com”,
+maps: “”,
+booked: true,
+note: “Airport → hotel ~€20, ~20 min. Hotel → Sintra ~€35–45. Always cheaper than taxis.”
+}, {
+category: “✈️ Flight Tracking”,
+name: “FlightRadar24”,
+role: “Live flight tracking”,
+address: “”,
+phone: “”,
+email: “”,
+web: “https://www.flightradar24.com”,
+maps: “”,
+booked: true,
+note: “Use flight numbers from the Flights tab to track on the day.”
+}];
+const FLIGHTS_IN = [{
+name: “Harry”,
+flight: “EY99”,
+route: “AUH → LIS”,
+datetime: “Wed 6 May · dep 02:05 · arr 07:25 (T1)”,
+status: “confirmed”
+}, {
+name: “Benjie”,
+flight: “TAP TBC”,
+route: “LHR → LIS”,
+datetime: “Thu 7 May · arr ~10:50”,
+status: “tbc”
+}, {
+name: “Laurie + Amon”,
+flight: “TP1357”,
+route: “LHR → LIS”,
+datetime: “Thu 7 May · dep 18:45 · arr 21:35”,
+status: “confirmed”
+}, {
+name: “John (Gilmore)”,
+flight: “EZY3321”,
+route: “EDI → LIS”,
+datetime: “Fri 8 May · dep 06:05 · arr 09:25 (T1)”,
+status: “confirmed”,
+note: “Ref: KCMWVK5”
+}, {
+name: “Paul (PeeWee)”,
+flight: “easyJet TBC”,
+route: “MAN → LIS”,
+datetime: “Fri 8 May · dep 09:00 · arr 11:55”,
+status: “confirmed”
+}, {
+name: “Rob”,
+flight: “TBC”,
+route: “TBC”,
+datetime: “TBC”,
+status: “tbc”
+}];
+const FLIGHTS_OUT = [{
+name: “Paul (PeeWee)”,
+flight: “Ryanair TBC”,
+route: “LIS → MAN”,
+datetime: “Sun 10 May · dep 17:20 · arr 20:10”,
+status: “confirmed”
+}, {
+name: “Benjie”,
+flight: “TAP TBC”,
+route: “LIS → LHR”,
+datetime: “Sun 10 May · dep ~18:50”,
+status: “tbc”
+}, {
+name: “Laurie + Amon”,
+flight: “BA507”,
+route: “LIS → LHR”,
+datetime: “Sun 10 May · dep 18:50 · arr 21:35 (LHR T5)”,
+status: “confirmed”
+}, {
+name: “John (Gilmore)”,
+flight: “EZY3322”,
+route: “LIS → EDI”,
+datetime: “Sun 10 May · dep 18:50 · arr 22:05 (LIS T1)”,
+status: “confirmed”,
+note: “Ref: KCMWVK5”
+}, {
+name: “Harry”,
+flight: “TP1352”,
+route: “LIS → LHR”,
+datetime: “Mon 11 May · dep 10:00 · arr 12:45 (LHR T2)”,
+status: “confirmed”,
+note: “Then TP6919 LHR T4→AUH dep 14:45”
+}];
+const DAYS = [{
+date: “2026-05-06”,
+label: “Wed 6 May”,
+theme: “Harry Arrives — Early Recon”
+}, {
+date: “2026-05-07”,
+label: “Thu 7 May”,
+theme: “Sintra Day — Harry & Benjie”
+}, {
+date: “2026-05-08”,
+label: “Fri 8 May”,
+theme: “Full Group Assembles”
+}, {
+date: “2026-05-09”,
+label: “Sat 9 May”,
+theme: “Surf + Big Night Out”
+}, {
+date: “2026-05-10”,
+label: “Sun 10 May”,
+theme: “Easy Sunday + Farewell”
+}, {
+date: “2026-05-11”,
+label: “Mon 11 May”,
+theme: “Harry Departs”
+}];
+const EVENT_TYPES = [“🍽️ Dinner”, “🍻 Drinks”, “🏄 Activity”, “🚌 Transfer”, “✈️ Travel”, “🏊 Pool/Beach”, “🎉 Party”, “👁️ Sightseeing”, “⛵ Boat”, “🛏️ Free Time”, “🍷 Tasting”];
 const INITIAL_ITINERARY = {
-“2026-05-06”: [
-{ title:“Harry arrives”, type:“✈️ Travel”, time:“07:25”, location:“Lisbon Airport (LIS) Terminal 1”, links:[{label:“Flores GH on Maps”,url:“https://maps.google.com/?q=Rua+de+São+Marçal+30+Lisbon”}], notes:“Etihad EY99 from AUH dep 02:05. Uber to Flores GH ~20 min, ~€20. Early check-in — confirm with hotel.”, booked:true },
-{ title:“Settle in & explore Lisbon solo”, type:“👁️ Sightseeing”, time:“10:00”, location:“Príncipe Real / Chiado / Alfama”, links:[], notes:“Scout restaurants, walk the neighbourhoods, find the good bars. Great chance to get ahead on bookings.”, booked:false },
-{ title:“Dinner solo”, type:“🍽️ Dinner”, time:“20:00”, location:“Praça das Flores area”, links:[{label:“Praça das Flores on Maps”,url:“https://maps.google.com/?q=Praça+das+Flores+Lisbon”}], notes:“Plenty of great spots on the doorstep of the hotel.”, booked:false },
-],
-“2026-05-07”: [
-{ title:“Benjie arrives — Uber to Flores GH”, type:“✈️ Travel”, time:“10:50”, location:“Lisbon Airport (LIS) → Flores Guest House”, links:[], notes:“TAP from LHR arr ~10:50. Uber to hotel ~€20, 20 min. Drop bags and head straight out.”, booked:true },
-{ title:“Uber direct to Sintra”, type:“🚌 Transfer”, time:“12:00”, location:“Flores GH → Bar do Binho, Sintra”, links:[], notes:“Uber straight from hotel ~40 min, ~€35–45. Leave by 12:00 to arrive for 13:00. Return: Uber back (~€35–45) OR train Sintra → Rossio (~40 min, ~€2.50pp) for the scenic route.”, booked:false },
-{ title:“🍷 Bar do Binho — Port Tasting & Lunch”, type:“🍷 Tasting”, time:“13:00”, location:“Praça da República 2, Sintra”, links:[{label:“bardobinho.wordpress.com”,url:“https://bardobinho.wordpress.com”},{label:“View on Maps”,url:“https://maps.google.com/?q=Bar+do+Binho+Sintra”},{label:“Email Paulo”,url:“mailto:bar.do.binho.sintra@gmail.com”}], notes:“✅ BOOKED · Bailey Family · 2 pax · Port tasting (4 ports per flight) + lunch with local wines · Paulo Cruz / Carlos Alves · 📞 +351 21 924 1790”, booked:true },
-{ title:“Meander around Sintra historic centre”, type:“👁️ Sightseeing”, time:“15:00”, location:“Sintra historic centre”, links:[{label:“Casa Piriquita”,url:“https://maps.google.com/?q=Casa+Piriquita+Sintra”},{label:“Casa do Fauno”,url:“https://maps.google.com/?q=Casa+do+Fauno+Sintra”}], notes:“No tickets, no plans — just wander. Cobbled streets, palace exteriors, hilltop views are all free. 🥐 Casa Piriquita — queijada de Sintra & travesseiro pastry (since 1862). 🍺 Casa do Fauno — medieval pub, own-brewed mead, opens 4pm, ⭐4.7.”, booked:false },
-{ title:“Uber back to Lisbon”, type:“🚌 Transfer”, time:“17:30”, location:“Sintra → Flores Guest House”, links:[], notes:“~35–45 min, ~€25–35. Freshen up before Laurie & Amon arrive at 21:35.”, booked:false },
-{ title:“Harry & Benjie — early dinner on the square”, type:“🍽️ Dinner”, time:“20:00”, location:“Praça das Flores”, links:[{label:“Flores da Pampa”,url:“https://maps.google.com/?q=Flores+da+Pampa+Lisbon”},{label:“Cafeh Tehran”,url:“https://maps.google.com/?q=Cafeh+Tehran+Lisbon”},{label:“Magnolia Bistrot”,url:“https://www.instagram.com/magnolia_lisboa/”}], notes:“Options on the square: Flores da Pampa (No.18, open till 1am, ⭐4.4) · Cafeh Tehran (No.40, Persian, ⭐4.5) · Magnolia Bistrot & Winebar (No.43, ⭐4.5 — book ahead).”, booked:false },
-{ title:“Laurie & Amon arrive”, type:“✈️ Travel”, time:“21:35”, location:“Lisbon Airport (LIS)”, links:[], notes:“TAP TP1357 from LHR dep 18:45. Uber to hotel ~20 min.”, booked:true },
-{ title:“Late night drinks — trip kickoff! 🎉”, type:“🍻 Drinks”, time:“22:30”, location:“Praça das Flores, Príncipe Real”, links:[{label:“Sino Bar”,url:“https://maps.google.com/?q=Sino+Bar+Lisbon”},{label:“Black Sheep Lisboa”,url:“http://blacksheeplisboa.com/”},{label:“Sneaky Sip Instagram”,url:“https://www.instagram.com/sneakysiplisbon/”},{label:“Gin Lovers”,url:“http://ginlovers.pt/”}], notes:“Sino Bar (No.6, ⭐4.9, cocktails, open till 1am, Thu lotto night 🎲) · Black Sheep Lisboa (No.62, ⭐4.8, wine bar) · Sneaky Sip (5 min walk, speakeasy — get password from their Instagram) · Gin Lovers at Embaixada Palace (5 min walk, ⭐4.6).”, booked:false },
-],
-“2026-05-08”: [
-{ title:“John (Gilmore) arrives”, type:“✈️ Travel”, time:“09:25”, location:“Lisbon Airport (LIS) Terminal 1”, links:[], notes:“easyJet EZY3321 from EDI dep 06:05. Uber to hotel ~20 min.”, booked:true },
-{ title:“☕ Group breakfast — Pão de Canela”, type:“🍽️ Dinner”, time:“09:30”, location:“Pão de Canela · Praça das Flores 25-29”, links:[{label:“View on Maps”,url:“https://maps.google.com/?q=Pão+de+Canela+Praça+das+Flores+Lisbon”}], notes:“Right on the square. Open from 9am — go early, fills up. Portuguese pastries, eggs, coffee.”, booked:false },
-{ title:“Paul (PeeWee) arrives”, type:“✈️ Travel”, time:“11:55”, location:“Lisbon Airport (LIS)”, links:[], notes:“easyJet from MAN dep 09:00. Uber to hotel ~20 min. Will miss breakfast — joins group later.”, booked:true },
-{ title:“🧗 Escala25 — climbing under the bridge”, type:“🏄 Activity”, time:“11:00”, location:“Under the 25 de Abril Bridge, Alcântara”, links:[{label:“escala25.com”,url:“https://escala25.com”},{label:“View on Maps”,url:“https://maps.google.com/?q=Escala25+Lisbon”},{label:“Email to book”,url:“mailto:contact@escala25.com”}], notes:“⚠️ NEEDS BOOKING · Outdoor sport climbing on bridge pillars, 12m walls, all levels. Day pass ~€10–12pp. 📞 +351 964 129 244 · Open Fri 10am–8pm.”, booked:false },
-{ title:“🏭 LX Factory — non-climbers explore”, type:“👁️ Sightseeing”, time:“11:00”, location:“LX Factory · Rua Rodrigues Faria 103, Alcântara”, links:[{label:“lxfactory.com”,url:“https://lxfactory.com”},{label:“View on Maps”,url:“https://maps.google.com/?q=LX+Factory+Lisbon”}], notes:“5 min walk from Escala25. Creative hub — street art, independent shops, cafés, market stalls. Happy hour from ~2pm (€1.50 beers, €5 Aperol).”, booked:false },
-{ title:“Lunch together at LX Factory 🎉”, type:“🍽️ Dinner”, time:“13:00”, location:“LX Factory, Alcântara”, links:[{label:“Rio Maravilha”,url:“https://maps.google.com/?q=Rio+Maravilha+LX+Factory+Lisbon”},{label:“1300 Taberna”,url:“https://maps.google.com/?q=1300+Taberna+LX+Factory+Lisbon”}], notes:“EVERYONE together for first time! Options: 1300 Taberna (Portuguese, ~€25pp) · Cantina (wood-fired, classics since 1846) · Selllva (Mediterranean, terrace, happy hour) · Rio Maravilha (rooftop, river & bridge views — great for groups).”, booked:false },
-{ title:“🍺 Beer Tasting Tuk — Lisbon Tuk Tuk Tours”, type:“🏄 Activity”, time:“15:00”, location:“Lisbon Tuk Tuk Tours · Rua São Sebastião da Pedra 53A”, links:[{label:“Tour page”,url:“https://www.lisbontuktuktours.com/en/programa/11/beer-tasting-tuk”},{label:“Email”,url:“mailto:geral@lisbontuktuktours.pt”},{label:“View on Maps”,url:“https://maps.google.com/?q=Rua+São+Sebastião+da+Pedra+53A+Lisbon”}], notes:“✅ BOOKED · Booking ref #76 · 6 passengers · 08 May 2026 · 15:00 · Language: English · Beer Tasting Tuk · 2h30 · Craft beer tastings + exclusive brewery visit · 2 tuk tuks · 📞 +351 213 918 090 · geral@lisbontuktuktours.pt”, booked:true },
-{ title:“Group dinner — pick one & book ahead”, type:“🍽️ Dinner”, time:“20:00”, location:“Bairro Alto”, links:[{label:“A Nossa Casa ⭐4.8”,url:“https://maps.google.com/?cid=13872759130300370656”},{label:“Lisboa à Noite ⭐4.5”,url:“http://www.lisboanoite.com/”},{label:“Versículo d’O Faia ⭐4.7”,url:“http://www.versiculo.pt/”}], notes:“⚠️ NEEDS BOOKING — all in Bairro Alto, walk straight into the crawl after.\n\n🥇 A Nossa Casa (Rua da Atalaia 31) · ⭐4.8 · ‘Best meal I had in Lisbon’ · Tasting-style, incredible pork & beef · Host Antonio recommends everything · 6:30–10:30pm · 📞 +351 21 342 0484\n\n🥈 Lisboa à Noite (Rua das Gáveas 69) · ⭐4.5 · ‘There were 10 of us — all dishes outstanding’ · Premium Portuguese seafood & meat · 6:30–11:30pm · 📞 +351 21 346 8557\n\n🥉 Versículo d’O Faia (Rua da Barroca 60A) · ⭐4.7 · Set menus, great octopus & lamb · Good value · 7pm–midnight · 📞 +351 963 999 678”, booked:false },
-{ title:“🍻 Bairro Alto Crawl — 3 stops then Pink Street finale”, type:“🍻 Drinks”, time:“22:00”, location:“Bairro Alto → Cais do Sodré”, links:[{label:“Stop 1: Bar da Vera”,url:“https://www.instagram.com/bardaverabyshortys/”},{label:“Stop 2: Jay’z Bar”,url:“https://www.instagram.com/jayz_bar”},{label:“Stop 3: Jimmy’s Bar”,url:“https://maps.google.com/?cid=2101315264414116739”},{label:“Stop 4: Pensão Amor”,url:“https://maps.google.com/?cid=9882671449491607982”},{label:“Stop 5: Spot Bairro Alto”,url:“https://maps.google.com/?cid=14433836855413236586”}], notes:“All within a short walk — Bairro Alto bars then down to Cais do Sodré for the late finish.\n\n🍹 Stop 1 — Bar da Vera by SHORTYS (Rua da Rosa 154) · ⭐4.9 · Incredible shots, caipirinhas, passion fruit cocktails. Open till 3am.\n\n🎸 Stop 2 — Jay’z Bar (Rua da Atalaia 26) · ⭐5.0 · Live guitar, Pablo plays ANY song. Host Jay is legendary. Open till 2am.\n\n📺 Stop 3 — Jimmy’s Bar #1 (Rua da Barroca 43) · ⭐4.9 · 80s MTV, cheap drinks, brilliant host Jimmy. Open till 3am.\n\n🏚️ Stop 4 — Pensão Amor (Rua Nova do Carvalho 38) · ⭐4.4 · LATE FINISH · Former brothel turned iconic bar on Pink Street · Multiple rooms, incredible character, burlesque/live shows most nights · Open till 4am Fri · ‘One of the best bars with character I’ve ever been to.’ Perfect stag energy.\n\n🎉 Stop 5 — Spot Bairro Alto (Rua da Atalaia 25) · ⭐4.3 · LATE FINISH · ‘Visited for a mate’s stag party — owner fantastic, DJing all night, great atmosphere.’ Tech house / EDM. One reviewer came every night of their stag trip. Open till 3am. The last stop.”, booked:false },
-],
-“2026-05-09”: [
-{ title:“😴 Gentle start — late morning”, type:“🛏️ Free Time”, time:“10:00”, location:“Flores Guest House”, links:[], notes:“No rush. Recovery morning after Friday night. Brunch at Dear Breakfast (~10:30am) then head to Caparica.”, booked:false },
-{ title:“☕ Brunch — Dear Breakfast”, type:“🍽️ Dinner”, time:“10:30”, location:“Dear Breakfast · Rua das Gaivotas 17, Santos”, links:[{label:“View on Maps”,url:“https://maps.google.com/?q=Dear+Breakfast+Lisbon+Santos”}], notes:“Rated #1 brunch in Lisbon. Eggs-focused, great pancakes, good coffee. Walk in — no reservations.”, booked:false },
-{ title:“🚗 Uber to Costa da Caparica”, type:“🚌 Transfer”, time:“12:00”, location:“Lisbon → Costa da Caparica”, links:[], notes:“~25–30 min, ~€20–25. Much closer than Cascais. Drop straight at the beach.”, booked:false },
-{ title:“🏄 Surf lesson — Costa da Caparica”, type:“🏄 Activity”, time:“12:30”, location:“Costa da Caparica beach”, links:[{label:“Surf School Caparica”,url:“https://surfschoolcostadacaparica.com”},{label:“Gecko Surf School”,url:“https://geckosurfschool.com/en/”},{label:“Breakthrough Surf”,url:“https://breakthroughsurfschool.com”}], notes:“⚠️ NEEDS BOOKING · ~2hrs · ~€50pp for group of 6 · All equipment included (board & wetsuit).\n\n🥇 Surf School Costa da Caparica — surfschoolcostadacaparica.com — private group lesson for 6, uncrowded beach, certified instructors, max 6pp per coach. Highly reviewed.\n🥈 Gecko Surf School — geckosurfschool.com — certified, all levels, great reviews.\n🥉 Breakthrough Surf School — breakthroughsurfschool.com — private lessons, changing rooms, secure storage, outdoor shower.”, booked:false },
-{ title:“🏐 Beach sports on the sand”, type:“🏄 Activity”, time:“12:00”, location:“Costa da Caparica beach”, links:[], notes:“Post-surf wind-down before lunch. Volleyball nets along the beach — informal games. Frisbee, football, whatever the group fancies. Free.”, booked:false },
-{ title:“🍽️ Lunch — Restaurante Praia do Rei”, type:“🍽️ Dinner”, time:“13:30”, location:“Estrada das Matas Nacionais, Costa da Caparica”, links:[{label:“Instagram”,url:“https://www.instagram.com/restaurantepraiadorei/”},{label:“View on Maps”,url:“https://maps.google.com/?q=Restaurante+Praia+do+Rei+Costa+da+Caparica”}], notes:“⚠️ Worth calling ahead for a group of 6 · Local institution since 1990 · Traditional Portuguese grilled fish over charcoal · Sea terrace · ⭐4.5 (428 reviews) · Great value, proper local lunch · Open Sat till 20:30.\n📞 +351 21 297 0038 / +351 965 696 182”, booked:false },
-{ title:“🏐 Beach sports + afternoon hang”, type:“🏄 Activity”, time:“15:00”, location:“Costa da Caparica beach”, links:[], notes:“Volleyball nets along the beach — informal games, no booking needed. Frisbee, football, whatever. Then settle in at one of the beach clubs nearby.”, booked:false },
-{ title:“🏖️ Beach club — pick one on the day”, type:“🏄 Activity”, time:“16:00”, location:“Praia do Rei stretch, Costa da Caparica”, links:[{label:“Coco Beach”,url:“https://cocobeach.pt”},{label:“Salty Club”,url:“https://saltyclub.pt”},{label:“Clássico Beach Club”,url:“https://maps.google.com/?q=Clássico+Beach+Club+Costa+da+Caparica”},{label:“Praia Princesa”,url:“https://maps.google.com/?q=Praia+Princesa+Costa+da+Caparica”}], notes:“All on the Praia do Rei stretch — wander and pick based on vibe:\n\n🥇 Coco Beach (Estrada da Praia do Infante) · Right on the sand, bohemian organic design, woven umbrellas, tables on the sand · Sushi, sashimi, bao, Portuguese classics · DJ sets at sunset · Big groups & private events welcome · 📞 +351 915 540 052 · cocobeach.pt\n\n🥈 Salty Club (Praia do Rei) · Beach club 20 min from Lisbon · Relaxed, sunbeds, cocktails · saltyclub.pt\n\n🥉 Clássico Beach Club (Estrada da Praia do Castelo) · Brazilian beach club inspiration · Hammocks, beige cushions, Wagyu burger, wagyu steak, shrimp feijoada · Premium crowd but laid back · 📞 +351 210 605 992\n\n☀️ Praia Princesa (Av. Afonso de Albuquerque) · Cosy indoor/outdoor dining · Clams, octopus, international dishes · Popular with French expats · 📞 +351 927 194 906”, booked:false },
-{ title:“🚗 Uber back to Lisbon”, type:“🚌 Transfer”, time:“20:00”, location:“Costa da Caparica → Flores Guest House”, links:[], notes:“~25–30 min, ~€20–25. Back in good time to shower and get ready for the big night.”, booked:false },
-{ title:“Pre-drinks on the square”, type:“🍻 Drinks”, time:“21:30”, location:“Praça das Flores”, links:[{label:“Sino Bar”,url:“https://maps.google.com/?q=Sino+Bar+Lisbon”}], notes:“Sino Bar (⭐4.9, No.6 on the square). Start the night.”, booked:false },
-{ title:“🍽️ Final stag dinner”, type:“🍽️ Dinner”, time:“22:00”, location:“TBC — book in advance”, links:[{label:“Cervejaria Ramiro”,url:“https://maps.google.com/?q=Cervejaria+Ramiro+Lisbon”},{label:“Solar dos Presuntos”,url:“https://maps.google.com/?q=Solar+dos+Presuntos+Lisbon”},{label:“Taberna da Rua das Flores”,url:“https://maps.google.com/?q=Taberna+da+Rua+das+Flores+Lisbon”}], notes:“⚠️ NEEDS BOOKING · Later start (22:00) after a big beach day.\n\n🦞 Cervejaria Ramiro (Av. Almirante Reis 1) · Legendary seafood since 1956 · Huge prawns, crab, clams, barnacles · Raucous energy, perfect last night · ~€55pp · 📞 +351 21 885 1024\n🍖 Solar dos Presuntos (Rua das Portas de Santo Antão 150) · Classic Portuguese, great for groups · ~€40pp · 📞 +351 21 342 5253\n🫙 Taberna da Rua das Flores (Rua das Flores 103) · Petiscos/tapas · Cash only · No reservations — arrive early · ~€28pp”, booked:false },
-{ title:“🎉 VIP late night”, type:“🎉 Party”, time:“00:00”, location:“Príncipe Real / Cais do Sodré”, links:[{label:“The V Rooftop Bar”,url:“https://maps.google.com/?q=The+V+Rooftop+Bar+Lisbon”},{label:“5A Club”,url:“https://maps.google.com/?q=5A+Club+Lisbon”},{label:“Lux Frágil”,url:“https://maps.google.com/?q=Lux+Fragil+Lisbon”}], notes:“Rooftop drinks first at The V (The Vintage Hotel) — panoramic castle & city views, premium cocktails. Then club: 5A Club (Príncipe Real, house till sunrise, close to hotel) or Lux Frágil (Lisbon’s most iconic club, Tagus rooftop, till 6am).”, booked:false },
-],
-“2026-05-10”: [
-{ title:“😴 Slow morning — everyone’s own pace”, type:“🛏️ Free Time”, time:“10:00”, location:“Flores Guest House”, notes:“No plan, no rush. Last day together before departures kick off from 15:30.”, booked:false, links:[] },
-{ title:“☕ Brunch — pick one nearby”, type:“🍽️ Dinner”, time:“10:30”, location:“Príncipe Real / Chiado”, links:[{label:“Instant Crunch ⭐4.8”,url:“https://maps.google.com/?cid=16831805777993508154”},{label:“Breakfast Lovers ⭐4.9”,url:“https://maps.google.com/?cid=15756801661605489238”},{label:“Seventh Brunch ⭐4.7”,url:“https://maps.google.com/?cid=11319770363702260125”}], notes:“All within 10 min walk. No need to pre-agree — split into groups or all together.\n\n🥇 Instant Crunch (Rua da Mãe d’Água 9, Príncipe Real) · ⭐4.8 · Beautiful garden setting, best Eggs Benedict in Lisbon. 8 min walk. 📞 +351 21 151 1516\n🥈 Breakfast Lovers Chiado (Rua Vítor Cordon 26) · ⭐4.9 · Highest rated in Lisbon. Guacamole Benedict on croissant, cheesy pancakes. 12 min walk.\n🥉 Seventh Brunch (Calçada do Combro 147) · ⭐4.7 · Full English, great pancakes, mimosas, 8 min walk.”, booked:false },
-{ title:“🌤️ Chilled afternoon — rooftop options”, type:“🍻 Drinks”, time:“13:00”, location:“Chiado / Bairro Alto”, links:[{label:“Park Rooftop ⭐4.0”,url:“https://maps.google.com/?cid=8635606603508500092”},{label:“Lumi Rooftop ⭐4.4”,url:“https://maps.google.com/?cid=15254176787018518536”},{label:“Carmo Rooftop ⭐4.2”,url:“https://maps.google.com/?cid=23150919717859615”}], notes:“Nowhere to be — drift between these depending on energy levels. All within 10 min walk.\n\n🅿️ Park Rooftop (Calçada do Combro 58) · ⭐4.0 · Opens 12pm Sunday. Hidden gem ON TOP of a car park — sounds odd, looks incredible. Unreal city views, cold drinks, chilled vibes. Closes 8pm. Free entry.\n🌅 Lumi Rooftop (Rua de São Pedro de Alcântara 35) · ⭐4.4 · Opens 11:30am Sunday. Panoramic views, small plates & cocktails. Smart-casual. Good for a proper last sundowner.\n⛪ Carmo Rooftop (Largo do Carmo) · ⭐4.2 · Opens 10am. Overlooks the Santa Justa Lift & rooftops of Lisbon. Cocktails & tapas, open-air.”, booked:false },
-{ title:“Paul departs — Ryanair LIS→MAN 17:20”, type:“✈️ Travel”, time:“15:30”, location:“Lisbon Airport (LIS)”, links:[], notes:“Leave hotel by 15:30, Uber ~20 min to airport.”, booked:true },
-{ title:“Benjie, Laurie, Amon & John depart”, type:“✈️ Travel”, time:“17:00”, location:“Lisbon Airport (LIS) Terminal 1”, links:[], notes:“All departing ~18:50 · Benjie: TAP LIS→LHR · Laurie + Amon: BA507 LIS→LHR T5 · John: EZY3322 LIS→EDI. Leave hotel by 17:00 — share Ubers!”, booked:true },
-{ title:“Harry — last evening solo”, type:“🍻 Drinks”, time:“20:00”, location:“Chiado / Alfama”, links:[{label:“Chiado on Maps”,url:“https://maps.google.com/?q=Chiado+Lisbon”}], notes:“Quieter final evening. Explore Chiado or Alfama.”, booked:false },
-],
-“2026-05-11”: [
-{ title:“Checkout / luggage”, type:“🛏️ Free Time”, time:“09:00”, location:“Flores Guest House”, links:[{label:“Call hotel”,url:“tel:+351213461884”},{label:“Email hotel”,url:“mailto:welcome@floresguesthouse.com”}], notes:“⚠️ Room booked until Sun 10 May — arrange extension or luggage storage with hotel.”, booked:false },
-{ title:“Harry departs — TAP TP1352 LIS→LHR”, type:“✈️ Travel”, time:“09:00”, location:“Lisbon Airport (LIS) Terminal 1”, links:[{label:“Track TP1352”,url:“https://www.flightradar24.com/data/flights/tp1352”}], notes:“TP1352 dep 10:00, arr LHR T2 12:45. Last check-in 09:00 — leave hotel by 08:00. Then TP6919 LHR T4→AUH dep 14:45.”, booked:true },
-],
+“2026-05-06”: [{
+title: “Harry arrives”,
+type: “✈️ Travel”,
+time: “07:25”,
+location: “Lisbon Airport (LIS) Terminal 1”,
+links: [{
+label: “Flores GH on Maps”,
+url: “https://maps.google.com/?q=Rua+de+São+Marçal+30+Lisbon”
+}],
+notes: “Etihad EY99 from AUH dep 02:05. Uber to Flores GH ~20 min, ~€20. Early check-in — confirm with hotel.”,
+booked: true
+}, {
+title: “Settle in & explore Lisbon solo”,
+type: “👁️ Sightseeing”,
+time: “10:00”,
+location: “Príncipe Real / Chiado / Alfama”,
+links: [],
+notes: “Scout restaurants, walk the neighbourhoods, find the good bars. Great chance to get ahead on bookings.”,
+booked: false
+}, {
+title: “Dinner solo”,
+type: “🍽️ Dinner”,
+time: “20:00”,
+location: “Praça das Flores area”,
+links: [{
+label: “Praça das Flores on Maps”,
+url: “https://maps.google.com/?q=Praça+das+Flores+Lisbon”
+}],
+notes: “Plenty of great spots on the doorstep of the hotel.”,
+booked: false
+}],
+“2026-05-07”: [{
+title: “Benjie arrives — Uber to Flores GH”,
+type: “✈️ Travel”,
+time: “10:50”,
+location: “Lisbon Airport (LIS) → Flores Guest House”,
+links: [],
+notes: “TAP from LHR arr ~10:50. Uber to hotel ~€20, 20 min. Drop bags and head straight out.”,
+booked: true
+}, {
+title: “Uber direct to Sintra”,
+type: “🚌 Transfer”,
+time: “12:00”,
+location: “Flores GH → Bar do Binho, Sintra”,
+links: [],
+notes: “Uber straight from hotel ~40 min, ~€35–45. Leave by 12:00 to arrive for 13:00. Return: Uber back (~€35–45) OR train Sintra → Rossio (~40 min, ~€2.50pp) for the scenic route.”,
+booked: false
+}, {
+title: “🍷 Bar do Binho — Port Tasting & Lunch”,
+type: “🍷 Tasting”,
+time: “13:00”,
+location: “Praça da República 2, Sintra”,
+links: [{
+label: “bardobinho.wordpress.com”,
+url: “https://bardobinho.wordpress.com”
+}, {
+label: “View on Maps”,
+url: “https://maps.google.com/?q=Bar+do+Binho+Sintra”
+}, {
+label: “Email Paulo”,
+url: “mailto:bar.do.binho.sintra@gmail.com”
+}],
+notes: “✅ BOOKED · Bailey Family · 2 pax · Port tasting (4 ports per flight) + lunch with local wines · Paulo Cruz / Carlos Alves · 📞 +351 21 924 1790”,
+booked: true
+}, {
+title: “Meander around Sintra historic centre”,
+type: “👁️ Sightseeing”,
+time: “15:00”,
+location: “Sintra historic centre”,
+links: [{
+label: “Casa Piriquita”,
+url: “https://maps.google.com/?q=Casa+Piriquita+Sintra”
+}, {
+label: “Casa do Fauno”,
+url: “https://maps.google.com/?q=Casa+do+Fauno+Sintra”
+}],
+notes: “No tickets, no plans — just wander. Cobbled streets, palace exteriors, hilltop views are all free. 🥐 Casa Piriquita — queijada de Sintra & travesseiro pastry (since 1862). 🍺 Casa do Fauno — medieval pub, own-brewed mead, opens 4pm, ⭐4.7.”,
+booked: false
+}, {
+title: “Uber back to Lisbon”,
+type: “🚌 Transfer”,
+time: “17:30”,
+location: “Sintra → Flores Guest House”,
+links: [],
+notes: “~35–45 min, ~€25–35. Freshen up before Laurie & Amon arrive at 21:35.”,
+booked: false
+}, {
+title: “Harry & Benjie — early dinner on the square”,
+type: “🍽️ Dinner”,
+time: “20:00”,
+location: “Praça das Flores”,
+links: [{
+label: “Flores da Pampa”,
+url: “https://maps.google.com/?q=Flores+da+Pampa+Lisbon”
+}, {
+label: “Cafeh Tehran”,
+url: “https://maps.google.com/?q=Cafeh+Tehran+Lisbon”
+}, {
+label: “Magnolia Bistrot”,
+url: “https://www.instagram.com/magnolia_lisboa/”
+}],
+notes: “Options on the square: Flores da Pampa (No.18, open till 1am, ⭐4.4) · Cafeh Tehran (No.40, Persian, ⭐4.5) · Magnolia Bistrot & Winebar (No.43, ⭐4.5 — book ahead).”,
+booked: false
+}, {
+title: “Laurie & Amon arrive”,
+type: “✈️ Travel”,
+time: “21:35”,
+location: “Lisbon Airport (LIS)”,
+links: [],
+notes: “TAP TP1357 from LHR dep 18:45. Uber to hotel ~20 min.”,
+booked: true
+}, {
+title: “Late night drinks — trip kickoff! 🎉”,
+type: “🍻 Drinks”,
+time: “22:30”,
+location: “Praça das Flores, Príncipe Real”,
+links: [{
+label: “Sino Bar”,
+url: “https://maps.google.com/?q=Sino+Bar+Lisbon”
+}, {
+label: “Black Sheep Lisboa”,
+url: “http://blacksheeplisboa.com/”
+}, {
+label: “Sneaky Sip Instagram”,
+url: “https://www.instagram.com/sneakysiplisbon/”
+}, {
+label: “Gin Lovers”,
+url: “http://ginlovers.pt/”
+}],
+notes: “Sino Bar (No.6, ⭐4.9, cocktails, open till 1am, Thu lotto night 🎲) · Black Sheep Lisboa (No.62, ⭐4.8, wine bar) · Sneaky Sip (5 min walk, speakeasy — get password from their Instagram) · Gin Lovers at Embaixada Palace (5 min walk, ⭐4.6).”,
+booked: false
+}],
+“2026-05-08”: [{
+title: “John (Gilmore) arrives”,
+type: “✈️ Travel”,
+time: “09:25”,
+location: “Lisbon Airport (LIS) Terminal 1”,
+links: [],
+notes: “easyJet EZY3321 from EDI dep 06:05. Uber to hotel ~20 min.”,
+booked: true
+}, {
+title: “☕ Group breakfast — Pão de Canela”,
+type: “🍽️ Dinner”,
+time: “09:30”,
+location: “Pão de Canela · Praça das Flores 25-29”,
+links: [{
+label: “View on Maps”,
+url: “https://maps.google.com/?q=Pão+de+Canela+Praça+das+Flores+Lisbon”
+}],
+notes: “Right on the square. Open from 9am — go early, fills up. Portuguese pastries, eggs, coffee.”,
+booked: false
+}, {
+title: “Paul (PeeWee) arrives”,
+type: “✈️ Travel”,
+time: “11:55”,
+location: “Lisbon Airport (LIS)”,
+links: [],
+notes: “easyJet from MAN dep 09:00. Uber to hotel ~20 min. Will miss breakfast — joins group later.”,
+booked: true
+}, {
+title: “🧗 Escala25 — climbing under the bridge”,
+type: “🏄 Activity”,
+time: “11:00”,
+location: “Under the 25 de Abril Bridge, Alcântara”,
+links: [{
+label: “escala25.com”,
+url: “https://escala25.com”
+}, {
+label: “View on Maps”,
+url: “https://maps.google.com/?q=Escala25+Lisbon”
+}, {
+label: “Email to book”,
+url: “mailto:contact@escala25.com”
+}],
+notes: “⚠️ NEEDS BOOKING · Outdoor sport climbing on bridge pillars, 12m walls, all levels. Day pass ~€10–12pp. 📞 +351 964 129 244 · Open Fri 10am–8pm.”,
+booked: false
+}, {
+title: “🏭 LX Factory — non-climbers explore”,
+type: “👁️ Sightseeing”,
+time: “11:00”,
+location: “LX Factory · Rua Rodrigues Faria 103, Alcântara”,
+links: [{
+label: “lxfactory.com”,
+url: “https://lxfactory.com”
+}, {
+label: “View on Maps”,
+url: “https://maps.google.com/?q=LX+Factory+Lisbon”
+}],
+notes: “5 min walk from Escala25. Creative hub — street art, independent shops, cafés, market stalls. Happy hour from ~2pm (€1.50 beers, €5 Aperol).”,
+booked: false
+}, {
+title: “Lunch together at LX Factory 🎉”,
+type: “🍽️ Dinner”,
+time: “13:00”,
+location: “LX Factory, Alcântara”,
+links: [{
+label: “Rio Maravilha”,
+url: “https://maps.google.com/?q=Rio+Maravilha+LX+Factory+Lisbon”
+}, {
+label: “1300 Taberna”,
+url: “https://maps.google.com/?q=1300+Taberna+LX+Factory+Lisbon”
+}],
+notes: “EVERYONE together for first time! Options: 1300 Taberna (Portuguese, ~€25pp) · Cantina (wood-fired, classics since 1846) · Selllva (Mediterranean, terrace, happy hour) · Rio Maravilha (rooftop, river & bridge views — great for groups).”,
+booked: false
+}, {
+title: “🍺 Beer Tasting Tuk — Lisbon Tuk Tuk Tours”,
+type: “🏄 Activity”,
+time: “15:00”,
+location: “Lisbon Tuk Tuk Tours · Rua São Sebastião da Pedra 53A”,
+links: [{
+label: “Tour page”,
+url: “https://www.lisbontuktuktours.com/en/programa/11/beer-tasting-tuk”
+}, {
+label: “Email”,
+url: “mailto:geral@lisbontuktuktours.pt”
+}, {
+label: “View on Maps”,
+url: “https://maps.google.com/?q=Rua+São+Sebastião+da+Pedra+53A+Lisbon”
+}],
+notes: “✅ BOOKED · Booking ref #76 · 6 passengers · 08 May 2026 · 15:00 · Language: English · Beer Tasting Tuk · 2h30 · Craft beer tastings + exclusive brewery visit · 2 tuk tuks · 📞 +351 213 918 090 · geral@lisbontuktuktours.pt”,
+booked: true
+}, {
+title: “Group dinner — pick one & book ahead”,
+type: “🍽️ Dinner”,
+time: “20:00”,
+location: “Bairro Alto”,
+links: [{
+label: “A Nossa Casa ⭐4.8”,
+url: “https://maps.google.com/?cid=13872759130300370656”
+}, {
+label: “Lisboa à Noite ⭐4.5”,
+url: “http://www.lisboanoite.com/”
+}, {
+label: “Versículo d’O Faia ⭐4.7”,
+url: “http://www.versiculo.pt/”
+}],
+notes: “⚠️ NEEDS BOOKING — all in Bairro Alto, walk straight into the crawl after.\n\n🥇 A Nossa Casa (Rua da Atalaia 31) · ⭐4.8 · ‘Best meal I had in Lisbon’ · Tasting-style, incredible pork & beef · Host Antonio recommends everything · 6:30–10:30pm · 📞 +351 21 342 0484\n\n🥈 Lisboa à Noite (Rua das Gáveas 69) · ⭐4.5 · ‘There were 10 of us — all dishes outstanding’ · Premium Portuguese seafood & meat · 6:30–11:30pm · 📞 +351 21 346 8557\n\n🥉 Versículo d’O Faia (Rua da Barroca 60A) · ⭐4.7 · Set menus, great octopus & lamb · Good value · 7pm–midnight · 📞 +351 963 999 678”,
+booked: false
+}, {
+title: “🍻 Bairro Alto Crawl — 3 stops then Pink Street finale”,
+type: “🍻 Drinks”,
+time: “22:00”,
+location: “Bairro Alto → Cais do Sodré”,
+links: [{
+label: “Stop 1: Bar da Vera”,
+url: “https://www.instagram.com/bardaverabyshortys/”
+}, {
+label: “Stop 2: Jay’z Bar”,
+url: “https://www.instagram.com/jayz_bar”
+}, {
+label: “Stop 3: Jimmy’s Bar”,
+url: “https://maps.google.com/?cid=2101315264414116739”
+}, {
+label: “Stop 4: Pensão Amor”,
+url: “https://maps.google.com/?cid=9882671449491607982”
+}, {
+label: “Stop 5: Spot Bairro Alto”,
+url: “https://maps.google.com/?cid=14433836855413236586”
+}],
+notes: “All within a short walk — Bairro Alto bars then down to Cais do Sodré for the late finish.\n\n🍹 Stop 1 — Bar da Vera by SHORTYS (Rua da Rosa 154) · ⭐4.9 · Incredible shots, caipirinhas, passion fruit cocktails. Open till 3am.\n\n🎸 Stop 2 — Jay’z Bar (Rua da Atalaia 26) · ⭐5.0 · Live guitar, Pablo plays ANY song. Host Jay is legendary. Open till 2am.\n\n📺 Stop 3 — Jimmy’s Bar #1 (Rua da Barroca 43) · ⭐4.9 · 80s MTV, cheap drinks, brilliant host Jimmy. Open till 3am.\n\n🏚️ Stop 4 — Pensão Amor (Rua Nova do Carvalho 38) · ⭐4.4 · LATE FINISH · Former brothel turned iconic bar on Pink Street · Multiple rooms, incredible character, burlesque/live shows most nights · Open till 4am Fri · ‘One of the best bars with character I’ve ever been to.’ Perfect stag energy.\n\n🎉 Stop 5 — Spot Bairro Alto (Rua da Atalaia 25) · ⭐4.3 · LATE FINISH · ‘Visited for a mate’s stag party — owner fantastic, DJing all night, great atmosphere.’ Tech house / EDM. One reviewer came every night of their stag trip. Open till 3am. The last stop.”,
+booked: false
+}],
+“2026-05-09”: [{
+title: “😴 Gentle start — late morning”,
+type: “🛏️ Free Time”,
+time: “10:00”,
+location: “Flores Guest House”,
+links: [],
+notes: “No rush. Recovery morning after Friday night. Brunch at Dear Breakfast (~10:30am) then head to Caparica.”,
+booked: false
+}, {
+title: “☕ Brunch — Dear Breakfast”,
+type: “🍽️ Dinner”,
+time: “10:30”,
+location: “Dear Breakfast · Rua das Gaivotas 17, Santos”,
+links: [{
+label: “View on Maps”,
+url: “https://maps.google.com/?q=Dear+Breakfast+Lisbon+Santos”
+}],
+notes: “Rated #1 brunch in Lisbon. Eggs-focused, great pancakes, good coffee. Walk in — no reservations.”,
+booked: false
+}, {
+title: “🚗 Uber to Costa da Caparica”,
+type: “🚌 Transfer”,
+time: “12:00”,
+location: “Lisbon → Costa da Caparica”,
+links: [],
+notes: “~25–30 min, ~€20–25. Much closer than Cascais. Drop straight at the beach.”,
+booked: false
+}, {
+title: “🏄 Surf lesson — Costa da Caparica”,
+type: “🏄 Activity”,
+time: “12:30”,
+location: “Costa da Caparica beach”,
+links: [{
+label: “Surf School Caparica”,
+url: “https://surfschoolcostadacaparica.com”
+}, {
+label: “Gecko Surf School”,
+url: “https://geckosurfschool.com/en/”
+}, {
+label: “Breakthrough Surf”,
+url: “https://breakthroughsurfschool.com”
+}],
+notes: “⚠️ NEEDS BOOKING · ~2hrs · ~€50pp for group of 6 · All equipment included (board & wetsuit).\n\n🥇 Surf School Costa da Caparica — surfschoolcostadacaparica.com — private group lesson for 6, uncrowded beach, certified instructors, max 6pp per coach. Highly reviewed.\n🥈 Gecko Surf School — geckosurfschool.com — certified, all levels, great reviews.\n🥉 Breakthrough Surf School — breakthroughsurfschool.com — private lessons, changing rooms, secure storage, outdoor shower.”,
+booked: false
+}, {
+title: “🏐 Beach sports on the sand”,
+type: “🏄 Activity”,
+time: “12:00”,
+location: “Costa da Caparica beach”,
+links: [],
+notes: “Post-surf wind-down before lunch. Volleyball nets along the beach — informal games. Frisbee, football, whatever the group fancies. Free.”,
+booked: false
+}, {
+title: “🍽️ Lunch — Restaurante Praia do Rei”,
+type: “🍽️ Dinner”,
+time: “13:30”,
+location: “Estrada das Matas Nacionais, Costa da Caparica”,
+links: [{
+label: “Instagram”,
+url: “https://www.instagram.com/restaurantepraiadorei/”
+}, {
+label: “View on Maps”,
+url: “https://maps.google.com/?q=Restaurante+Praia+do+Rei+Costa+da+Caparica”
+}],
+notes: “⚠️ Worth calling ahead for a group of 6 · Local institution since 1990 · Traditional Portuguese grilled fish over charcoal · Sea terrace · ⭐4.5 (428 reviews) · Great value, proper local lunch · Open Sat till 20:30.\n📞 +351 21 297 0038 / +351 965 696 182”,
+booked: false
+}, {
+title: “🏐 Beach sports + afternoon hang”,
+type: “🏄 Activity”,
+time: “15:00”,
+location: “Costa da Caparica beach”,
+links: [],
+notes: “Volleyball nets along the beach — informal games, no booking needed. Frisbee, football, whatever. Then settle in at one of the beach clubs nearby.”,
+booked: false
+}, {
+title: “🏖️ Beach club — pick one on the day”,
+type: “🏄 Activity”,
+time: “16:00”,
+location: “Praia do Rei stretch, Costa da Caparica”,
+links: [{
+label: “Coco Beach”,
+url: “https://cocobeach.pt”
+}, {
+label: “Salty Club”,
+url: “https://saltyclub.pt”
+}, {
+label: “Clássico Beach Club”,
+url: “https://maps.google.com/?q=Clássico+Beach+Club+Costa+da+Caparica”
+}, {
+label: “Praia Princesa”,
+url: “https://maps.google.com/?q=Praia+Princesa+Costa+da+Caparica”
+}],
+notes: “All on the Praia do Rei stretch — wander and pick based on vibe:\n\n🥇 Coco Beach (Estrada da Praia do Infante) · Right on the sand, bohemian organic design, woven umbrellas, tables on the sand · Sushi, sashimi, bao, Portuguese classics · DJ sets at sunset · Big groups & private events welcome · 📞 +351 915 540 052 · cocobeach.pt\n\n🥈 Salty Club (Praia do Rei) · Beach club 20 min from Lisbon · Relaxed, sunbeds, cocktails · saltyclub.pt\n\n🥉 Clássico Beach Club (Estrada da Praia do Castelo) · Brazilian beach club inspiration · Hammocks, beige cushions, Wagyu burger, wagyu steak, shrimp feijoada · Premium crowd but laid back · 📞 +351 210 605 992\n\n☀️ Praia Princesa (Av. Afonso de Albuquerque) · Cosy indoor/outdoor dining · Clams, octopus, international dishes · Popular with French expats · 📞 +351 927 194 906”,
+booked: false
+}, {
+title: “🚗 Uber back to Lisbon”,
+type: “🚌 Transfer”,
+time: “20:00”,
+location: “Costa da Caparica → Flores Guest House”,
+links: [],
+notes: “~25–30 min, ~€20–25. Back in good time to shower and get ready for the big night.”,
+booked: false
+}, {
+title: “Pre-drinks on the square”,
+type: “🍻 Drinks”,
+time: “21:30”,
+location: “Praça das Flores”,
+links: [{
+label: “Sino Bar”,
+url: “https://maps.google.com/?q=Sino+Bar+Lisbon”
+}],
+notes: “Sino Bar (⭐4.9, No.6 on the square). Start the night.”,
+booked: false
+}, {
+title: “🍽️ Final stag dinner”,
+type: “🍽️ Dinner”,
+time: “22:00”,
+location: “TBC — book in advance”,
+links: [{
+label: “Cervejaria Ramiro”,
+url: “https://maps.google.com/?q=Cervejaria+Ramiro+Lisbon”
+}, {
+label: “Solar dos Presuntos”,
+url: “https://maps.google.com/?q=Solar+dos+Presuntos+Lisbon”
+}, {
+label: “Taberna da Rua das Flores”,
+url: “https://maps.google.com/?q=Taberna+da+Rua+das+Flores+Lisbon”
+}],
+notes: “⚠️ NEEDS BOOKING · Later start (22:00) after a big beach day.\n\n🦞 Cervejaria Ramiro (Av. Almirante Reis 1) · Legendary seafood since 1956 · Huge prawns, crab, clams, barnacles · Raucous energy, perfect last night · ~€55pp · 📞 +351 21 885 1024\n🍖 Solar dos Presuntos (Rua das Portas de Santo Antão 150) · Classic Portuguese, great for groups · ~€40pp · 📞 +351 21 342 5253\n🫙 Taberna da Rua das Flores (Rua das Flores 103) · Petiscos/tapas · Cash only · No reservations — arrive early · ~€28pp”,
+booked: false
+}, {
+title: “🎉 VIP late night”,
+type: “🎉 Party”,
+time: “00:00”,
+location: “Príncipe Real / Cais do Sodré”,
+links: [{
+label: “The V Rooftop Bar”,
+url: “https://maps.google.com/?q=The+V+Rooftop+Bar+Lisbon”
+}, {
+label: “5A Club”,
+url: “https://maps.google.com/?q=5A+Club+Lisbon”
+}, {
+label: “Lux Frágil”,
+url: “https://maps.google.com/?q=Lux+Fragil+Lisbon”
+}],
+notes: “Rooftop drinks first at The V (The Vintage Hotel) — panoramic castle & city views, premium cocktails. Then club: 5A Club (Príncipe Real, house till sunrise, close to hotel) or Lux Frágil (Lisbon’s most iconic club, Tagus rooftop, till 6am).”,
+booked: false
+}],
+“2026-05-10”: [{
+title: “😴 Slow morning — everyone’s own pace”,
+type: “🛏️ Free Time”,
+time: “10:00”,
+location: “Flores Guest House”,
+notes: “No plan, no rush. Last day together before departures kick off from 15:30.”,
+booked: false,
+links: []
+}, {
+title: “☕ Brunch — pick one nearby”,
+type: “🍽️ Dinner”,
+time: “10:30”,
+location: “Príncipe Real / Chiado”,
+links: [{
+label: “Instant Crunch ⭐4.8”,
+url: “https://maps.google.com/?cid=16831805777993508154”
+}, {
+label: “Breakfast Lovers ⭐4.9”,
+url: “https://maps.google.com/?cid=15756801661605489238”
+}, {
+label: “Seventh Brunch ⭐4.7”,
+url: “https://maps.google.com/?cid=11319770363702260125”
+}],
+notes: “All within 10 min walk. No need to pre-agree — split into groups or all together.\n\n🥇 Instant Crunch (Rua da Mãe d’Água 9, Príncipe Real) · ⭐4.8 · Beautiful garden setting, best Eggs Benedict in Lisbon. 8 min walk. 📞 +351 21 151 1516\n🥈 Breakfast Lovers Chiado (Rua Vítor Cordon 26) · ⭐4.9 · Highest rated in Lisbon. Guacamole Benedict on croissant, cheesy pancakes. 12 min walk.\n🥉 Seventh Brunch (Calçada do Combro 147) · ⭐4.7 · Full English, great pancakes, mimosas, 8 min walk.”,
+booked: false
+}, {
+title: “🌤️ Chilled afternoon — rooftop options”,
+type: “🍻 Drinks”,
+time: “13:00”,
+location: “Chiado / Bairro Alto”,
+links: [{
+label: “Park Rooftop ⭐4.0”,
+url: “https://maps.google.com/?cid=8635606603508500092”
+}, {
+label: “Lumi Rooftop ⭐4.4”,
+url: “https://maps.google.com/?cid=15254176787018518536”
+}, {
+label: “Carmo Rooftop ⭐4.2”,
+url: “https://maps.google.com/?cid=23150919717859615”
+}],
+notes: “Nowhere to be — drift between these depending on energy levels. All within 10 min walk.\n\n🅿️ Park Rooftop (Calçada do Combro 58) · ⭐4.0 · Opens 12pm Sunday. Hidden gem ON TOP of a car park — sounds odd, looks incredible. Unreal city views, cold drinks, chilled vibes. Closes 8pm. Free entry.\n🌅 Lumi Rooftop (Rua de São Pedro de Alcântara 35) · ⭐4.4 · Opens 11:30am Sunday. Panoramic views, small plates & cocktails. Smart-casual. Good for a proper last sundowner.\n⛪ Carmo Rooftop (Largo do Carmo) · ⭐4.2 · Opens 10am. Overlooks the Santa Justa Lift & rooftops of Lisbon. Cocktails & tapas, open-air.”,
+booked: false
+}, {
+title: “Paul departs — Ryanair LIS→MAN 17:20”,
+type: “✈️ Travel”,
+time: “15:30”,
+location: “Lisbon Airport (LIS)”,
+links: [],
+notes: “Leave hotel by 15:30, Uber ~20 min to airport.”,
+booked: true
+}, {
+title: “Benjie, Laurie, Amon & John depart”,
+type: “✈️ Travel”,
+time: “17:00”,
+location: “Lisbon Airport (LIS) Terminal 1”,
+links: [],
+notes: “All departing ~18:50 · Benjie: TAP LIS→LHR · Laurie + Amon: BA507 LIS→LHR T5 · John: EZY3322 LIS→EDI. Leave hotel by 17:00 — share Ubers!”,
+booked: true
+}, {
+title: “Harry — last evening solo”,
+type: “🍻 Drinks”,
+time: “20:00”,
+location: “Chiado / Alfama”,
+links: [{
+label: “Chiado on Maps”,
+url: “https://maps.google.com/?q=Chiado+Lisbon”
+}],
+notes: “Quieter final evening. Explore Chiado or Alfama.”,
+booked: false
+}],
+“2026-05-11”: [{
+title: “Checkout / luggage”,
+type: “🛏️ Free Time”,
+time: “09:00”,
+location: “Flores Guest House”,
+links: [{
+label: “Call hotel”,
+url: “tel:+351213461884”
+}, {
+label: “Email hotel”,
+url: “mailto:welcome@floresguesthouse.com”
+}],
+notes: “⚠️ Room booked until Sun 10 May — arrange extension or luggage storage with hotel.”,
+booked: false
+}, {
+title: “Harry departs — TAP TP1352 LIS→LHR”,
+type: “✈️ Travel”,
+time: “09:00”,
+location: “Lisbon Airport (LIS) Terminal 1”,
+links: [{
+label: “Track TP1352”,
+url: “https://www.flightradar24.com/data/flights/tp1352”
+}],
+notes: “TP1352 dep 10:00, arr LHR T2 12:45. Last check-in 09:00 — leave hotel by 08:00. Then TP6919 LHR T4→AUH dep 14:45.”,
+booked: true
+}]
 };
 
 // ── HELPERS ──────────────────────────────────────────────────────────────────
@@ -144,81 +942,292 @@ const parts = text.split(/(https?://[^\s]+|mailto:[^\s]+|tel:[^\s]+)/g);
 return parts.map((p, i) => {
 if (p.startsWith(“http”) || p.startsWith(“mailto:”) || p.startsWith(“tel:”)) {
 const label = p.startsWith(“mailto:”) ? p.replace(“mailto:”, “”) : p.startsWith(“tel:”) ? p.replace(“tel:”, “”) : p.replace(/^https?:///, “”).replace(//$/, “”);
-return <a key={i} href={p} target={p.startsWith(“http”) ? “_blank” : undefined} rel=“noreferrer” style={{ color: “#8a6a10”, textDecoration: “underline”, wordBreak: “break-all” }}>{label}</a>;
+return /*#**PURE***/React.createElement(“a”, {
+key: i,
+href: p,
+target: p.startsWith(“http”) ? “_blank” : undefined,
+rel: “noreferrer”,
+style: {
+color: “#8a6a10”,
+textDecoration: “underline”,
+wordBreak: “break-all”
 }
-return <span key={i}>{p}</span>;
+}, label);
+}
+return /*#**PURE***/React.createElement(“span”, {
+key: i
+}, p);
 });
 }
 
 // ── UI PRIMITIVES ─────────────────────────────────────────────────────────────
 
-function Tag({ children, color = “gold” }) {
-const s = { gold:{ bg:”#8a6a1018”, fg:”#8a6a10”, br:”#8a6a1044” }, green:{ bg:”#2d6a4f22”, fg:”#006600”, br:”#00660055” }, grey:{ bg:”#d8d0bc”, fg:”#8a7f70”, br:”#c0b8a4” }, red:{ bg:”#cc000015”, fg:”#cc0000”, br:”#cc000035” } }[color] || { bg:”#d8d0bc”, fg:”#8a7f70”, br:”#c0b8a4” };
-return <span style={{ padding:“2px 9px”, borderRadius:99, fontSize:11, fontWeight:700, letterSpacing:0.4, background:s.bg, color:s.fg, border:`1px solid ${s.br}` }}>{children}</span>;
+function Tag({
+children,
+color = “gold”
+}) {
+const s = {
+gold: {
+bg: “#8a6a1018”,
+fg: “#8a6a10”,
+br: “#8a6a1044”
+},
+green: {
+bg: “#2d6a4f22”,
+fg: “#006600”,
+br: “#00660055”
+},
+grey: {
+bg: “#d8d0bc”,
+fg: “#8a7f70”,
+br: “#c0b8a4”
+},
+red: {
+bg: “#cc000015”,
+fg: “#cc0000”,
+br: “#cc000035”
 }
-
-function Modal({ open, onClose, title, children }) {
+}[color] || {
+bg: “#d8d0bc”,
+fg: “#8a7f70”,
+br: “#c0b8a4”
+};
+return /*#**PURE***/React.createElement(“span”, {
+style: {
+padding: “2px 9px”,
+borderRadius: 99,
+fontSize: 11,
+fontWeight: 700,
+letterSpacing: 0.4,
+background: s.bg,
+color: s.fg,
+border: `1px solid ${s.br}`
+}
+}, children);
+}
+function Modal({
+open,
+onClose,
+title,
+children
+}) {
 if (!open) return null;
-return (
-<div style={{ position:“fixed”, inset:0, background:”#000c”, zIndex:1000, display:“flex”, alignItems:“center”, justifyContent:“center”, padding:16 }} onClick={onClose}>
-<div style={{ background:”#ede8df”, border:“1px solid #2a2a2a”, borderRadius:16, padding:26, width:“100%”, maxWidth:500, maxHeight:“90vh”, overflowY:“auto” }} onClick={e => e.stopPropagation()}>
-<div style={{ display:“flex”, justifyContent:“space-between”, alignItems:“center”, marginBottom:18 }}>
-<h3 style={{ margin:0, fontFamily:”‘Cormorant Garamond’,serif”, fontSize:21, color:”#8a6a10” }}>{title}</h3>
-<button onClick={onClose} style={{ background:“none”, border:“none”, color:”#8a7f70”, fontSize:24, cursor:“pointer”, padding:“0 4px”, lineHeight:1 }}>×</button>
-</div>
-{children}
-</div>
-</div>
-);
+return /*#**PURE***/React.createElement(“div”, {
+style: {
+position: “fixed”,
+inset: 0,
+background: “#000c”,
+zIndex: 1000,
+display: “flex”,
+alignItems: “center”,
+justifyContent: “center”,
+padding: 16
+},
+onClick: onClose
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+background: “#ede8df”,
+border: “1px solid #2a2a2a”,
+borderRadius: 16,
+padding: 26,
+width: “100%”,
+maxWidth: 500,
+maxHeight: “90vh”,
+overflowY: “auto”
+},
+onClick: e => e.stopPropagation()
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+justifyContent: “space-between”,
+alignItems: “center”,
+marginBottom: 18
 }
-
-const fStyle = { width:“100%”, background:”#ffffff”, border:“1px solid #252525”, borderRadius:8, padding:“9px 12px”, color:”#1a1410”, fontSize:13, outline:“none”, boxSizing:“border-box”, fontFamily:“inherit” };
-const lStyle = { display:“block”, fontSize:10, letterSpacing:1.2, color:”#7a6f60”, marginBottom:4, textTransform:“uppercase” };
-
-function F({ label, textarea, select, opts, …p }) {
-return (
-<div style={{ marginBottom:13 }}>
-{label && <label style={lStyle}>{label}</label>}
-{textarea ? <textarea {…p} rows={3} style={{ …fStyle, resize:“vertical” }} /> :
-select ? <select {…p} style={fStyle}>{opts.map(o => <option key={o} value={o}>{o}</option>)}</select> :
-<input {…p} style={fStyle} />}
-</div>
-);
+}, /*#**PURE***/React.createElement(“h3”, {
+style: {
+margin: 0,
+fontFamily: “‘Cormorant Garamond’,serif”,
+fontSize: 21,
+color: “#8a6a10”
 }
-
-function Btn({ children, onClick, v=“primary”, sm, style:sx={} }) {
-const vs = { primary:{ background:“linear-gradient(135deg,#006600,#004d00)”, color:”#1a1410”, border:“none” }, ghost:{ background:“none”, color:”#8a6a10”, border:“1px solid #c9a84c44” }, danger:{ background:”#e6394612”, color:”#cc0000”, border:“1px solid #e6394635” } };
-return <button onClick={onClick} style={{ …vs[v], borderRadius:7, padding:sm ? “4px 12px” : “8px 18px”, fontSize:sm ? 12 : 13, cursor:“pointer”, fontWeight:600, fontFamily:“inherit”, …sx }}>{children}</button>;
+}, title), /*#**PURE***/React.createElement(“button”, {
+onClick: onClose,
+style: {
+background: “none”,
+border: “none”,
+color: “#8a7f70”,
+fontSize: 24,
+cursor: “pointer”,
+padding: “0 4px”,
+lineHeight: 1
 }
-
-function LinkRow({ links }) {
+}, “\xD7”)), children));
+}
+const fStyle = {
+width: “100%”,
+background: “#ffffff”,
+border: “1px solid #252525”,
+borderRadius: 8,
+padding: “9px 12px”,
+color: “#1a1410”,
+fontSize: 13,
+outline: “none”,
+boxSizing: “border-box”,
+fontFamily: “inherit”
+};
+const lStyle = {
+display: “block”,
+fontSize: 10,
+letterSpacing: 1.2,
+color: “#7a6f60”,
+marginBottom: 4,
+textTransform: “uppercase”
+};
+function F({
+label,
+textarea,
+select,
+opts,
+…p
+}) {
+return /*#**PURE***/React.createElement(“div”, {
+style: {
+marginBottom: 13
+}
+}, label && /*#**PURE***/React.createElement(“label”, {
+style: lStyle
+}, label), textarea ? /*#**PURE***/React.createElement(“textarea”, _extends({}, p, {
+rows: 3,
+style: {
+…fStyle,
+resize: “vertical”
+}
+})) : select ? /*#**PURE***/React.createElement(“select”, _extends({}, p, {
+style: fStyle
+}), opts.map(o => /*#**PURE***/React.createElement(“option”, {
+key: o,
+value: o
+}, o))) : /*#**PURE***/React.createElement(“input”, _extends({}, p, {
+style: fStyle
+})));
+}
+function Btn({
+children,
+onClick,
+v = “primary”,
+sm,
+style: sx = {}
+}) {
+const vs = {
+primary: {
+background: “linear-gradient(135deg,#006600,#004d00)”,
+color: “#1a1410”,
+border: “none”
+},
+ghost: {
+background: “none”,
+color: “#8a6a10”,
+border: “1px solid #c9a84c44”
+},
+danger: {
+background: “#e6394612”,
+color: “#cc0000”,
+border: “1px solid #e6394635”
+}
+};
+return /*#**PURE***/React.createElement(“button”, {
+onClick: onClick,
+style: {
+…vs[v],
+borderRadius: 7,
+padding: sm ? “4px 12px” : “8px 18px”,
+fontSize: sm ? 12 : 13,
+cursor: “pointer”,
+fontWeight: 600,
+fontFamily: “inherit”,
+…sx
+}
+}, children);
+}
+function LinkRow({
+links
+}) {
 if (!links || links.length === 0) return null;
-return (
-<div style={{ display:“flex”, gap:6, flexWrap:“wrap”, marginTop:5 }}>
-{links.map((l, i) => (
-<a key={i} href={l.url} target={l.url.startsWith(“http”) ? “_blank” : undefined} rel=“noreferrer”
-style={{ fontSize:11, color:”#8a6a10”, background:”#8a6a1015”, border:“1px solid #c9a84c33”, borderRadius:99, padding:“2px 9px”, textDecoration:“none”, fontWeight:600 }}>
-{l.label} ↗
-</a>
-))}
-</div>
-);
+return /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+gap: 6,
+flexWrap: “wrap”,
+marginTop: 5
 }
-
-function FlightBadge({ f, direction }) {
+}, links.map((l, i) => /*#**PURE***/React.createElement(“a”, {
+key: i,
+href: l.url,
+target: l.url.startsWith(“http”) ? “_blank” : undefined,
+rel: “noreferrer”,
+style: {
+fontSize: 11,
+color: “#8a6a10”,
+background: “#8a6a1015”,
+border: “1px solid #c9a84c33”,
+borderRadius: 99,
+padding: “2px 9px”,
+textDecoration: “none”,
+fontWeight: 600
+}
+}, l.label, “ \u2197”)));
+}
+function FlightBadge({
+f,
+direction
+}) {
 if (!f) return null;
 const tbc = f.flight === “TBC”;
-return (
-<div style={{ background:”#f0ebe0”, border:`1px solid ${tbc ? "#d8d0bc" : "#c0dac0"}`, borderRadius:8, padding:“7px 11px”, marginTop:4 }}>
-<div style={{ display:“flex”, alignItems:“center”, gap:8, flexWrap:“wrap” }}>
-<span style={{ fontSize:12, color:direction === “in” ? “#1a5fa8” : “#f59e0b” }}>{direction === “in” ? “✈️ IN” : “🛫 OUT”}</span>
-<span style={{ fontWeight:700, fontSize:13, color:tbc ? “#7a6f60” : “#1a1410”, fontFamily:“monospace”, letterSpacing:1 }}>{f.flight}</span>
-<span style={{ fontSize:12, color:”#8a7f70” }}>{f.from} → {f.to}</span>
-{!tbc && <span style={{ fontSize:12, color:”#7a6f60” }}>{f.dep} → {f.arr}</span>}
-</div>
-<div style={{ fontSize:11, color:”#8a7f70”, marginTop:2 }}>{f.date}{f.terminal ? ` · ${f.terminal}` : “”}{f.note ? ` · ${f.note}` : “”}</div>
-</div>
-);
+return /*#**PURE***/React.createElement(“div”, {
+style: {
+background: “#f0ebe0”,
+border: `1px solid ${tbc ? "#d8d0bc" : "#c0dac0"}`,
+borderRadius: 8,
+padding: “7px 11px”,
+marginTop: 4
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+alignItems: “center”,
+gap: 8,
+flexWrap: “wrap”
+}
+}, /*#**PURE***/React.createElement(“span”, {
+style: {
+fontSize: 12,
+color: direction === “in” ? “#1a5fa8” : “#f59e0b”
+}
+}, direction === “in” ? “✈️ IN” : “🛫 OUT”), /*#**PURE***/React.createElement(“span”, {
+style: {
+fontWeight: 700,
+fontSize: 13,
+color: tbc ? “#7a6f60” : “#1a1410”,
+fontFamily: “monospace”,
+letterSpacing: 1
+}
+}, f.flight), /*#**PURE***/React.createElement(“span”, {
+style: {
+fontSize: 12,
+color: “#8a7f70”
+}
+}, f.from, “ \u2192 “, f.to), !tbc && /*#**PURE***/React.createElement(“span”, {
+style: {
+fontSize: 12,
+color: “#7a6f60”
+}
+}, f.dep, “ \u2192 “, f.arr)), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 11,
+color: “#8a7f70”,
+marginTop: 2
+}
+}, f.date, f.terminal ? ` · ${f.terminal}` : “”, f.note ? ` · ${f.note}` : “”));
 }
 
 // ── BUDGET CALCULATOR ────────────────────────────────────────────────────────
@@ -226,183 +1235,448 @@ return (
 // Room 1: €500 room cost over 4 nights = €125/night
 // Wed 6 May: Harry alone (1 night = €125 + city tax €8 = €133 Harry solo)
 // Thu-Sun: Harry & Benjie (3 nights = €375 room + €24 city tax = €399 split)
-const ROOM1_WED_HARRY = 133;       // Harry’s solo Wednesday night (room €125 + city tax €8)
-const ROOM1_THU_SUN_TOTAL = 399;   // Thu–Sun Room 1 total (€375 room + €24 city tax)
+const ROOM1_WED_HARRY = 133; // Harry’s solo Wednesday night (room €125 + city tax €8)
+const ROOM1_THU_SUN_TOTAL = 399; // Thu–Sun Room 1 total (€375 room + €24 city tax)
 
-const ALL_NAMES = [“Harry”,“Benjie”,“Laurie”,“Amon”,“Paul”,“John”]; // display order
-const PAYERS = [“Harry”,“Laurie”,“Amon”,“Paul”,“John”]; // Benjie always €0
-const FRI_PRESENT = [“Harry”,“Benjie”,“Laurie”,“Amon”,“Paul”,“John”];
-const SUN_PRESENT = [“Harry”,“Benjie”,“Laurie”,“Amon”,“Paul”,“John”];
+const ALL_NAMES = [“Harry”, “Benjie”, “Laurie”, “Amon”, “Paul”, “John”]; // display order
+const PAYERS = [“Harry”, “Laurie”, “Amon”, “Paul”, “John”]; // Benjie always €0
+const FRI_PRESENT = [“Harry”, “Benjie”, “Laurie”, “Amon”, “Paul”, “John”];
+const SUN_PRESENT = [“Harry”, “Benjie”, “Laurie”, “Amon”, “Paul”, “John”];
 
 // Each expense: present = who attends (incl Benjie where applicable)
 // Benjie’s share always redistributed equally among other payers present
 // For hotel: use perPersonOverride for custom logic
 const EXPENSES = [
 // Hotel — correctly separated
-{ label:“Room 1 — Wed night (Harry solo)”, category:“🏨 Hotel”, total:ROOM1_WED_HARRY, present:[“Harry”], note:“Harry’s solo night Wed 6 May before Benjie arrives. €125 room + €8 city tax.” },
-{ label:“Room 1 — Thu–Sun (Harry & Benjie, 3 nights)”, category:“🏨 Hotel”, total:ROOM1_THU_SUN_TOTAL, present:[“Harry”,“Benjie”,“Laurie”,“Amon”,“Paul”,“John”], note:“Harry pays his half (€199.50). Benjie’s half (€199.50) split across all 6 payers.” },
-{ label:“Room 2 — Laurie & Amon (Thu–Sun, 3 nights)”, category:“🏨 Hotel”, total:369, present:FRI_PRESENT, note:“Laurie & Amon pay their share. Benjie’s notional share split across all 6.” },
-{ label:“Room 3 — Paul & John (Fri–Sun, 2 nights)”, category:“🏨 Hotel”, total:246, present:FRI_PRESENT, note:“Paul & John pay their share. Benjie’s notional share split across all 6.” },
+{
+label: “Room 1 — Wed night (Harry solo)”,
+category: “🏨 Hotel”,
+total: ROOM1_WED_HARRY,
+present: [“Harry”],
+note: “Harry’s solo night Wed 6 May before Benjie arrives. €125 room + €8 city tax.”
+}, {
+label: “Room 1 — Thu–Sun (Harry & Benjie, 3 nights)”,
+category: “🏨 Hotel”,
+total: ROOM1_THU_SUN_TOTAL,
+present: [“Harry”, “Benjie”, “Laurie”, “Amon”, “Paul”, “John”],
+note: “Harry pays his half (€199.50). Benjie’s half (€199.50) split across all 6 payers.”
+}, {
+label: “Room 2 — Laurie & Amon (Thu–Sun, 3 nights)”,
+category: “🏨 Hotel”,
+total: 369,
+present: FRI_PRESENT,
+note: “Laurie & Amon pay their share. Benjie’s notional share split across all 6.”
+}, {
+label: “Room 3 — Paul & John (Fri–Sun, 2 nights)”,
+category: “🏨 Hotel”,
+total: 246,
+present: FRI_PRESENT,
+note: “Paul & John pay their share. Benjie’s notional share split across all 6.”
+},
 // Activities
-{ label:“Bar do Binho — port tasting & lunch”, category:“🍷 Sintra”, total:120, present:[“Harry”,“Benjie”], note:“~€60pp est · Harry & Benjie only · Harry covers Benjie’s share” },
-{ label:“Escala25 climbing (climbers only)”, category:“🧗 Climbing”, ppCost:12, present:[“Harry”,“Benjie”,“Laurie”,“Amon”], note:“~€12pp · Benjie share split across 3 payers attending” },
-{ label:“Beer Tasting Tuk tour”, category:“🍺 Fri Activity”, ppCost:null, present:FRI_PRESENT, note:“Price TBC · Ref #76 · Lisbon Tuk Tuk Tours · 2h30 · all 6” },
-{ label:“Surf lesson — Cascais/Guincho”, category:“🏄 Surf”, ppCost:45, present:FRI_PRESENT, note:“~€45pp est · 2hrs · all 6 · Salty Souls or Moana Surf School” },
-{ label:“Beach club — sunbeds & drinks (Cascais)”, category:“🏄 Surf”, ppCost:30, present:FRI_PRESENT, note:“~€30pp est for sunbed + afternoon drinks · Rainha or Panorama Beach Club” },
-
-{ label:“Fri group dinner (Bairro Alto)”, category:“🍽️ Dinners”, ppCost:45, present:FRI_PRESENT, note:“~€45pp est · A Nossa Casa or similar” },
-{ label:“Sat final stag dinner”, category:“🍽️ Dinners”, ppCost:55, present:FRI_PRESENT, note:“~€55pp est · Cervejaria Ramiro (seafood) or Solar dos Presuntos” },
-];
-
+{
+label: “Bar do Binho — port tasting & lunch”,
+category: “🍷 Sintra”,
+total: 120,
+present: [“Harry”, “Benjie”],
+note: “~€60pp est · Harry & Benjie only · Harry covers Benjie’s share”
+}, {
+label: “Escala25 climbing (climbers only)”,
+category: “🧗 Climbing”,
+ppCost: 12,
+present: [“Harry”, “Benjie”, “Laurie”, “Amon”],
+note: “~€12pp · Benjie share split across 3 payers attending”
+}, {
+label: “Beer Tasting Tuk tour”,
+category: “🍺 Fri Activity”,
+ppCost: null,
+present: FRI_PRESENT,
+note: “Price TBC · Ref #76 · Lisbon Tuk Tuk Tours · 2h30 · all 6”
+}, {
+label: “Surf lesson — Cascais/Guincho”,
+category: “🏄 Surf”,
+ppCost: 45,
+present: FRI_PRESENT,
+note: “~€45pp est · 2hrs · all 6 · Salty Souls or Moana Surf School”
+}, {
+label: “Beach club — sunbeds & drinks (Cascais)”,
+category: “🏄 Surf”,
+ppCost: 30,
+present: FRI_PRESENT,
+note: “~€30pp est for sunbed + afternoon drinks · Rainha or Panorama Beach Club”
+}, {
+label: “Fri group dinner (Bairro Alto)”,
+category: “🍽️ Dinners”,
+ppCost: 45,
+present: FRI_PRESENT,
+note: “~€45pp est · A Nossa Casa or similar”
+}, {
+label: “Sat final stag dinner”,
+category: “🍽️ Dinners”,
+ppCost: 55,
+present: FRI_PRESENT,
+note: “~€55pp est · Cervejaria Ramiro (seafood) or Solar dos Presuntos”
+}];
 function calcExp(exp) {
-const { total, ppCost, present } = exp;
+const {
+total,
+ppCost,
+present
+} = exp;
 const payers = present.filter(n => n !== “Benjie”);
 const benjiePresent = present.includes(“Benjie”);
-let cpa = 0, totalEst = 0;
-if (total != null) { cpa = total / present.length; totalEst = total; }
-else if (ppCost != null) { cpa = ppCost; totalEst = ppCost * present.length; }
+let cpa = 0,
+totalEst = 0;
+if (total != null) {
+cpa = total / present.length;
+totalEst = total;
+} else if (ppCost != null) {
+cpa = ppCost;
+totalEst = ppCost * present.length;
+}
 const benjieExtra = benjiePresent && payers.length > 0 ? cpa / payers.length : 0;
 const perPerson = {};
 // All names get a slot — Benjie always 0, payers get their share + Benjie’s redistributed bit
 ALL_NAMES.forEach(n => {
-if (n === “Benjie”) { perPerson[n] = 0; }
-else if (present.includes(n)) { perPerson[n] = cpa + benjieExtra; }
-else { perPerson[n] = 0; }
-});
-return { …exp, perPerson, totalEst };
+if (n === “Benjie”) {
+perPerson[n] = 0;
+} else if (present.includes(n)) {
+perPerson[n] = cpa + benjieExtra;
+} else {
+perPerson[n] = 0;
 }
-
-function InfoTab({ budget, setBudget, fStyle, lStyle }) {
+});
+return {
+…exp,
+perPerson,
+totalEst
+};
+}
+function InfoTab({
+budget,
+setBudget,
+fStyle,
+lStyle
+}) {
 const costs = EXPENSES.map(calcExp);
 const [notes, setNotes] = useState(budget || “”);
 const totals = {};
-ALL_NAMES.forEach(n => { totals[n] = costs.reduce((s,e) => s+(e.perPerson[n]||0), 0); });
+ALL_NAMES.forEach(n => {
+totals[n] = costs.reduce((s, e) => s + (e.perPerson[n] || 0), 0);
+});
 const categories = […new Set(EXPENSES.map(e => e.category))];
-
-const colStyle = (name) => name === “Benjie”
-? { color:”#006600”, fontWeight:700 }
-: { color:”#8a6a10”, fontWeight:600 };
-
-return (
-<div>
-<h2 style={{ margin:“0 0 4px”, fontFamily:”‘Cormorant Garamond’,serif”, fontSize:24, color:”#1a1410” }}>Info & Budget</h2>
-<p style={{ margin:“0 0 18px”, color:”#6a5f50”, fontSize:13 }}>Per-person costs · Benjie pays nothing · his share split across those present · estimates only</p>
-
-```
-  <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(185px,1fr))", gap:10, marginBottom:22 }}>
-    {[
-      { icon:"🌡️", title:"Weather", text:"May: 18–24°C, sunny. Light jacket evenings." },
-      { icon:"💶", title:"Currency", text:"Euro (€). Cards everywhere. ATMs plentiful." },
-      { icon:"🚕", title:"Transport", text:"Uber/Bolt cheap. Airport → hotel ~€20." },
-      { icon:"🏨", title:"Hotel", text:"Contact Flores GH 48hrs before. No lift!" },
-      { icon:"⏰", title:"Time Zone", text:"WET (UTC+1 in May) = same as UK/BST." },
-      { icon:"🚨", title:"Emergency", text:"112 · UK Embassy: +351 21 392 4000" },
-    ].map(c => (
-      <div key={c.title} style={{ background:"#ffffff", border:"1px solid #1c1c1c", borderRadius:11, padding:"12px 13px" }}>
-        <div style={{ fontSize:19, marginBottom:4 }}>{c.icon}</div>
-        <div style={{ fontWeight:600, fontSize:12, color:"#8a6a10", marginBottom:3 }}>{c.title}</div>
-        <div style={{ fontSize:12, color:"#8a7f70", lineHeight:1.5 }}>{c.text}</div>
-      </div>
-    ))}
-  </div>
-
-  {/* Per-person totals */}
-  <div style={{ background:"#ffffff", border:"1px solid #c9a84c2a", borderRadius:12, padding:"16px 18px", marginBottom:16 }}>
-    <div style={{ fontSize:11, color:"#006600", fontWeight:700, letterSpacing:1, textTransform:"uppercase", marginBottom:12 }}>💶 Estimated Total Per Person</div>
-    <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(105px,1fr))", gap:10 }}>
-      {ALL_NAMES.map(name => {
-        const isBenjie = name === "Benjie";
-        return (
-          <div key={name} style={{ background:isBenjie ? "#e8f2e8" : "#f5f0e8", border:`1px solid ${isBenjie ? "#00660033" : "#d8d0bc"}`, borderRadius:10, padding:"12px 13px" }}>
-            <div style={{ fontSize:11, color:isBenjie ? "#006600" : "#6a5f50", fontWeight:700, marginBottom:4 }}>
-              {isBenjie ? "💍 Benjie" : name.split(" ")[0]}
-            </div>
-            <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:24, color:isBenjie ? "#006600" : "#8a6a10", fontWeight:700 }}>
-              {isBenjie ? "€0" : `~€${Math.round(totals[name])}`}
-            </div>
-            <div style={{ fontSize:10, color:isBenjie ? "#004d00" : "#7a6f60", marginTop:2 }}>
-              {isBenjie ? "Groom goes free 🎉" : "estimated"}
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  </div>
-
-  {/* Breakdown by category */}
-  {categories.map(cat => (
-    <div key={cat} style={{ background:"#ffffff", border:"1px solid #1c1c1c", borderRadius:12, overflow:"hidden", marginBottom:12 }}>
-      <div style={{ background:"linear-gradient(90deg,#e8f2e8,#ffffff)", padding:"10px 16px", borderBottom:"1px solid #1c1c1c" }}>
-        <span style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:17, color:"#1a1410", fontWeight:600 }}>{cat}</span>
-      </div>
-      <div style={{ overflowX:"auto" }}>
-        <table style={{ width:"100%", borderCollapse:"collapse", fontSize:12 }}>
-          <thead>
-            <tr style={{ borderBottom:"1px solid #1c1c1c" }}>
-              <th style={{ padding:"8px 14px", textAlign:"left", color:"#8a7f70", fontWeight:600, fontSize:10, minWidth:150 }}>Expense</th>
-              {ALL_NAMES.map(n => (
-                <th key={n} style={{ padding:"8px 8px", textAlign:"center", color: n === "Benjie" ? "#006600" : "#7a6f60", fontWeight:700, fontSize:10, whiteSpace:"nowrap" }}>
-                  {n === "Benjie" ? "💍" : n.split(" ")[0]}
-                </th>
-              ))}
-              <th style={{ padding:"8px 8px", textAlign:"center", color:"#7a6f60", fontWeight:600, fontSize:10 }}>Total est.</th>
-            </tr>
-          </thead>
-          <tbody>
-            {costs.filter(e => e.category === cat).map((e, i) => (
-              <tr key={i} style={{ borderBottom:"1px solid #181818" }}>
-                <td style={{ padding:"8px 14px", lineHeight:1.4 }}>
-                  <div style={{ color:"#6a5f50", fontSize:11 }}>{e.label}</div>
-                  {e.note && <div style={{ color:"#8a7f70", fontSize:10, marginTop:2 }}>{e.note}</div>}
-                </td>
-                {ALL_NAMES.map(n => {
-                  const val = e.perPerson[n] || 0;
-                  const isBenjie = n === "Benjie";
-                  return (
-                    <td key={n} style={{ padding:"8px 8px", textAlign:"center" }}>
-                      {isBenjie
-                        ? <span style={{ color:"#006600", fontWeight:700, fontSize:11 }}>€0</span>
-                        : val > 0
-                          ? <span style={{ color:"#8a6a10", fontWeight:600 }}>€{Math.round(val)}</span>
-                          : <span style={{ color:"#ccc4b0", fontSize:13 }}>—</span>}
-                    </td>
-                  );
-                })}
-                <td style={{ padding:"8px 8px", textAlign:"center", color:"#8a7f70", fontWeight:600 }}>
-                  {e.totalEst ? "~€"+Math.round(e.totalEst) : <span style={{ color:"#9a8f80" }}>TBC</span>}
-                </td>
-              </tr>
-            ))}
-            <tr style={{ borderTop:"1px solid #252525", background:"#f0ebe0" }}>
-              <td style={{ padding:"7px 14px", color:"#8a7f70", fontSize:11, fontWeight:700 }}>Subtotal</td>
-              {ALL_NAMES.map(n => {
-                const sub = costs.filter(e => e.category === cat).reduce((s,e) => s+(e.perPerson[n]||0), 0);
-                const isBenjie = n === "Benjie";
-                return (
-                  <td key={n} style={{ padding:"7px 8px", textAlign:"center", fontWeight:700, fontSize:12, color:isBenjie ? "#006600" : sub > 0 ? "#bbb" : "#ccc4b0" }}>
-                    {isBenjie ? "€0" : sub > 0 ? "~€"+Math.round(sub) : "—"}
-                  </td>
-                );
-              })}
-              <td style={{ padding:"7px 8px" }} />
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  ))}
-
-  <div style={{ background:"#ffffff", border:"1px solid #1e1e1e", borderRadius:12, padding:"14px 16px", marginTop:4 }}>
-    <label style={lStyle}>Kitty notes / payments tracker</label>
-    <textarea value={notes} onChange={e => { setNotes(e.target.value); setBudget(e.target.value); }} rows={5} placeholder={"e.g. Harry fronting hotel deposits\nGroup kitty: €200 each\nBeer tour price TBC..."} style={{ ...fStyle, resize:"vertical", fontSize:12 }} />
-  </div>
-  <div style={{ marginTop:10, fontSize:10, color:"#c0b8a4", lineHeight:1.6 }}>
-    * Hotel: Room 1 split as Harry solo Wed night (€133) + his half Thu–Sun + Benjie's half of Thu–Sun redistributed across all 6. Rooms 2 & 3 split across occupants with Benjie's notional share redistributed. All activity costs are estimates. Beer tour TBC. Climbing assumes Harry, Laurie & Amon attend.
-  </div>
-</div>
-```
-
-);
+const colStyle = name => name === “Benjie” ? {
+color: “#006600”,
+fontWeight: 700
+} : {
+color: “#8a6a10”,
+fontWeight: 600
+};
+return /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“h2”, {
+style: {
+margin: “0 0 4px”,
+fontFamily: “‘Cormorant Garamond’,serif”,
+fontSize: 24,
+color: “#1a1410”
+}
+}, “Info & Budget”), /*#**PURE***/React.createElement(“p”, {
+style: {
+margin: “0 0 18px”,
+color: “#6a5f50”,
+fontSize: 13
+}
+}, “Per-person costs \xB7 Benjie pays nothing \xB7 his share split across those present \xB7 estimates only”), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “grid”,
+gridTemplateColumns: “repeat(auto-fill,minmax(185px,1fr))”,
+gap: 10,
+marginBottom: 22
+}
+}, [{
+icon: “🌡️”,
+title: “Weather”,
+text: “May: 18–24°C, sunny. Light jacket evenings.”
+}, {
+icon: “💶”,
+title: “Currency”,
+text: “Euro (€). Cards everywhere. ATMs plentiful.”
+}, {
+icon: “🚕”,
+title: “Transport”,
+text: “Uber/Bolt cheap. Airport → hotel ~€20.”
+}, {
+icon: “🏨”,
+title: “Hotel”,
+text: “Contact Flores GH 48hrs before. No lift!”
+}, {
+icon: “⏰”,
+title: “Time Zone”,
+text: “WET (UTC+1 in May) = same as UK/BST.”
+}, {
+icon: “🚨”,
+title: “Emergency”,
+text: “112 · UK Embassy: +351 21 392 4000”
+}].map(c => /*#**PURE***/React.createElement(“div”, {
+key: c.title,
+style: {
+background: “#ffffff”,
+border: “1px solid #1c1c1c”,
+borderRadius: 11,
+padding: “12px 13px”
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 19,
+marginBottom: 4
+}
+}, c.icon), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontWeight: 600,
+fontSize: 12,
+color: “#8a6a10”,
+marginBottom: 3
+}
+}, c.title), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 12,
+color: “#8a7f70”,
+lineHeight: 1.5
+}
+}, c.text)))), /*#**PURE***/React.createElement(“div”, {
+style: {
+background: “#ffffff”,
+border: “1px solid #c9a84c2a”,
+borderRadius: 12,
+padding: “16px 18px”,
+marginBottom: 16
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 11,
+color: “#006600”,
+fontWeight: 700,
+letterSpacing: 1,
+textTransform: “uppercase”,
+marginBottom: 12
+}
+}, “\uD83D\uDCB6 Estimated Total Per Person”), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “grid”,
+gridTemplateColumns: “repeat(auto-fill,minmax(105px,1fr))”,
+gap: 10
+}
+}, ALL_NAMES.map(name => {
+const isBenjie = name === “Benjie”;
+return /*#**PURE***/React.createElement(“div”, {
+key: name,
+style: {
+background: isBenjie ? “#e8f2e8” : “#f5f0e8”,
+border: `1px solid ${isBenjie ? "#00660033" : "#d8d0bc"}`,
+borderRadius: 10,
+padding: “12px 13px”
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 11,
+color: isBenjie ? “#006600” : “#6a5f50”,
+fontWeight: 700,
+marginBottom: 4
+}
+}, isBenjie ? “💍 Benjie” : name.split(” “)[0]), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontFamily: “‘Cormorant Garamond’,serif”,
+fontSize: 24,
+color: isBenjie ? “#006600” : “#8a6a10”,
+fontWeight: 700
+}
+}, isBenjie ? “€0” : `~€${Math.round(totals[name])}`), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 10,
+color: isBenjie ? “#004d00” : “#7a6f60”,
+marginTop: 2
+}
+}, isBenjie ? “Groom goes free 🎉” : “estimated”));
+}))), categories.map(cat => /*#**PURE***/React.createElement(“div”, {
+key: cat,
+style: {
+background: “#ffffff”,
+border: “1px solid #1c1c1c”,
+borderRadius: 12,
+overflow: “hidden”,
+marginBottom: 12
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+background: “linear-gradient(90deg,#e8f2e8,#ffffff)”,
+padding: “10px 16px”,
+borderBottom: “1px solid #1c1c1c”
+}
+}, /*#**PURE***/React.createElement(“span”, {
+style: {
+fontFamily: “‘Cormorant Garamond’,serif”,
+fontSize: 17,
+color: “#1a1410”,
+fontWeight: 600
+}
+}, cat)), /*#**PURE***/React.createElement(“div”, {
+style: {
+overflowX: “auto”
+}
+}, /*#**PURE***/React.createElement(“table”, {
+style: {
+width: “100%”,
+borderCollapse: “collapse”,
+fontSize: 12
+}
+}, /*#**PURE***/React.createElement(“thead”, null, /*#**PURE***/React.createElement(“tr”, {
+style: {
+borderBottom: “1px solid #1c1c1c”
+}
+}, /*#**PURE***/React.createElement(“th”, {
+style: {
+padding: “8px 14px”,
+textAlign: “left”,
+color: “#8a7f70”,
+fontWeight: 600,
+fontSize: 10,
+minWidth: 150
+}
+}, “Expense”), ALL_NAMES.map(n => /*#**PURE***/React.createElement(“th”, {
+key: n,
+style: {
+padding: “8px 8px”,
+textAlign: “center”,
+color: n === “Benjie” ? “#006600” : “#7a6f60”,
+fontWeight: 700,
+fontSize: 10,
+whiteSpace: “nowrap”
+}
+}, n === “Benjie” ? “💍” : n.split(” “)[0])), /*#**PURE***/React.createElement(“th”, {
+style: {
+padding: “8px 8px”,
+textAlign: “center”,
+color: “#7a6f60”,
+fontWeight: 600,
+fontSize: 10
+}
+}, “Total est.”))), /*#**PURE***/React.createElement(“tbody”, null, costs.filter(e => e.category === cat).map((e, i) => /*#**PURE***/React.createElement(“tr”, {
+key: i,
+style: {
+borderBottom: “1px solid #181818”
+}
+}, /*#**PURE***/React.createElement(“td”, {
+style: {
+padding: “8px 14px”,
+lineHeight: 1.4
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+color: “#6a5f50”,
+fontSize: 11
+}
+}, e.label), e.note && /*#**PURE***/React.createElement(“div”, {
+style: {
+color: “#8a7f70”,
+fontSize: 10,
+marginTop: 2
+}
+}, e.note)), ALL_NAMES.map(n => {
+const val = e.perPerson[n] || 0;
+const isBenjie = n === “Benjie”;
+return /*#**PURE***/React.createElement(“td”, {
+key: n,
+style: {
+padding: “8px 8px”,
+textAlign: “center”
+}
+}, isBenjie ? /*#**PURE***/React.createElement(“span”, {
+style: {
+color: “#006600”,
+fontWeight: 700,
+fontSize: 11
+}
+}, “\u20AC0”) : val > 0 ? /*#**PURE***/React.createElement(“span”, {
+style: {
+color: “#8a6a10”,
+fontWeight: 600
+}
+}, “\u20AC”, Math.round(val)) : /*#**PURE***/React.createElement(“span”, {
+style: {
+color: “#ccc4b0”,
+fontSize: 13
+}
+}, “\u2014”));
+}), /*#**PURE***/React.createElement(“td”, {
+style: {
+padding: “8px 8px”,
+textAlign: “center”,
+color: “#8a7f70”,
+fontWeight: 600
+}
+}, e.totalEst ? “~€” + Math.round(e.totalEst) : /*#**PURE***/React.createElement(“span”, {
+style: {
+color: “#9a8f80”
+}
+}, “TBC”)))), /*#**PURE***/React.createElement(“tr”, {
+style: {
+borderTop: “1px solid #252525”,
+background: “#f0ebe0”
+}
+}, /*#**PURE***/React.createElement(“td”, {
+style: {
+padding: “7px 14px”,
+color: “#8a7f70”,
+fontSize: 11,
+fontWeight: 700
+}
+}, “Subtotal”), ALL_NAMES.map(n => {
+const sub = costs.filter(e => e.category === cat).reduce((s, e) => s + (e.perPerson[n] || 0), 0);
+const isBenjie = n === “Benjie”;
+return /*#**PURE***/React.createElement(“td”, {
+key: n,
+style: {
+padding: “7px 8px”,
+textAlign: “center”,
+fontWeight: 700,
+fontSize: 12,
+color: isBenjie ? “#006600” : sub > 0 ? “#bbb” : “#ccc4b0”
+}
+}, isBenjie ? “€0” : sub > 0 ? “~€” + Math.round(sub) : “—”);
+}), /*#**PURE***/React.createElement(“td”, {
+style: {
+padding: “7px 8px”
+}
+}))))))), /*#**PURE***/React.createElement(“div”, {
+style: {
+background: “#ffffff”,
+border: “1px solid #1e1e1e”,
+borderRadius: 12,
+padding: “14px 16px”,
+marginTop: 4
+}
+}, /*#**PURE***/React.createElement(“label”, {
+style: lStyle
+}, “Kitty notes / payments tracker”), /*#**PURE***/React.createElement(“textarea”, {
+value: notes,
+onChange: e => {
+setNotes(e.target.value);
+setBudget(e.target.value);
+},
+rows: 5,
+placeholder: “e.g. Harry fronting hotel deposits\nGroup kitty: €200 each\nBeer tour price TBC…”,
+style: {
+…fStyle,
+resize: “vertical”,
+fontSize: 12
+}
+})), /*#**PURE***/React.createElement(“div”, {
+style: {
+marginTop: 10,
+fontSize: 10,
+color: “#c0b8a4”,
+lineHeight: 1.6
+}
+}, “* Hotel: Room 1 split as Harry solo Wed night (\u20AC133) + his half Thu\u2013Sun + Benjie’s half of Thu\u2013Sun redistributed across all 6. Rooms 2 & 3 split across occupants with Benjie’s notional share redistributed. All activity costs are estimates. Beer tour TBC. Climbing assumes Harry, Laurie & Amon attend.”));
 }
 
 // ── MAIN APP ──────────────────────────────────────────────────────────────────
@@ -413,371 +1687,1363 @@ const [crew, setCrew] = useState(CREW);
 const [itin, setItin] = useState(INITIAL_ITINERARY);
 const [whatsapp, setWhatsapp] = useState(””);
 const [budget, setBudget] = useState(””);
-const [pm, setPm] = useState(null); const [pf, setPf] = useState({});
-const [em, setEm] = useState(null); const [ef, setEf] = useState({});
-
+const [pm, setPm] = useState(null);
+const [pf, setPf] = useState({});
+const [em, setEm] = useState(null);
+const [ef, setEf] = useState({});
 const confirmed = crew.filter(p => p.confirmed).length;
 const allEv = Object.values(itin).flat();
 const bookedEv = allEv.filter(e => e.booked).length;
 const todoEv = allEv.filter(e => !e.booked).length;
-const totalHotel = ROOMS.reduce((s,r) => s+r.total, 0);
-const totalDeposit = ROOMS.reduce((s,r) => s+r.deposit, 0);
-
-const savePerson = () => { pm === “new” ? setCrew(ps => […ps, { …pf, id:Date.now() }]) : setCrew(ps => ps.map(p => p.id === pm ? { …pf, id:p.id } : p)); setPm(null); };
+const totalHotel = ROOMS.reduce((s, r) => s + r.total, 0);
+const totalDeposit = ROOMS.reduce((s, r) => s + r.deposit, 0);
+const savePerson = () => {
+pm === “new” ? setCrew(ps => […ps, {
+…pf,
+id: Date.now()
+}]) : setCrew(ps => ps.map(p => p.id === pm ? {
+…pf,
+id: p.id
+} : p));
+setPm(null);
+};
 const saveEvent = () => {
-const { date, idx } = em;
-setItin(it => { const d = […(it[date]||[])]; idx === null ? d.push(ef) : (d[idx] = ef); d.sort((a,b) => (a.time||””).localeCompare(b.time||””)); return { …it, [date]:d }; });
+const {
+date,
+idx
+} = em;
+setItin(it => {
+const d = […(it[date] || [])];
+idx === null ? d.push(ef) : d[idx] = ef;
+d.sort((a, b) => (a.time || “”).localeCompare(b.time || “”));
+return {
+…it,
+[date]: d
+};
+});
 setEm(null);
 };
-const toggleBooked = (date, i) => setItin(it => { const d = […it[date]]; d[i] = { …d[i], booked:!d[i].booked }; return { …it, [date]:d }; });
-const delEvent = (date, i) => setItin(it => ({ …it, [date]:it[date].filter((_,j) => j!==i) }));
-
-const TABS = [
-{ id:“itin”, label:“📅 Itinerary” },
-{ id:“contacts”, label:“📞 Contacts” },
-{ id:“hotel”, label:“🏨 Hotel” },
-{ id:“flights”, label:“✈️ Flights” },
-{ id:“crew”, label:“👥 Crew” },
-{ id:“info”, label:“ℹ️ Info” },
-];
-
-const rIcon = { groom:“💍”, best_man:“🎩”, organiser:“🗂️”, guest:“🙋” };
-const rLabel = { groom:“GROOM”, best_man:“BEST MAN”, organiser:“ORGANISER” };
-
-return (
-<div style={{ minHeight:“100vh”, background:”#f7f5f0”, color:”#1a1410”, fontFamily:”‘DM Sans’,sans-serif” }}>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
-```
-  {/* HEADER */}
-  <div style={{ background:"linear-gradient(160deg,#00550a 0%,#004d08 45%,#8a0000 100%)", borderBottom:"1px solid #1c1600", padding:"28px 20px 18px", position:"relative", overflow:"hidden" }}>
-    <div style={{ position:"absolute", top:-50, right:-50, width:300, height:300, background:"radial-gradient(circle,#00660010,transparent 68%)", pointerEvents:"none" }} />
-    <div style={{ maxWidth:900, margin:"0 auto", display:"flex", justifyContent:"space-between", alignItems:"flex-end", flexWrap:"wrap", gap:14 }}>
-      <div>
-        <div style={{ fontSize:10, letterSpacing:4, color:"#8a6a10", fontWeight:600, marginBottom:4, textTransform:"uppercase" }}>Bachelor Weekend · Pre-Wedding Celebration</div>
-        <h1 style={{ margin:0, fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(30px,5vw,54px)", fontWeight:700, lineHeight:1.05, color:"#ffffff" }}>
-          Lisbon <span style={{ color:"#8a6a10" }}>🇵🇹</span>
-        </h1>
-        <p style={{ margin:"5px 0 0", color:"#a8c8a8", fontSize:13 }}>6 – 11 May 2026 &nbsp;·&nbsp; Celebrating Benjie &nbsp;·&nbsp; 7 People</p>
-      </div>
-    </div>
-  </div>
-
-  {/* TABS */}
-  <div style={{ borderBottom:"1px solid #1a1a1a", background:"#f0ebe0", borderTop:"1px solid #ddd5c0", position:"sticky", top:0, zIndex:100 }}>
-    <div style={{ maxWidth:900, margin:"0 auto", display:"flex", overflowX:"auto" }}>
-      {TABS.map(t => (
-        <button key={t.id} onClick={() => setTab(t.id)} style={{ padding:"12px 16px", background:"none", border:"none", borderBottom:tab === t.id ? "2px solid #006600" : "2px solid transparent", color:tab === t.id ? "#8a6a10" : "#6a5f50", fontSize:13, fontWeight:600, cursor:"pointer", whiteSpace:"nowrap", fontFamily:"inherit" }}>
-          {t.label}
-        </button>
-      ))}
-    </div>
-  </div>
-
-  <div style={{ maxWidth:900, margin:"0 auto", padding:"22px 16px 80px" }}>
-
-    {/* ── ITINERARY ── */}
-    {tab === "itin" && (
-      <div>
-        <div style={{ marginBottom:14 }}>
-          <h2 style={{ margin:0, fontFamily:"'Cormorant Garamond',serif", fontSize:24, color:"#1a1410" }}>Itinerary</h2>
-          <p style={{ margin:"3px 0 0", color:"#6a5f50", fontSize:13 }}>{bookedEv} confirmed · {todoEv} still to book · all links clickable</p>
-        </div>
-        <div style={{ background:"#fffae8", border:"1px solid #c9a84c2a", borderRadius:10, padding:"10px 14px", marginBottom:14, fontSize:12, color:"#8a6a10" }}>
-          ⚠️ <b>Still to book:</b> Escala25 climbing · Surf lesson (Sat) · Group dinners Fri & Sat · VIP late night Sat
-        </div>
-        <div style={{ display:"grid", gap:14 }}>
-          {DAYS.map(day => {
-            const evs = itin[day.date] || [];
-            const nb = evs.filter(e => e.booked).length;
-            return (
-              <div key={day.date} style={{ background:"#ffffff", border:"1px solid #1c1c1c", borderRadius:13, overflow:"hidden" }}>
-                <div style={{ background:"linear-gradient(90deg,#e8f2e8,#ffffff)", padding:"11px 16px", display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:"1px solid #1c1c1c", flexWrap:"wrap", gap:8 }}>
-                  <div style={{ display:"flex", alignItems:"center", gap:10, flexWrap:"wrap" }}>
-                    <span style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:18, color:"#1a1410", fontWeight:600 }}>{day.label}</span>
-                    <span style={{ fontSize:10, color:"#8a6a10", letterSpacing:1, textTransform:"uppercase" }}>{day.theme}</span>
-                  </div>
-                  <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                    <span style={{ fontSize:11, color:"#9a8f80" }}>{nb}/{evs.length} booked</span>
-                    <Btn sm onClick={() => { setEf({ title:"", type:"🍽️ Dinner", time:"", location:"", links:[], notes:"", booked:false }); setEm({ date:day.date, idx:null }); }}>+ Add</Btn>
-                  </div>
-                </div>
-                <div>
-                  {evs.length === 0 && <div style={{ padding:"10px 16px", color:"#c0b8a4", fontSize:12, fontStyle:"italic" }}>Nothing planned yet.</div>}
-                  {evs.map((ev, i) => {
-                    const special = ev.booked && ["🍷 Tasting","⛵ Boat","🏄 Activity","🎉 Party"].includes(ev.type);
-                    const needsBooking = !ev.booked && ev.notes && ev.notes.includes("NEEDS BOOKING");
-                    return (
-                      <div key={i} style={{ display:"flex", gap:10, padding:"10px 16px", borderBottom:i < evs.length-1 ? "1px solid #181818" : "none", background:special ? "#0f1a0d" : needsBooking ? "#fff5e8" : ev.booked ? "#e8f5e8" : "transparent", alignItems:"flex-start", borderLeft:special ? "2px solid #52b788" : needsBooking ? "2px solid #c9a84c" : "none" }}>
-                        <div style={{ fontSize:16, width:24, textAlign:"center", flexShrink:0, marginTop:1 }}>{ev.type.split(" ")[0]}</div>
-                        <div style={{ flex:1, minWidth:0 }}>
-                          <div style={{ display:"flex", flexWrap:"wrap", gap:5, alignItems:"center" }}>
-                            <span style={{ fontWeight:600, color:special ? "#a3e4a0" : needsBooking ? "#f0c060" : "#1a1410", fontSize:13 }}>{ev.title}</span>
-                            {ev.time && <span style={{ fontSize:11, color:"#8a7f70", background:"#1a1410", padding:"1px 6px", borderRadius:99 }}>{ev.time}</span>}
-                            {ev.booked ? <Tag color="green">✓ Booked</Tag> : needsBooking ? <Tag color="red">⚠️ Book Now</Tag> : <Tag color="grey">TBC</Tag>}
-                          </div>
-                          {ev.location && <div style={{ fontSize:11, color:"#7a6f60", marginTop:2 }}>📍 {ev.location}</div>}
-                          {ev.notes && <div style={{ fontSize:11, color:"#8a7f70", marginTop:2, lineHeight:1.5 }}>{linkify(ev.notes)}</div>}
-                          <LinkRow links={ev.links} />
-                        </div>
-                        <div style={{ display:"flex", gap:4, flexShrink:0 }}>
-                          <button onClick={() => toggleBooked(day.date, i)} style={{ background:"none", border:`1px solid ${ev.booked ? "#00660055" : "#ccc4b0"}`, borderRadius:6, padding:"3px 7px", cursor:"pointer", fontSize:13, color:ev.booked ? "#006600" : "#9a8f80" }}>✓</button>
-                          <Btn v="ghost" sm onClick={() => { setEf({ ...ev, links:ev.links||[] }); setEm({ date:day.date, idx:i }); }}>Edit</Btn>
-                          <Btn v="danger" sm onClick={() => delEvent(day.date, i)}>✕</Btn>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    )}
-
-    {/* ── CONTACTS ── */}
-    {tab === "contacts" && (
-      <div>
-        <div style={{ marginBottom:18 }}>
-          <h2 style={{ margin:0, fontFamily:"'Cormorant Garamond',serif", fontSize:24, color:"#1a1410" }}>Contacts & Links</h2>
-          <p style={{ margin:"3px 0 0", color:"#6a5f50", fontSize:13 }}>Everything clickable — tap to call, email or open in maps.</p>
-        </div>
-
-        {/* WhatsApp group */}
-        <div style={{ background:"#ffffff", border:"1px solid #1e3020", borderRadius:12, padding:"14px 16px", marginBottom:16 }}>
-          <div style={{ fontSize:10, color:"#006600", fontWeight:700, letterSpacing:1, textTransform:"uppercase", marginBottom:8 }}>📱 WhatsApp Group</div>
-          <div style={{ display:"flex", gap:10, alignItems:"center" }}>
-            <input value={whatsapp} onChange={e => setWhatsapp(e.target.value)} placeholder="Paste group link here..." style={{ ...fStyle, flex:1 }} />
-            {whatsapp && <a href={whatsapp} target="_blank" rel="noreferrer" style={{ background:"#25D366", color:"#1a1410", borderRadius:8, padding:"8px 14px", fontSize:13, fontWeight:600, textDecoration:"none", whiteSpace:"nowrap" }}>Open ↗</a>}
-          </div>
-        </div>
-
-        {/* Contact cards grouped by category */}
-        {["🏨 Hotel","🍷 Port Tasting","🧗 Climbing","🍺 Beer Tour","🚨 Emergency","🚕 Transport","✈️ Flight Tracking"].map(cat => {
-          const items = CONTACTS.filter(c => c.category === cat);
-          if (items.length === 0) return null;
-          return (
-            <div key={cat} style={{ marginBottom:20 }}>
-              <div style={{ fontSize:11, letterSpacing:2, color:"#8a6a10", fontWeight:700, textTransform:"uppercase", marginBottom:10 }}>{cat}</div>
-              <div style={{ display:"grid", gap:10 }}>
-                {items.map((c, i) => (
-                  <div key={i} style={{ background:"#ffffff", border:`1px solid ${c.booked ? "#1e2a1e" : "#2a1a00"}`, borderRadius:12, padding:"14px 16px" }}>
-                    <div style={{ display:"flex", justifyContent:"space-between", flexWrap:"wrap", gap:8, marginBottom:6 }}>
-                      <div>
-                        <div style={{ fontWeight:600, fontSize:15, color:"#1a1410" }}>{c.name}</div>
-                        <div style={{ fontSize:12, color:"#8a7f70", marginTop:2 }}>{c.role}</div>
-                        {c.address && <div style={{ fontSize:12, color:"#7a6f60", marginTop:2 }}>📍 {c.address}</div>}
-                      </div>
-                      {!c.booked && <Tag color="red">⚠️ Book Now</Tag>}
-                      {c.booked && cat !== "🚨 Emergency" && cat !== "🚕 Transport" && cat !== "✈️ Flight Tracking" && <Tag color="green">✓ Confirmed</Tag>}
-                    </div>
-                    <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
-                      {c.phone && <a href={`tel:${c.phone}`} style={{ fontSize:12, color:"#1a5fa8", background:"#e0eaf8", border:"1px solid #60a5fa33", borderRadius:99, padding:"3px 10px", textDecoration:"none", fontWeight:600 }}>📞 {c.phone}</a>}
-                      {c.email && <a href={`mailto:${c.email}`} style={{ fontSize:12, color:"#8a6a10", background:"#8a6a1015", border:"1px solid #c9a84c33", borderRadius:99, padding:"3px 10px", textDecoration:"none", fontWeight:600 }}>📧 {c.email}</a>}
-                      {c.web && <a href={c.web} target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#6030c0", background:"#1e1535", border:"1px solid #7c3aed44", borderRadius:99, padding:"3px 10px", textDecoration:"none", fontWeight:600 }}>🔗 Website ↗</a>}
-                      {c.maps && <a href={c.maps} target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#006600", background:"#0d1f15", border:"1px solid #52b78833", borderRadius:99, padding:"3px 10px", textDecoration:"none", fontWeight:600 }}>🗺 Maps ↗</a>}
-                    </div>
-                    {c.note && <div style={{ fontSize:11, color:"#7a6f60", marginTop:8, lineHeight:1.5 }}>{c.note}</div>}
-                  </div>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    )}
-
-    {/* ── HOTEL ── */}
-    {tab === "hotel" && (
-      <div>
-        <div style={{ marginBottom:16 }}>
-          <h2 style={{ margin:0, fontFamily:"'Cormorant Garamond',serif", fontSize:24, color:"#1a1410" }}>Flores Guest House</h2>
-          <div style={{ display:"flex", gap:8, marginTop:6, flexWrap:"wrap" }}>
-            <a href="https://www.floresguesthouse.com" target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#6030c0", background:"#1e1535", border:"1px solid #7c3aed44", borderRadius:99, padding:"3px 10px", textDecoration:"none", fontWeight:600 }}>🔗 floresguesthouse.com ↗</a>
-            <a href="https://maps.google.com/?q=Rua+de+São+Marçal+30+Lisbon" target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#006600", background:"#0d1f15", border:"1px solid #52b78833", borderRadius:99, padding:"3px 10px", textDecoration:"none", fontWeight:600 }}>🗺 View on Maps ↗</a>
-            <a href="tel:+351213461884" style={{ fontSize:12, color:"#1a5fa8", background:"#e0eaf8", border:"1px solid #60a5fa33", borderRadius:99, padding:"3px 10px", textDecoration:"none", fontWeight:600 }}>📞 +351 213 461 884</a>
-            <a href="mailto:welcome@floresguesthouse.com" style={{ fontSize:12, color:"#8a6a10", background:"#8a6a1015", border:"1px solid #c9a84c33", borderRadius:99, padding:"3px 10px", textDecoration:"none", fontWeight:600 }}>📧 Email hotel</a>
-          </div>
-        </div>
-        <div style={{ display:"grid", gap:8, marginBottom:16 }}>
-          <div style={{ background:"#fff0f0", border:"1px solid #e6394633", borderRadius:10, padding:"10px 14px", fontSize:12, color:"#cc0000" }}>⚠️ <b>Harry's checkout is Sun 10 May</b> — but Harry leaves Mon 11 May. Contact hotel to extend or arrange luggage storage.</div>
-          <div style={{ background:"#e8f2e8", border:"1px solid #52b78833", borderRadius:10, padding:"10px 14px", fontSize:12, color:"#006600" }}>✅ <b>All deposits paid.</b> Balance due at property on check-in.</div>
-        </div>
-        {/* Cost summary */}
-        <div style={{ background:"#ffffff", border:"1px solid #1e1e1e", borderRadius:12, padding:"14px 18px", marginBottom:16, display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(130px,1fr))", gap:14 }}>
-          {[{ l:"Total Cost", v:`€${totalHotel}` }, { l:"Deposits Due", v:`€${totalDeposit.toFixed(0)}` }, { l:"Balance at Property", v:`€${(totalHotel-totalDeposit).toFixed(0)}` }, { l:"Per Person", v:`€${Math.round(totalHotel/6)}` }].map(({ l, v }) => (
-            <div key={l}><div style={{ fontSize:10, color:"#8a7f70", letterSpacing:1, textTransform:"uppercase", marginBottom:2 }}>{l}</div><div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:"#8a6a10", fontWeight:700 }}>{v}</div></div>
-          ))}
-        </div>
-        {/* Room cards */}
-        <div style={{ display:"grid", gap:12 }}>
-          {ROOMS.map(r => (
-            <div key={r.id} style={{ background:"#ffffff", border:"1px solid #c9a84c2a", borderRadius:13, overflow:"hidden" }}>
-              <div style={{ background:"#fffae8", padding:"12px 16px", borderBottom:"1px solid #1a1a1a", display:"flex", justifyContent:"space-between", flexWrap:"wrap", gap:8 }}>
-                <div>
-                  <div style={{ display:"flex", gap:7, alignItems:"center", flexWrap:"wrap", marginBottom:3 }}>
-                    <span style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:18, color:"#1a1410", fontWeight:600 }}>Room {r.id} — {r.guests.join(" & ")}</span>
-                    <Tag color="gold">Deposit Pending</Tag>
-                  </div>
-                  <div style={{ fontSize:12, color:"#8a7f70" }}>🛏 {r.type} · {r.nights} nights</div>
-                </div>
-                <div style={{ textAlign:"right" }}><div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:20, color:"#8a6a10", fontWeight:700 }}>€{r.total}</div><div style={{ fontSize:11, color:"#8a7f70" }}>inc. €{r.cityTax} city tax</div></div>
-              </div>
-              <div style={{ padding:"12px 16px", display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(160px,1fr))", gap:"8px 16px" }}>
-                <div><div style={lStyle}>Booking ID</div><div style={{ fontFamily:"monospace", fontSize:13, color:"#006600", fontWeight:700, letterSpacing:1 }}>{r.bookingId}</div></div>
-                <div><div style={lStyle}>Check-in</div><div style={{ fontSize:13, color:"#4a3f30" }}>{r.checkIn}</div></div>
-                <div><div style={lStyle}>Check-out</div><div style={{ fontSize:13, color:"#4a3f30" }}>{r.checkOut}</div></div>
-                <div><div style={lStyle}>Deposit (50%)</div><div style={{ fontSize:13, color:"#e8a020", fontWeight:600 }}>€{r.deposit} due {r.depositDue}</div></div>
-                <div><div style={lStyle}>Balance</div><div style={{ fontSize:13, color:"#6a5f50" }}>€{r.deposit} at property</div></div>
-                <div><div style={lStyle}>Cancellation</div><div style={{ fontSize:12, color:"#8a7f70" }}>Free until 5 days before</div></div>
-              </div>
-              {r.warning && <div style={{ margin:"0 16px 12px", background:"#fff0f0", border:"1px solid #e6394633", borderRadius:8, padding:"7px 11px", fontSize:12, color:"#cc0000" }}>{r.warning}</div>}
-            </div>
-          ))}
-        </div>
-        <div style={{ marginTop:14, background:"#e0efe0", border:"1px solid #1a3020", borderRadius:10, padding:"12px 16px", fontSize:12, color:"#006600", lineHeight:1.7 }}>
-          📍 Misericórdia/Príncipe Real · Bairro Alto 8 min walk · Cais do Sodré 15 min walk or 5 min Uber · ⚠️ Walk-up only — no lift!
-        </div>
-      </div>
-    )}
-
-    {/* ── FLIGHTS ── */}
-    {tab === "flights" && (
-      <div>
-        <div style={{ marginBottom:18 }}>
-          <h2 style={{ margin:0, fontFamily:"'Cormorant Garamond',serif", fontSize:24, color:"#1a1410" }}>Flight Tracker</h2>
-          <p style={{ margin:"3px 0 0", color:"#6a5f50", fontSize:13 }}>All flight numbers in one place. Tap to track live.</p>
-        </div>
-        {[{ label:"✈️ ARRIVALS INTO LISBON", data:FLIGHTS_IN, color:"#1a5fa8" }, { label:"🛫 DEPARTURES FROM LISBON", data:FLIGHTS_OUT, color:"#f59e0b" }].map(({ label, data, color }) => (
-          <div key={label} style={{ marginBottom:24 }}>
-            <div style={{ fontSize:10, letterSpacing:2, color, fontWeight:700, textTransform:"uppercase", marginBottom:10 }}>{label}</div>
-            <div style={{ display:"grid", gap:7 }}>
-              {data.map((f, i) => (
-                <div key={i} style={{ background:"#ffffff", border:`1px solid ${f.status === "confirmed" ? "#c0ddc0" : "#d8d0bc"}`, borderRadius:10, padding:"10px 14px", display:"flex", alignItems:"flex-start", gap:12, flexWrap:"wrap" }}>
-                  <div style={{ minWidth:120, flexShrink:0 }}>
-                    <div style={{ fontWeight:600, fontSize:13, color:"#1a1410" }}>{f.name}</div>
-                    <div style={{ fontSize:11, color:"#8a7f70", marginTop:1 }}>{f.datetime}</div>
-                    {f.note && <div style={{ fontSize:11, color:"#8a7f70", marginTop:1, fontStyle:"italic" }}>{f.note}</div>}
-                  </div>
-                  <div style={{ flex:1, display:"flex", alignItems:"center", gap:8, flexWrap:"wrap" }}>
-                    <a href={`https://www.flightradar24.com/data/flights/${f.flight.toLowerCase().replace(/\s/g,"")}`} target="_blank" rel="noreferrer"
-                      style={{ fontFamily:"monospace", fontSize:13, fontWeight:700, color:f.status === "confirmed" ? "#8a6a10" : "#7a6f60", background:f.status === "confirmed" ? "#8a6a1015" : "#e8e3d8", padding:"2px 9px", borderRadius:6, border:`1px solid ${f.status === "confirmed" ? "#8a6a1033" : "#ccc4b0"}`, letterSpacing:1, textDecoration:"none" }}>
-                      {f.flight} ↗
-                    </a>
-                    <span style={{ fontSize:12, color:"#8a7f70" }}>{f.route}</span>
-                    {f.status === "confirmed" ? <Tag color="green">✓</Tag> : <Tag color="grey">TBC</Tag>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-        <div style={{ background:"#0d1a10", border:"1px solid #1a3020", borderRadius:10, padding:"11px 14px", fontSize:12, color:"#006600", lineHeight:1.6 }}>
-          💡 Flight numbers above link directly to <a href="https://www.flightradar24.com" target="_blank" rel="noreferrer" style={{ color:"#006600" }}>FlightRadar24</a> for live tracking. Still needed: Benjie's exact TAP flight number · Rob's details.
-        </div>
-      </div>
-    )}
-
-    {/* ── CREW ── */}
-    {tab === "crew" && (
-      <div>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:16, flexWrap:"wrap", gap:10 }}>
-          <div>
-            <h2 style={{ margin:0, fontFamily:"'Cormorant Garamond',serif", fontSize:24, color:"#1a1410" }}>The Crew</h2>
-            <p style={{ margin:"3px 0 0", color:"#6a5f50", fontSize:13 }}>{confirmed}/{crew.length} confirmed · {crew.length - confirmed} pending</p>
-          </div>
-          <Btn onClick={() => { setPf({ name:"", role:"guest", arrival:"", departure:"", flightIn:null, flightOut:null, notes:"", confirmed:false }); setPm("new"); }}>+ Add Person</Btn>
-        </div>
-        {/* Arrival timeline */}
-        <div style={{ background:"#ffffff", border:"1px solid #1e1e1e", borderRadius:12, padding:"13px 16px", marginBottom:16 }}>
-          <div style={{ fontSize:10, letterSpacing:2, color:"#8a6a10", fontWeight:700, textTransform:"uppercase", marginBottom:10 }}>Arrival Timeline</div>
-          {[
-            { day:"Wed 6 May", time:"07:25", who:"Harry", note:"Etihad EY99 from AUH" },
-            { day:"Thu 7 May", time:"10:50", who:"Benjie", note:"TAP from LHR" },
-            { day:"Thu 7 May", time:"21:35", who:"Laurie + Amon", note:"TAP TP1357 from LHR" },
-            { day:"Fri 8 May", time:"09:25", who:"John (Gilmore)", note:"EZY3321 from EDI" },
-            { day:"Fri 8 May", time:"11:55", who:"Paul (PeeWee)", note:"easyJet from MAN" },
-            { day:"TBC", time:"—", who:"Rob", note:"TBC" },
-          ].map((r, i, a) => (
-            <div key={i} style={{ display:"flex", alignItems:"center", gap:12, padding:"6px 0", borderBottom:i < a.length-1 ? "1px solid #1a1a1a" : "none" }}>
-              <div style={{ width:76, fontSize:12, color:"#8a6a10", fontWeight:600, flexShrink:0 }}>{r.day}</div>
-              <div style={{ width:40, fontSize:12, color:"#8a7f70", flexShrink:0 }}>{r.time}</div>
-              <div style={{ flex:1 }}><span style={{ fontSize:13, color:"#4a3f30", fontWeight:500 }}>{r.who}</span><span style={{ fontSize:12, color:"#7a6f60", marginLeft:8 }}>{r.note}</span></div>
-            </div>
-          ))}
-        </div>
-        <div style={{ display:"grid", gap:10 }}>
-          {crew.map(p => (
-            <div key={p.id} style={{ background:"#ffffff", border:`1px solid ${p.id === 1 ? "#8a6a102a" : "#d8d0bc"}`, borderRadius:12, padding:"13px 15px" }}>
-              <div style={{ display:"flex", gap:12, alignItems:"flex-start", flexWrap:"wrap" }}>
-                <div style={{ width:36, height:36, borderRadius:"50%", background:"#fffae8", border:"1px solid #c9a84c2a", display:"flex", alignItems:"center", justifyContent:"center", fontSize:15, flexShrink:0 }}>{rIcon[p.role] || "🙋"}</div>
-                <div style={{ flex:1, minWidth:150 }}>
-                  <div style={{ display:"flex", flexWrap:"wrap", gap:6, alignItems:"center", marginBottom:5 }}>
-                    <span style={{ fontWeight:600, fontSize:15, color:"#1a1410" }}>{p.name}</span>
-                    {rLabel[p.role] && <Tag color="gold">{rLabel[p.role]}</Tag>}
-                    {p.confirmed ? <Tag color="green">✓ Confirmed</Tag> : <Tag color="grey">Pending</Tag>}
-                  </div>
-                  <FlightBadge f={p.flightIn} direction="in" />
-                  <FlightBadge f={p.flightOut} direction="out" />
-                  {p.notes && <div style={{ fontSize:11, color:"#8a7f70", marginTop:5, fontStyle:"italic" }}>{p.notes}</div>}
-                </div>
-                <div style={{ display:"flex", gap:5 }}>
-                  <Btn v="ghost" sm onClick={() => { setPf({ ...p }); setPm(p.id); }}>Edit</Btn>
-                  <Btn v="danger" sm onClick={() => setCrew(ps => ps.filter(x => x.id !== p.id))}>✕</Btn>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
-
-    {/* ── INFO ── */}
-    {tab === "info" && (
-      <InfoTab budget={budget} setBudget={setBudget} fStyle={fStyle} lStyle={lStyle} />
-    )}
-  </div>
-
-  {/* PERSON MODAL */}
-  <Modal open={!!pm} onClose={() => setPm(null)} title={pm === "new" ? "Add Person" : "Edit Person"}>
-    <F label="Name" value={pf.name||""} onChange={e => setPf(f => ({ ...f, name:e.target.value }))} />
-    <F label="Role" select opts={["groom","best_man","organiser","guest"]} value={pf.role||"guest"} onChange={e => setPf(f => ({ ...f, role:e.target.value }))} />
-    <F label="Arrival" value={pf.arrival||""} onChange={e => setPf(f => ({ ...f, arrival:e.target.value }))} placeholder="e.g. Thu 7 May, 21:35" />
-    <F label="Departure" value={pf.departure||""} onChange={e => setPf(f => ({ ...f, departure:e.target.value }))} />
-    <F label="Notes" textarea value={pf.notes||""} onChange={e => setPf(f => ({ ...f, notes:e.target.value }))} />
-    <label style={{ display:"flex", gap:8, alignItems:"center", marginBottom:18, cursor:"pointer", color:"#6a5f50", fontSize:13 }}>
-      <input type="checkbox" checked={!!pf.confirmed} onChange={e => setPf(f => ({ ...f, confirmed:e.target.checked }))} /> Confirmed coming
-    </label>
-    <div style={{ display:"flex", gap:8, justifyContent:"flex-end" }}>
-      <Btn v="ghost" onClick={() => setPm(null)}>Cancel</Btn>
-      <Btn onClick={savePerson}>Save</Btn>
-    </div>
-  </Modal>
-
-  {/* EVENT MODAL */}
-  <Modal open={!!em} onClose={() => setEm(null)} title={em?.idx === null ? "Add Event" : "Edit Event"}>
-    <F label="Title" value={ef.title||""} onChange={e => setEf(f => ({ ...f, title:e.target.value }))} />
-    <F label="Type" select opts={EVENT_TYPES} value={ef.type||"🍽️ Dinner"} onChange={e => setEf(f => ({ ...f, type:e.target.value }))} />
-    <F label="Time" type="time" value={ef.time||""} onChange={e => setEf(f => ({ ...f, time:e.target.value }))} />
-    <F label="Location" value={ef.location||""} onChange={e => setEf(f => ({ ...f, location:e.target.value }))} />
-    <F label="Notes" textarea value={ef.notes||""} onChange={e => setEf(f => ({ ...f, notes:e.target.value }))} placeholder="Any URLs typed here will become clickable automatically." />
-    <label style={{ display:"flex", gap:8, alignItems:"center", marginBottom:18, cursor:"pointer", color:"#6a5f50", fontSize:13 }}>
-      <input type="checkbox" checked={!!ef.booked} onChange={e => setEf(f => ({ ...f, booked:e.target.checked }))} /> Booked & confirmed
-    </label>
-    <div style={{ display:"flex", gap:8, justifyContent:"flex-end" }}>
-      <Btn v="ghost" onClick={() => setEm(null)}>Cancel</Btn>
-      <Btn onClick={saveEvent}>Save</Btn>
-    </div>
-  </Modal>
-</div>
-```
-
-);
+const toggleBooked = (date, i) => setItin(it => {
+const d = […it[date]];
+d[i] = {
+…d[i],
+booked: !d[i].booked
+};
+return {
+…it,
+[date]: d
+};
+});
+const delEvent = (date, i) => setItin(it => ({
+…it,
+[date]: it[date].filter((_, j) => j !== i)
+}));
+const TABS = [{
+id: “itin”,
+label: “📅 Itinerary”
+}, {
+id: “contacts”,
+label: “📞 Contacts”
+}, {
+id: “hotel”,
+label: “🏨 Hotel”
+}, {
+id: “flights”,
+label: “✈️ Flights”
+}, {
+id: “crew”,
+label: “👥 Crew”
+}, {
+id: “info”,
+label: “ℹ️ Info”
+}];
+const rIcon = {
+groom: “💍”,
+best_man: “🎩”,
+organiser: “🗂️”,
+guest: “🙋”
+};
+const rLabel = {
+groom: “GROOM”,
+best_man: “BEST MAN”,
+organiser: “ORGANISER”
+};
+return /*#**PURE***/React.createElement(“div”, {
+style: {
+minHeight: “100vh”,
+background: “#f7f5f0”,
+color: “#1a1410”,
+fontFamily: “‘DM Sans’,sans-serif”
 }
-
+}, /*#**PURE***/React.createElement(“link”, {
+href: “https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap”,
+rel: “stylesheet”
+}), /*#**PURE***/React.createElement(“div”, {
+style: {
+background: “linear-gradient(160deg,#00550a 0%,#004d08 45%,#8a0000 100%)”,
+borderBottom: “1px solid #1c1600”,
+padding: “28px 20px 18px”,
+position: “relative”,
+overflow: “hidden”
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+position: “absolute”,
+top: -50,
+right: -50,
+width: 300,
+height: 300,
+background: “radial-gradient(circle,#00660010,transparent 68%)”,
+pointerEvents: “none”
+}
+}), /*#**PURE***/React.createElement(“div”, {
+style: {
+maxWidth: 900,
+margin: “0 auto”,
+display: “flex”,
+justifyContent: “space-between”,
+alignItems: “flex-end”,
+flexWrap: “wrap”,
+gap: 14
+}
+}, /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 10,
+letterSpacing: 4,
+color: “#8a6a10”,
+fontWeight: 600,
+marginBottom: 4,
+textTransform: “uppercase”
+}
+}, “Bachelor Weekend \xB7 Pre-Wedding Celebration”), /*#**PURE***/React.createElement(“h1”, {
+style: {
+margin: 0,
+fontFamily: “‘Cormorant Garamond’,serif”,
+fontSize: “clamp(30px,5vw,54px)”,
+fontWeight: 700,
+lineHeight: 1.05,
+color: “#ffffff”
+}
+}, “Lisbon “, /*#**PURE***/React.createElement(“span”, {
+style: {
+color: “#8a6a10”
+}
+}, “\uD83C\uDDF5\uD83C\uDDF9”)), /*#**PURE***/React.createElement(“p”, {
+style: {
+margin: “5px 0 0”,
+color: “#a8c8a8”,
+fontSize: 13
+}
+}, “6 \u2013 11 May 2026 \xA0\xB7\xA0 Celebrating Benjie \xA0\xB7\xA0 7 People”)))), /*#**PURE***/React.createElement(“div”, {
+style: {
+borderBottom: “1px solid #1a1a1a”,
+background: “#f0ebe0”,
+borderTop: “1px solid #ddd5c0”,
+position: “sticky”,
+top: 0,
+zIndex: 100
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+maxWidth: 900,
+margin: “0 auto”,
+display: “flex”,
+overflowX: “auto”
+}
+}, TABS.map(t => /*#**PURE***/React.createElement(“button”, {
+key: t.id,
+onClick: () => setTab(t.id),
+style: {
+padding: “12px 16px”,
+background: “none”,
+border: “none”,
+borderBottom: tab === t.id ? “2px solid #006600” : “2px solid transparent”,
+color: tab === t.id ? “#8a6a10” : “#6a5f50”,
+fontSize: 13,
+fontWeight: 600,
+cursor: “pointer”,
+whiteSpace: “nowrap”,
+fontFamily: “inherit”
+}
+}, t.label)))), /*#**PURE***/React.createElement(“div”, {
+style: {
+maxWidth: 900,
+margin: “0 auto”,
+padding: “22px 16px 80px”
+}
+}, tab === “itin” && /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“div”, {
+style: {
+marginBottom: 14
+}
+}, /*#**PURE***/React.createElement(“h2”, {
+style: {
+margin: 0,
+fontFamily: “‘Cormorant Garamond’,serif”,
+fontSize: 24,
+color: “#1a1410”
+}
+}, “Itinerary”), /*#**PURE***/React.createElement(“p”, {
+style: {
+margin: “3px 0 0”,
+color: “#6a5f50”,
+fontSize: 13
+}
+}, bookedEv, “ confirmed \xB7 “, todoEv, “ still to book \xB7 all links clickable”)), /*#**PURE***/React.createElement(“div”, {
+style: {
+background: “#fffae8”,
+border: “1px solid #c9a84c2a”,
+borderRadius: 10,
+padding: “10px 14px”,
+marginBottom: 14,
+fontSize: 12,
+color: “#8a6a10”
+}
+}, “\u26A0\uFE0F “, /*#**PURE***/React.createElement(“b”, null, “Still to book:”), “ Escala25 climbing \xB7 Surf lesson (Sat) \xB7 Group dinners Fri & Sat \xB7 VIP late night Sat”), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “grid”,
+gap: 14
+}
+}, DAYS.map(day => {
+const evs = itin[day.date] || [];
+const nb = evs.filter(e => e.booked).length;
+return /*#**PURE***/React.createElement(“div”, {
+key: day.date,
+style: {
+background: “#ffffff”,
+border: “1px solid #1c1c1c”,
+borderRadius: 13,
+overflow: “hidden”
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+background: “linear-gradient(90deg,#e8f2e8,#ffffff)”,
+padding: “11px 16px”,
+display: “flex”,
+justifyContent: “space-between”,
+alignItems: “center”,
+borderBottom: “1px solid #1c1c1c”,
+flexWrap: “wrap”,
+gap: 8
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+alignItems: “center”,
+gap: 10,
+flexWrap: “wrap”
+}
+}, /*#**PURE***/React.createElement(“span”, {
+style: {
+fontFamily: “‘Cormorant Garamond’,serif”,
+fontSize: 18,
+color: “#1a1410”,
+fontWeight: 600
+}
+}, day.label), /*#**PURE***/React.createElement(“span”, {
+style: {
+fontSize: 10,
+color: “#8a6a10”,
+letterSpacing: 1,
+textTransform: “uppercase”
+}
+}, day.theme)), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+alignItems: “center”,
+gap: 8
+}
+}, /*#**PURE***/React.createElement(“span”, {
+style: {
+fontSize: 11,
+color: “#9a8f80”
+}
+}, nb, “/”, evs.length, “ booked”), /*#**PURE***/React.createElement(Btn, {
+sm: true,
+onClick: () => {
+setEf({
+title: “”,
+type: “🍽️ Dinner”,
+time: “”,
+location: “”,
+links: [],
+notes: “”,
+booked: false
+});
+setEm({
+date: day.date,
+idx: null
+});
+}
+}, “+ Add”))), /*#**PURE***/React.createElement(“div”, null, evs.length === 0 && /*#**PURE***/React.createElement(“div”, {
+style: {
+padding: “10px 16px”,
+color: “#c0b8a4”,
+fontSize: 12,
+fontStyle: “italic”
+}
+}, “Nothing planned yet.”), evs.map((ev, i) => {
+const special = ev.booked && [“🍷 Tasting”, “⛵ Boat”, “🏄 Activity”, “🎉 Party”].includes(ev.type);
+const needsBooking = !ev.booked && ev.notes && ev.notes.includes(“NEEDS BOOKING”);
+return /*#**PURE***/React.createElement(“div”, {
+key: i,
+style: {
+display: “flex”,
+gap: 10,
+padding: “10px 16px”,
+borderBottom: i < evs.length - 1 ? “1px solid #181818” : “none”,
+background: special ? “#0f1a0d” : needsBooking ? “#fff5e8” : ev.booked ? “#e8f5e8” : “transparent”,
+alignItems: “flex-start”,
+borderLeft: special ? “2px solid #52b788” : needsBooking ? “2px solid #c9a84c” : “none”
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 16,
+width: 24,
+textAlign: “center”,
+flexShrink: 0,
+marginTop: 1
+}
+}, ev.type.split(” “)[0]), /*#**PURE***/React.createElement(“div”, {
+style: {
+flex: 1,
+minWidth: 0
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+flexWrap: “wrap”,
+gap: 5,
+alignItems: “center”
+}
+}, /*#**PURE***/React.createElement(“span”, {
+style: {
+fontWeight: 600,
+color: special ? “#a3e4a0” : needsBooking ? “#f0c060” : “#1a1410”,
+fontSize: 13
+}
+}, ev.title), ev.time && /*#**PURE***/React.createElement(“span”, {
+style: {
+fontSize: 11,
+color: “#8a7f70”,
+background: “#1a1410”,
+padding: “1px 6px”,
+borderRadius: 99
+}
+}, ev.time), ev.booked ? /*#**PURE***/React.createElement(Tag, {
+color: “green”
+}, “\u2713 Booked”) : needsBooking ? /*#**PURE***/React.createElement(Tag, {
+color: “red”
+}, “\u26A0\uFE0F Book Now”) : /*#**PURE***/React.createElement(Tag, {
+color: “grey”
+}, “TBC”)), ev.location && /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 11,
+color: “#7a6f60”,
+marginTop: 2
+}
+}, “\uD83D\uDCCD “, ev.location), ev.notes && /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 11,
+color: “#8a7f70”,
+marginTop: 2,
+lineHeight: 1.5
+}
+}, linkify(ev.notes)), /*#**PURE***/React.createElement(LinkRow, {
+links: ev.links
+})), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+gap: 4,
+flexShrink: 0
+}
+}, /*#**PURE***/React.createElement(“button”, {
+onClick: () => toggleBooked(day.date, i),
+style: {
+background: “none”,
+border: `1px solid ${ev.booked ? "#00660055" : "#ccc4b0"}`,
+borderRadius: 6,
+padding: “3px 7px”,
+cursor: “pointer”,
+fontSize: 13,
+color: ev.booked ? “#006600” : “#9a8f80”
+}
+}, “\u2713”), /*#**PURE***/React.createElement(Btn, {
+v: “ghost”,
+sm: true,
+onClick: () => {
+setEf({
+…ev,
+links: ev.links || []
+});
+setEm({
+date: day.date,
+idx: i
+});
+}
+}, “Edit”), /*#**PURE***/React.createElement(Btn, {
+v: “danger”,
+sm: true,
+onClick: () => delEvent(day.date, i)
+}, “\u2715”)));
+})));
+}))), tab === “contacts” && /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“div”, {
+style: {
+marginBottom: 18
+}
+}, /*#**PURE***/React.createElement(“h2”, {
+style: {
+margin: 0,
+fontFamily: “‘Cormorant Garamond’,serif”,
+fontSize: 24,
+color: “#1a1410”
+}
+}, “Contacts & Links”), /*#**PURE***/React.createElement(“p”, {
+style: {
+margin: “3px 0 0”,
+color: “#6a5f50”,
+fontSize: 13
+}
+}, “Everything clickable \u2014 tap to call, email or open in maps.”)), /*#**PURE***/React.createElement(“div”, {
+style: {
+background: “#ffffff”,
+border: “1px solid #1e3020”,
+borderRadius: 12,
+padding: “14px 16px”,
+marginBottom: 16
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 10,
+color: “#006600”,
+fontWeight: 700,
+letterSpacing: 1,
+textTransform: “uppercase”,
+marginBottom: 8
+}
+}, “\uD83D\uDCF1 WhatsApp Group”), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+gap: 10,
+alignItems: “center”
+}
+}, /*#**PURE***/React.createElement(“input”, {
+value: whatsapp,
+onChange: e => setWhatsapp(e.target.value),
+placeholder: “Paste group link here…”,
+style: {
+…fStyle,
+flex: 1
+}
+}), whatsapp && /*#**PURE***/React.createElement(“a”, {
+href: whatsapp,
+target: “_blank”,
+rel: “noreferrer”,
+style: {
+background: “#25D366”,
+color: “#1a1410”,
+borderRadius: 8,
+padding: “8px 14px”,
+fontSize: 13,
+fontWeight: 600,
+textDecoration: “none”,
+whiteSpace: “nowrap”
+}
+}, “Open \u2197”))), [“🏨 Hotel”, “🍷 Port Tasting”, “🧗 Climbing”, “🍺 Beer Tour”, “🚨 Emergency”, “🚕 Transport”, “✈️ Flight Tracking”].map(cat => {
+const items = CONTACTS.filter(c => c.category === cat);
+if (items.length === 0) return null;
+return /*#**PURE***/React.createElement(“div”, {
+key: cat,
+style: {
+marginBottom: 20
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 11,
+letterSpacing: 2,
+color: “#8a6a10”,
+fontWeight: 700,
+textTransform: “uppercase”,
+marginBottom: 10
+}
+}, cat), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “grid”,
+gap: 10
+}
+}, items.map((c, i) => /*#**PURE***/React.createElement(“div”, {
+key: i,
+style: {
+background: “#ffffff”,
+border: `1px solid ${c.booked ? "#1e2a1e" : "#2a1a00"}`,
+borderRadius: 12,
+padding: “14px 16px”
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+justifyContent: “space-between”,
+flexWrap: “wrap”,
+gap: 8,
+marginBottom: 6
+}
+}, /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“div”, {
+style: {
+fontWeight: 600,
+fontSize: 15,
+color: “#1a1410”
+}
+}, c.name), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 12,
+color: “#8a7f70”,
+marginTop: 2
+}
+}, c.role), c.address && /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 12,
+color: “#7a6f60”,
+marginTop: 2
+}
+}, “\uD83D\uDCCD “, c.address)), !c.booked && /*#**PURE***/React.createElement(Tag, {
+color: “red”
+}, “\u26A0\uFE0F Book Now”), c.booked && cat !== “🚨 Emergency” && cat !== “🚕 Transport” && cat !== “✈️ Flight Tracking” && /*#**PURE***/React.createElement(Tag, {
+color: “green”
+}, “\u2713 Confirmed”)), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+gap: 8,
+flexWrap: “wrap”
+}
+}, c.phone && /*#**PURE***/React.createElement(“a”, {
+href: `tel:${c.phone}`,
+style: {
+fontSize: 12,
+color: “#1a5fa8”,
+background: “#e0eaf8”,
+border: “1px solid #60a5fa33”,
+borderRadius: 99,
+padding: “3px 10px”,
+textDecoration: “none”,
+fontWeight: 600
+}
+}, “\uD83D\uDCDE “, c.phone), c.email && /*#**PURE***/React.createElement(“a”, {
+href: `mailto:${c.email}`,
+style: {
+fontSize: 12,
+color: “#8a6a10”,
+background: “#8a6a1015”,
+border: “1px solid #c9a84c33”,
+borderRadius: 99,
+padding: “3px 10px”,
+textDecoration: “none”,
+fontWeight: 600
+}
+}, “\uD83D\uDCE7 “, c.email), c.web && /*#**PURE***/React.createElement(“a”, {
+href: c.web,
+target: “_blank”,
+rel: “noreferrer”,
+style: {
+fontSize: 12,
+color: “#6030c0”,
+background: “#1e1535”,
+border: “1px solid #7c3aed44”,
+borderRadius: 99,
+padding: “3px 10px”,
+textDecoration: “none”,
+fontWeight: 600
+}
+}, “\uD83D\uDD17 Website \u2197”), c.maps && /*#**PURE***/React.createElement(“a”, {
+href: c.maps,
+target: “_blank”,
+rel: “noreferrer”,
+style: {
+fontSize: 12,
+color: “#006600”,
+background: “#0d1f15”,
+border: “1px solid #52b78833”,
+borderRadius: 99,
+padding: “3px 10px”,
+textDecoration: “none”,
+fontWeight: 600
+}
+}, “\uD83D\uDDFA Maps \u2197”)), c.note && /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 11,
+color: “#7a6f60”,
+marginTop: 8,
+lineHeight: 1.5
+}
+}, c.note)))));
+})), tab === “hotel” && /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“div”, {
+style: {
+marginBottom: 16
+}
+}, /*#**PURE***/React.createElement(“h2”, {
+style: {
+margin: 0,
+fontFamily: “‘Cormorant Garamond’,serif”,
+fontSize: 24,
+color: “#1a1410”
+}
+}, “Flores Guest House”), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+gap: 8,
+marginTop: 6,
+flexWrap: “wrap”
+}
+}, /*#**PURE***/React.createElement(“a”, {
+href: “https://www.floresguesthouse.com”,
+target: “_blank”,
+rel: “noreferrer”,
+style: {
+fontSize: 12,
+color: “#6030c0”,
+background: “#1e1535”,
+border: “1px solid #7c3aed44”,
+borderRadius: 99,
+padding: “3px 10px”,
+textDecoration: “none”,
+fontWeight: 600
+}
+}, “\uD83D\uDD17 floresguesthouse.com \u2197”), /*#**PURE***/React.createElement(“a”, {
+href: “https://maps.google.com/?q=Rua+de+S\xE3o+Mar\xE7al+30+Lisbon”,
+target: “_blank”,
+rel: “noreferrer”,
+style: {
+fontSize: 12,
+color: “#006600”,
+background: “#0d1f15”,
+border: “1px solid #52b78833”,
+borderRadius: 99,
+padding: “3px 10px”,
+textDecoration: “none”,
+fontWeight: 600
+}
+}, “\uD83D\uDDFA View on Maps \u2197”), /*#**PURE***/React.createElement(“a”, {
+href: “tel:+351213461884”,
+style: {
+fontSize: 12,
+color: “#1a5fa8”,
+background: “#e0eaf8”,
+border: “1px solid #60a5fa33”,
+borderRadius: 99,
+padding: “3px 10px”,
+textDecoration: “none”,
+fontWeight: 600
+}
+}, “\uD83D\uDCDE +351 213 461 884”), /*#**PURE***/React.createElement(“a”, {
+href: “mailto:welcome@floresguesthouse.com”,
+style: {
+fontSize: 12,
+color: “#8a6a10”,
+background: “#8a6a1015”,
+border: “1px solid #c9a84c33”,
+borderRadius: 99,
+padding: “3px 10px”,
+textDecoration: “none”,
+fontWeight: 600
+}
+}, “\uD83D\uDCE7 Email hotel”))), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “grid”,
+gap: 8,
+marginBottom: 16
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+background: “#fff0f0”,
+border: “1px solid #e6394633”,
+borderRadius: 10,
+padding: “10px 14px”,
+fontSize: 12,
+color: “#cc0000”
+}
+}, “\u26A0\uFE0F “, /*#**PURE***/React.createElement(“b”, null, “Harry’s checkout is Sun 10 May”), “ \u2014 but Harry leaves Mon 11 May. Contact hotel to extend or arrange luggage storage.”), /*#**PURE***/React.createElement(“div”, {
+style: {
+background: “#e8f2e8”,
+border: “1px solid #52b78833”,
+borderRadius: 10,
+padding: “10px 14px”,
+fontSize: 12,
+color: “#006600”
+}
+}, “\u2705 “, /*#**PURE***/React.createElement(“b”, null, “All deposits paid.”), “ Balance due at property on check-in.”)), /*#**PURE***/React.createElement(“div”, {
+style: {
+background: “#ffffff”,
+border: “1px solid #1e1e1e”,
+borderRadius: 12,
+padding: “14px 18px”,
+marginBottom: 16,
+display: “grid”,
+gridTemplateColumns: “repeat(auto-fill,minmax(130px,1fr))”,
+gap: 14
+}
+}, [{
+l: “Total Cost”,
+v: `€${totalHotel}`
+}, {
+l: “Deposits Due”,
+v: `€${totalDeposit.toFixed(0)}`
+}, {
+l: “Balance at Property”,
+v: `€${(totalHotel - totalDeposit).toFixed(0)}`
+}, {
+l: “Per Person”,
+v: `€${Math.round(totalHotel / 6)}`
+}].map(({
+l,
+v
+}) => /*#**PURE***/React.createElement(“div”, {
+key: l
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 10,
+color: “#8a7f70”,
+letterSpacing: 1,
+textTransform: “uppercase”,
+marginBottom: 2
+}
+}, l), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontFamily: “‘Cormorant Garamond’,serif”,
+fontSize: 20,
+color: “#8a6a10”,
+fontWeight: 700
+}
+}, v)))), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “grid”,
+gap: 12
+}
+}, ROOMS.map(r => /*#**PURE***/React.createElement(“div”, {
+key: r.id,
+style: {
+background: “#ffffff”,
+border: “1px solid #c9a84c2a”,
+borderRadius: 13,
+overflow: “hidden”
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+background: “#fffae8”,
+padding: “12px 16px”,
+borderBottom: “1px solid #1a1a1a”,
+display: “flex”,
+justifyContent: “space-between”,
+flexWrap: “wrap”,
+gap: 8
+}
+}, /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+gap: 7,
+alignItems: “center”,
+flexWrap: “wrap”,
+marginBottom: 3
+}
+}, /*#**PURE***/React.createElement(“span”, {
+style: {
+fontFamily: “‘Cormorant Garamond’,serif”,
+fontSize: 18,
+color: “#1a1410”,
+fontWeight: 600
+}
+}, “Room “, r.id, “ \u2014 “, r.guests.join(” & “)), /*#**PURE***/React.createElement(Tag, {
+color: “gold”
+}, “Deposit Pending”)), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 12,
+color: “#8a7f70”
+}
+}, “\uD83D\uDECF “, r.type, “ \xB7 “, r.nights, “ nights”)), /*#**PURE***/React.createElement(“div”, {
+style: {
+textAlign: “right”
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+fontFamily: “‘Cormorant Garamond’,serif”,
+fontSize: 20,
+color: “#8a6a10”,
+fontWeight: 700
+}
+}, “\u20AC”, r.total), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 11,
+color: “#8a7f70”
+}
+}, “inc. \u20AC”, r.cityTax, “ city tax”))), /*#**PURE***/React.createElement(“div”, {
+style: {
+padding: “12px 16px”,
+display: “grid”,
+gridTemplateColumns: “repeat(auto-fill,minmax(160px,1fr))”,
+gap: “8px 16px”
+}
+}, /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“div”, {
+style: lStyle
+}, “Booking ID”), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontFamily: “monospace”,
+fontSize: 13,
+color: “#006600”,
+fontWeight: 700,
+letterSpacing: 1
+}
+}, r.bookingId)), /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“div”, {
+style: lStyle
+}, “Check-in”), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 13,
+color: “#4a3f30”
+}
+}, r.checkIn)), /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“div”, {
+style: lStyle
+}, “Check-out”), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 13,
+color: “#4a3f30”
+}
+}, r.checkOut)), /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“div”, {
+style: lStyle
+}, “Deposit (50%)”), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 13,
+color: “#e8a020”,
+fontWeight: 600
+}
+}, “\u20AC”, r.deposit, “ due “, r.depositDue)), /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“div”, {
+style: lStyle
+}, “Balance”), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 13,
+color: “#6a5f50”
+}
+}, “\u20AC”, r.deposit, “ at property”)), /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“div”, {
+style: lStyle
+}, “Cancellation”), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 12,
+color: “#8a7f70”
+}
+}, “Free until 5 days before”))), r.warning && /*#**PURE***/React.createElement(“div”, {
+style: {
+margin: “0 16px 12px”,
+background: “#fff0f0”,
+border: “1px solid #e6394633”,
+borderRadius: 8,
+padding: “7px 11px”,
+fontSize: 12,
+color: “#cc0000”
+}
+}, r.warning)))), /*#**PURE***/React.createElement(“div”, {
+style: {
+marginTop: 14,
+background: “#e0efe0”,
+border: “1px solid #1a3020”,
+borderRadius: 10,
+padding: “12px 16px”,
+fontSize: 12,
+color: “#006600”,
+lineHeight: 1.7
+}
+}, “\uD83D\uDCCD Miseric\xF3rdia/Pr\xEDncipe Real \xB7 Bairro Alto 8 min walk \xB7 Cais do Sodr\xE9 15 min walk or 5 min Uber \xB7 \u26A0\uFE0F Walk-up only \u2014 no lift!”)), tab === “flights” && /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“div”, {
+style: {
+marginBottom: 18
+}
+}, /*#**PURE***/React.createElement(“h2”, {
+style: {
+margin: 0,
+fontFamily: “‘Cormorant Garamond’,serif”,
+fontSize: 24,
+color: “#1a1410”
+}
+}, “Flight Tracker”), /*#**PURE***/React.createElement(“p”, {
+style: {
+margin: “3px 0 0”,
+color: “#6a5f50”,
+fontSize: 13
+}
+}, “All flight numbers in one place. Tap to track live.”)), [{
+label: “✈️ ARRIVALS INTO LISBON”,
+data: FLIGHTS_IN,
+color: “#1a5fa8”
+}, {
+label: “🛫 DEPARTURES FROM LISBON”,
+data: FLIGHTS_OUT,
+color: “#f59e0b”
+}].map(({
+label,
+data,
+color
+}) => /*#**PURE***/React.createElement(“div”, {
+key: label,
+style: {
+marginBottom: 24
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 10,
+letterSpacing: 2,
+color,
+fontWeight: 700,
+textTransform: “uppercase”,
+marginBottom: 10
+}
+}, label), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “grid”,
+gap: 7
+}
+}, data.map((f, i) => /*#**PURE***/React.createElement(“div”, {
+key: i,
+style: {
+background: “#ffffff”,
+border: `1px solid ${f.status === "confirmed" ? "#c0ddc0" : "#d8d0bc"}`,
+borderRadius: 10,
+padding: “10px 14px”,
+display: “flex”,
+alignItems: “flex-start”,
+gap: 12,
+flexWrap: “wrap”
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+minWidth: 120,
+flexShrink: 0
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+fontWeight: 600,
+fontSize: 13,
+color: “#1a1410”
+}
+}, f.name), /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 11,
+color: “#8a7f70”,
+marginTop: 1
+}
+}, f.datetime), f.note && /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 11,
+color: “#8a7f70”,
+marginTop: 1,
+fontStyle: “italic”
+}
+}, f.note)), /*#**PURE***/React.createElement(“div”, {
+style: {
+flex: 1,
+display: “flex”,
+alignItems: “center”,
+gap: 8,
+flexWrap: “wrap”
+}
+}, /*#**PURE***/React.createElement(“a”, {
+href: `https://www.flightradar24.com/data/flights/${f.flight.toLowerCase().replace(/\s/g, "")}`,
+target: “_blank”,
+rel: “noreferrer”,
+style: {
+fontFamily: “monospace”,
+fontSize: 13,
+fontWeight: 700,
+color: f.status === “confirmed” ? “#8a6a10” : “#7a6f60”,
+background: f.status === “confirmed” ? “#8a6a1015” : “#e8e3d8”,
+padding: “2px 9px”,
+borderRadius: 6,
+border: `1px solid ${f.status === "confirmed" ? "#8a6a1033" : "#ccc4b0"}`,
+letterSpacing: 1,
+textDecoration: “none”
+}
+}, f.flight, “ \u2197”), /*#**PURE***/React.createElement(“span”, {
+style: {
+fontSize: 12,
+color: “#8a7f70”
+}
+}, f.route), f.status === “confirmed” ? /*#**PURE***/React.createElement(Tag, {
+color: “green”
+}, “\u2713”) : /*#**PURE***/React.createElement(Tag, {
+color: “grey”
+}, “TBC”))))))), /*#**PURE***/React.createElement(“div”, {
+style: {
+background: “#0d1a10”,
+border: “1px solid #1a3020”,
+borderRadius: 10,
+padding: “11px 14px”,
+fontSize: 12,
+color: “#006600”,
+lineHeight: 1.6
+}
+}, “\uD83D\uDCA1 Flight numbers above link directly to “, /*#**PURE***/React.createElement(“a”, {
+href: “https://www.flightradar24.com”,
+target: “_blank”,
+rel: “noreferrer”,
+style: {
+color: “#006600”
+}
+}, “FlightRadar24”), “ for live tracking. Still needed: Benjie’s exact TAP flight number \xB7 Rob’s details.”)), tab === “crew” && /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+justifyContent: “space-between”,
+alignItems: “flex-start”,
+marginBottom: 16,
+flexWrap: “wrap”,
+gap: 10
+}
+}, /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“h2”, {
+style: {
+margin: 0,
+fontFamily: “‘Cormorant Garamond’,serif”,
+fontSize: 24,
+color: “#1a1410”
+}
+}, “The Crew”), /*#**PURE***/React.createElement(“p”, {
+style: {
+margin: “3px 0 0”,
+color: “#6a5f50”,
+fontSize: 13
+}
+}, confirmed, “/”, crew.length, “ confirmed \xB7 “, crew.length - confirmed, “ pending”)), /*#**PURE***/React.createElement(Btn, {
+onClick: () => {
+setPf({
+name: “”,
+role: “guest”,
+arrival: “”,
+departure: “”,
+flightIn: null,
+flightOut: null,
+notes: “”,
+confirmed: false
+});
+setPm(“new”);
+}
+}, “+ Add Person”)), /*#**PURE***/React.createElement(“div”, {
+style: {
+background: “#ffffff”,
+border: “1px solid #1e1e1e”,
+borderRadius: 12,
+padding: “13px 16px”,
+marginBottom: 16
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 10,
+letterSpacing: 2,
+color: “#8a6a10”,
+fontWeight: 700,
+textTransform: “uppercase”,
+marginBottom: 10
+}
+}, “Arrival Timeline”), [{
+day: “Wed 6 May”,
+time: “07:25”,
+who: “Harry”,
+note: “Etihad EY99 from AUH”
+}, {
+day: “Thu 7 May”,
+time: “10:50”,
+who: “Benjie”,
+note: “TAP from LHR”
+}, {
+day: “Thu 7 May”,
+time: “21:35”,
+who: “Laurie + Amon”,
+note: “TAP TP1357 from LHR”
+}, {
+day: “Fri 8 May”,
+time: “09:25”,
+who: “John (Gilmore)”,
+note: “EZY3321 from EDI”
+}, {
+day: “Fri 8 May”,
+time: “11:55”,
+who: “Paul (PeeWee)”,
+note: “easyJet from MAN”
+}, {
+day: “TBC”,
+time: “—”,
+who: “Rob”,
+note: “TBC”
+}].map((r, i, a) => /*#**PURE***/React.createElement(“div”, {
+key: i,
+style: {
+display: “flex”,
+alignItems: “center”,
+gap: 12,
+padding: “6px 0”,
+borderBottom: i < a.length - 1 ? “1px solid #1a1a1a” : “none”
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+width: 76,
+fontSize: 12,
+color: “#8a6a10”,
+fontWeight: 600,
+flexShrink: 0
+}
+}, r.day), /*#**PURE***/React.createElement(“div”, {
+style: {
+width: 40,
+fontSize: 12,
+color: “#8a7f70”,
+flexShrink: 0
+}
+}, r.time), /*#**PURE***/React.createElement(“div”, {
+style: {
+flex: 1
+}
+}, /*#**PURE***/React.createElement(“span”, {
+style: {
+fontSize: 13,
+color: “#4a3f30”,
+fontWeight: 500
+}
+}, r.who), /*#**PURE***/React.createElement(“span”, {
+style: {
+fontSize: 12,
+color: “#7a6f60”,
+marginLeft: 8
+}
+}, r.note))))), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “grid”,
+gap: 10
+}
+}, crew.map(p => /*#**PURE***/React.createElement(“div”, {
+key: p.id,
+style: {
+background: “#ffffff”,
+border: `1px solid ${p.id === 1 ? "#8a6a102a" : "#d8d0bc"}`,
+borderRadius: 12,
+padding: “13px 15px”
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+gap: 12,
+alignItems: “flex-start”,
+flexWrap: “wrap”
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+width: 36,
+height: 36,
+borderRadius: “50%”,
+background: “#fffae8”,
+border: “1px solid #c9a84c2a”,
+display: “flex”,
+alignItems: “center”,
+justifyContent: “center”,
+fontSize: 15,
+flexShrink: 0
+}
+}, rIcon[p.role] || “🙋”), /*#**PURE***/React.createElement(“div”, {
+style: {
+flex: 1,
+minWidth: 150
+}
+}, /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+flexWrap: “wrap”,
+gap: 6,
+alignItems: “center”,
+marginBottom: 5
+}
+}, /*#**PURE***/React.createElement(“span”, {
+style: {
+fontWeight: 600,
+fontSize: 15,
+color: “#1a1410”
+}
+}, p.name), rLabel[p.role] && /*#**PURE***/React.createElement(Tag, {
+color: “gold”
+}, rLabel[p.role]), p.confirmed ? /*#**PURE***/React.createElement(Tag, {
+color: “green”
+}, “\u2713 Confirmed”) : /*#**PURE***/React.createElement(Tag, {
+color: “grey”
+}, “Pending”)), /*#**PURE***/React.createElement(FlightBadge, {
+f: p.flightIn,
+direction: “in”
+}), /*#**PURE***/React.createElement(FlightBadge, {
+f: p.flightOut,
+direction: “out”
+}), p.notes && /*#**PURE***/React.createElement(“div”, {
+style: {
+fontSize: 11,
+color: “#8a7f70”,
+marginTop: 5,
+fontStyle: “italic”
+}
+}, p.notes)), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+gap: 5
+}
+}, /*#**PURE***/React.createElement(Btn, {
+v: “ghost”,
+sm: true,
+onClick: () => {
+setPf({
+…p
+});
+setPm(p.id);
+}
+}, “Edit”), /*#**PURE***/React.createElement(Btn, {
+v: “danger”,
+sm: true,
+onClick: () => setCrew(ps => ps.filter(x => x.id !== p.id))
+}, “\u2715”))))))), tab === “info” && /*#**PURE***/React.createElement(InfoTab, {
+budget: budget,
+setBudget: setBudget,
+fStyle: fStyle,
+lStyle: lStyle
+})), /*#**PURE***/React.createElement(Modal, {
+open: !!pm,
+onClose: () => setPm(null),
+title: pm === “new” ? “Add Person” : “Edit Person”
+}, /*#**PURE***/React.createElement(F, {
+label: “Name”,
+value: pf.name || “”,
+onChange: e => setPf(f => ({
+…f,
+name: e.target.value
+}))
+}), /*#**PURE***/React.createElement(F, {
+label: “Role”,
+select: true,
+opts: [“groom”, “best_man”, “organiser”, “guest”],
+value: pf.role || “guest”,
+onChange: e => setPf(f => ({
+…f,
+role: e.target.value
+}))
+}), /*#**PURE***/React.createElement(F, {
+label: “Arrival”,
+value: pf.arrival || “”,
+onChange: e => setPf(f => ({
+…f,
+arrival: e.target.value
+})),
+placeholder: “e.g. Thu 7 May, 21:35”
+}), /*#**PURE***/React.createElement(F, {
+label: “Departure”,
+value: pf.departure || “”,
+onChange: e => setPf(f => ({
+…f,
+departure: e.target.value
+}))
+}), /*#**PURE***/React.createElement(F, {
+label: “Notes”,
+textarea: true,
+value: pf.notes || “”,
+onChange: e => setPf(f => ({
+…f,
+notes: e.target.value
+}))
+}), /*#**PURE***/React.createElement(“label”, {
+style: {
+display: “flex”,
+gap: 8,
+alignItems: “center”,
+marginBottom: 18,
+cursor: “pointer”,
+color: “#6a5f50”,
+fontSize: 13
+}
+}, /*#**PURE***/React.createElement(“input”, {
+type: “checkbox”,
+checked: !!pf.confirmed,
+onChange: e => setPf(f => ({
+…f,
+confirmed: e.target.checked
+}))
+}), “ Confirmed coming”), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+gap: 8,
+justifyContent: “flex-end”
+}
+}, /*#**PURE***/React.createElement(Btn, {
+v: “ghost”,
+onClick: () => setPm(null)
+}, “Cancel”), /*#**PURE***/React.createElement(Btn, {
+onClick: savePerson
+}, “Save”))), /*#**PURE***/React.createElement(Modal, {
+open: !!em,
+onClose: () => setEm(null),
+title: em?.idx === null ? “Add Event” : “Edit Event”
+}, /*#**PURE***/React.createElement(F, {
+label: “Title”,
+value: ef.title || “”,
+onChange: e => setEf(f => ({
+…f,
+title: e.target.value
+}))
+}), /*#**PURE***/React.createElement(F, {
+label: “Type”,
+select: true,
+opts: EVENT_TYPES,
+value: ef.type || “🍽️ Dinner”,
+onChange: e => setEf(f => ({
+…f,
+type: e.target.value
+}))
+}), /*#**PURE***/React.createElement(F, {
+label: “Time”,
+type: “time”,
+value: ef.time || “”,
+onChange: e => setEf(f => ({
+…f,
+time: e.target.value
+}))
+}), /*#**PURE***/React.createElement(F, {
+label: “Location”,
+value: ef.location || “”,
+onChange: e => setEf(f => ({
+…f,
+location: e.target.value
+}))
+}), /*#**PURE***/React.createElement(F, {
+label: “Notes”,
+textarea: true,
+value: ef.notes || “”,
+onChange: e => setEf(f => ({
+…f,
+notes: e.target.value
+})),
+placeholder: “Any URLs typed here will become clickable automatically.”
+}), /*#**PURE***/React.createElement(“label”, {
+style: {
+display: “flex”,
+gap: 8,
+alignItems: “center”,
+marginBottom: 18,
+cursor: “pointer”,
+color: “#6a5f50”,
+fontSize: 13
+}
+}, /*#**PURE***/React.createElement(“input”, {
+type: “checkbox”,
+checked: !!ef.booked,
+onChange: e => setEf(f => ({
+…f,
+booked: e.target.checked
+}))
+}), “ Booked & confirmed”), /*#**PURE***/React.createElement(“div”, {
+style: {
+display: “flex”,
+gap: 8,
+justifyContent: “flex-end”
+}
+}, /*#**PURE***/React.createElement(Btn, {
+v: “ghost”,
+onClick: () => setEm(null)
+}, “Cancel”), /*#**PURE***/React.createElement(Btn, {
+onClick: saveEvent
+}, “Save”))));
+}
 const root = ReactDOM.createRoot(document.getElementById(‘root’));
-root.render(<App />);
+root.render(/*#**PURE***/React.createElement(App, null));
 </script>
 
 </body>
