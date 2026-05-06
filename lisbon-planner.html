@@ -173,17 +173,17 @@ a { color: var(--green); }
 
 <script>
 const CREW = [
-  { id:1, name:"Benjie", role:"groom", arrival:"Thu 7 May, ~10:50", departure:"Sun 10 May, ~18:50", flightIn:{flight:"TAP (TBC)",from:"LHR",to:"LIS",dep:"~Morning",arr:"~10:50",date:"Thu 7 May"}, flightOut:{flight:"TAP (TBC)",from:"LIS",to:"LHR",dep:"~18:50",arr:"~21:30",date:"Sun 10 May"}, notes:"Groom 💍", confirmed:true },
+  { id:1, name:"Benjie", role:"groom", arrival:"Thu 7 May, 10:50", departure:"Sun 10 May, 18:50", flightIn:{flight:"TP1351",from:"LHR",to:"LIS",dep:"08:00",arr:"10:50",date:"Thu 7 May",terminal:"LHR T1 → LIS T2"}, flightOut:{flight:"TP1364",from:"LIS",to:"LHR",dep:"16:05",arr:"18:50",date:"Sun 10 May"}, notes:"Groom 💍", confirmed:true },
   { id:2, name:"Harry", role:"organiser", arrival:"Wed 6 May, 07:25", departure:"Mon 11 May, 10:00", flightIn:{flight:"EY99",from:"AUH",to:"LIS",dep:"02:05",arr:"07:25",date:"Wed 6 May",terminal:"Terminal 1"}, flightOut:{flight:"TP1352",from:"LIS",to:"LHR",dep:"10:00",arr:"12:45",date:"Mon 11 May",note:"Last check-in 09:00 · Then TP6919 LHR T4→AUH dep 14:45"}, notes:"Arrives first, leaves last. Returns to Abu Dhabi via LHR.", confirmed:true },
   { id:3, name:"Laurie", role:"guest", arrival:"Thu 7 May, 21:35", departure:"Sun 10 May, 18:50", flightIn:{flight:"TP1357",from:"LHR",to:"LIS",dep:"18:45",arr:"21:35",date:"Thu 7 May"}, flightOut:{flight:"BA507",from:"LIS",to:"LHR",dep:"18:50",arr:"21:35",date:"Sun 10 May",terminal:"LIS T1 → LHR T5"}, notes:"", confirmed:true },
   { id:4, name:"Amon", role:"guest", arrival:"Thu 7 May, 21:35", departure:"Sun 10 May, 18:50", flightIn:{flight:"TP1357",from:"LHR",to:"LIS",dep:"18:45",arr:"21:35",date:"Thu 7 May"}, flightOut:{flight:"BA507",from:"LIS",to:"LHR",dep:"18:50",arr:"21:35",date:"Sun 10 May",terminal:"LIS T1 → LHR T5"}, notes:"", confirmed:true },
-  { id:5, name:"Paul (PeeWee)", role:"guest", arrival:"Fri 8 May, 11:55", departure:"Sun 10 May, 17:20", flightIn:{flight:"easyJet TBC",from:"MAN",to:"LIS",dep:"09:00",arr:"11:55",date:"Fri 8 May"}, flightOut:{flight:"Ryanair TBC",from:"LIS",to:"MAN",dep:"17:20",arr:"20:10",date:"Sun 10 May"}, notes:"From Manchester.", confirmed:true },
+  { id:5, name:"Paul (PeeWee)", role:"guest", arrival:"Fri 8 May, 11:55", departure:"Sun 10 May, 17:20", flightIn:{flight:"EZY2209",from:"MAN",to:"LIS",dep:"09:00",arr:"11:55",date:"Fri 8 May"}, flightOut:{flight:"Ryanair TBC",from:"LIS",to:"MAN",dep:"17:20",arr:"20:10",date:"Sun 10 May"}, notes:"From Manchester.", confirmed:true },
   { id:6, name:"John (Gilmore)", role:"guest", arrival:"Fri 8 May, 09:25", departure:"Sun 10 May, 18:50", flightIn:{flight:"EZY3321",from:"EDI",to:"LIS",dep:"06:05",arr:"09:25",date:"Fri 8 May",terminal:"LIS Terminal 1",note:"Booking ref: KCMWVK5"}, flightOut:{flight:"EZY3322",from:"LIS",to:"EDI",dep:"18:50",arr:"22:05",date:"Sun 10 May",terminal:"LIS Terminal 1"}, notes:"Flying from Edinburgh.", confirmed:true },
   { id:7, name:"Rob", role:"guest", arrival:"", departure:"", flightIn:null, flightOut:null, notes:"TBC — may be joining", confirmed:false },
 ];
 
 const ROOMS = [
-  { id:1, guests:["Harry","Benjie"], type:"Double/Twin with Balcony", bookingId:"9853893567", checkIn:"Wed 6 May", checkOut:"Sun 10 May", nights:4, roomCost:500, cityTax:32, total:532, deposit:266, depositDue:"✅ Paid", status:"deposit_paid", warning:"⚠️ Harry leaves Mon 11 May — checkout needs extending or luggage storage arranging!" },
+  { id:1, guests:["Harry","Benjie"], type:"Double/Twin with Balcony", bookingId:"9853893567", checkIn:"Wed 6 May", checkOut:"Mon 11 May", nights:5, roomCost:558, cityTax:32, total:590, deposit:266, depositDue:"✅ Paid in full · €266 deposit + €324 balance", status:"deposit_paid", warning:null },
   { id:2, guests:["Laurie","Amon"], type:"Superior Double/Twin", bookingId:"3909162628", checkIn:"Thu 7 May", checkOut:"Sun 10 May", nights:3, roomCost:345, cityTax:24, total:369, deposit:184.50, depositDue:"✅ Paid", status:"deposit_paid", warning:null },
   { id:3, guests:["Paul (PeeWee)","John (Gilmore)"], type:"Superior Double/Twin", bookingId:"4258295389", checkIn:"Fri 8 May", checkOut:"Sun 10 May", nights:2, roomCost:230, cityTax:16, total:246, deposit:123, depositDue:"✅ Paid", status:"deposit_paid", warning:null },
 ];
@@ -202,16 +202,16 @@ const CONTACTS = [
 
 const FLIGHTS_IN = [
   { name:"Harry", flight:"EY99", route:"AUH → LIS", datetime:"Wed 6 May · dep 02:05 · arr 07:25 (T1)", status:"confirmed" },
-  { name:"Benjie", flight:"TAP TBC", route:"LHR → LIS", datetime:"Thu 7 May · arr ~10:50", status:"tbc" },
+  { name:"Benjie", flight:"TP1351", route:"LHR → LIS", datetime:"Thu 7 May · dep 08:00 · arr 10:50 (LHR T1 → LIS T2)", status:"confirmed" },
   { name:"Laurie + Amon", flight:"TP1357", route:"LHR → LIS", datetime:"Thu 7 May · dep 18:45 · arr 21:35", status:"confirmed" },
   { name:"John (Gilmore)", flight:"EZY3321", route:"EDI → LIS", datetime:"Fri 8 May · dep 06:05 · arr 09:25 (T1)", status:"confirmed", note:"Ref: KCMWVK5" },
-  { name:"Paul (PeeWee)", flight:"easyJet TBC", route:"MAN → LIS", datetime:"Fri 8 May · dep 09:00 · arr 11:55", status:"confirmed" },
+  { name:"Paul (PeeWee)", flight:"EZY2209", route:"MAN → LIS", datetime:"Fri 8 May · dep 09:00 · arr 11:55", status:"confirmed" },
   { name:"Rob", flight:"TBC", route:"TBC", datetime:"TBC", status:"tbc" },
 ];
 
 const FLIGHTS_OUT = [
   { name:"Paul (PeeWee)", flight:"Ryanair TBC", route:"LIS → MAN", datetime:"Sun 10 May · dep 17:20 · arr 20:10", status:"confirmed" },
-  { name:"Benjie", flight:"TAP TBC", route:"LIS → LHR", datetime:"Sun 10 May · dep ~18:50", status:"tbc" },
+  { name:"Benjie", flight:"TP1364", route:"LIS → LHR", datetime:"Sun 10 May · dep 16:05 · arr 18:50", status:"confirmed" },
   { name:"Laurie + Amon", flight:"BA507", route:"LIS → LHR", datetime:"Sun 10 May · dep 18:50 · arr 21:35 (LHR T5)", status:"confirmed" },
   { name:"John (Gilmore)", flight:"EZY3322", route:"LIS → EDI", datetime:"Sun 10 May · dep 18:50 · arr 22:05 (LIS T1)", status:"confirmed", note:"Ref: KCMWVK5" },
   { name:"Harry", flight:"TP1352", route:"LIS → LHR", datetime:"Mon 11 May · dep 10:00 · arr 12:45 (LHR T2)", status:"confirmed", note:"Then TP6919 LHR T4→AUH dep 14:45" },
@@ -250,14 +250,14 @@ const INITIAL_ITINERARY = {
     { title:"🏭 LX Factory — non-climbers explore", type:"👁️ Sightseeing", time:"11:00", location:"LX Factory · Rua Rodrigues Faria 103, Alcântara", links:[{label:"lxfactory.com",url:"https://lxfactory.com"},{label:"View on Maps",url:"https://maps.google.com/?q=LX+Factory+Lisbon"}], notes:"5 min walk from Escala25. Creative hub — street art, independent shops, cafés, market stalls. Happy hour from ~2pm (€1.50 beers, €5 Aperol).", booked:false },
     { title:"Lunch together at LX Factory 🎉", type:"🍽️ Dinner", time:"13:00", location:"LX Factory, Alcântara", links:[{label:"Rio Maravilha",url:"https://maps.google.com/?q=Rio+Maravilha+LX+Factory+Lisbon"},{label:"1300 Taberna",url:"https://maps.google.com/?q=1300+Taberna+LX+Factory+Lisbon"}], notes:"EVERYONE together for first time! Options: 1300 Taberna (Portuguese, ~€25pp) · Cantina (wood-fired, classics since 1846) · Selllva (Mediterranean, terrace, happy hour) · Rio Maravilha (rooftop, river & bridge views — great for groups).", booked:false },
     { title:"🍺 Beer Tasting Tuk — Lisbon Tuk Tuk Tours", type:"🏄 Activity", time:"15:00", location:"Lisbon Tuk Tuk Tours · Rua São Sebastião da Pedra 53A", links:[{label:"Tour page",url:"https://www.lisbontuktuktours.com/en/programa/11/beer-tasting-tuk"},{label:"Email",url:"mailto:geral@lisbontuktuktours.pt"},{label:"View on Maps",url:"https://maps.google.com/?q=Rua+São+Sebastião+da+Pedra+53A+Lisbon"}], notes:"✅ BOOKED · Booking ref #76 · 6 passengers · 08 May 2026 · 15:00 · Language: English · Beer Tasting Tuk · 2h30 · Craft beer tastings + exclusive brewery visit · 2 tuk tuks · 📞 +351 213 918 090 · geral@lisbontuktuktours.pt", booked:true },
-    { title:"Group dinner — pick one & book ahead", type:"🍽️ Dinner", time:"20:00", location:"Bairro Alto", links:[{label:"A Nossa Casa ⭐4.8",url:"https://maps.google.com/?cid=13872759130300370656"},{label:"Lisboa à Noite ⭐4.5",url:"http://www.lisboanoite.com/"},{label:"Versículo d'O Faia ⭐4.7",url:"http://www.versiculo.pt/"}], notes:"⚠️ NEEDS BOOKING — all in Bairro Alto, walk straight into the crawl after.\n\n🥇 A Nossa Casa (Rua da Atalaia 31) · ⭐4.8 · 'Best meal I had in Lisbon' · Tasting-style, incredible pork & beef · Host Antonio recommends everything · 6:30–10:30pm · 📞 +351 21 342 0484\n\n🥈 Lisboa à Noite (Rua das Gáveas 69) · ⭐4.5 · 'There were 10 of us — all dishes outstanding' · Premium Portuguese seafood & meat · 6:30–11:30pm · 📞 +351 21 346 8557\n\n🥉 Versículo d'O Faia (Rua da Barroca 60A) · ⭐4.7 · Set menus, great octopus & lamb · Good value · 7pm–midnight · 📞 +351 963 999 678", booked:false },
-    { title:"🍻 Bairro Alto Crawl — 3 stops then Pink Street finale", type:"🍻 Drinks", time:"22:00", location:"Bairro Alto → Cais do Sodré", links:[{label:"Stop 1: Bar da Vera",url:"https://www.instagram.com/bardaverabyshortys/"},{label:"Stop 2: Jay'z Bar",url:"https://www.instagram.com/jayz_bar"},{label:"Stop 3: Jimmy's Bar",url:"https://maps.google.com/?cid=2101315264414116739"},{label:"Stop 4: Pensão Amor",url:"https://maps.google.com/?cid=9882671449491607982"},{label:"Stop 5: Spot Bairro Alto",url:"https://maps.google.com/?cid=14433836855413236586"}], notes:"All within a short walk — Bairro Alto bars then down to Cais do Sodré for the late finish.\n\n🍹 Stop 1 — Bar da Vera by SHORTYS (Rua da Rosa 154) · ⭐4.9 · Incredible shots, caipirinhas, passion fruit cocktails. Open till 3am.\n\n🎸 Stop 2 — Jay'z Bar (Rua da Atalaia 26) · ⭐5.0 · Live guitar, Pablo plays ANY song. Host Jay is legendary. Open till 2am.\n\n📺 Stop 3 — Jimmy's Bar #1 (Rua da Barroca 43) · ⭐4.9 · 80s MTV, cheap drinks, brilliant host Jimmy. Open till 3am.\n\n🏚️ Stop 4 — Pensão Amor (Rua Nova do Carvalho 38) · ⭐4.4 · LATE FINISH · Former brothel turned iconic bar on Pink Street · Multiple rooms, incredible character, burlesque/live shows most nights · Open till 4am Fri · 'One of the best bars with character I've ever been to.' Perfect stag energy.\n\n🎉 Stop 5 — Spot Bairro Alto (Rua da Atalaia 25) · ⭐4.3 · LATE FINISH · 'Visited for a mate's stag party — owner fantastic, DJing all night, great atmosphere.' Tech house / EDM. One reviewer came every night of their stag trip. Open till 3am. The last stop.", booked:false },
+    { title:"🍽️ Dinner — Faz Frio", type:"🍽️ Dinner", time:"20:00", location:"Rua Dom Pedro V 96, Príncipe Real", links:[{label:"fazfrio.pt",url:"https://www.fazfrio.pt"},{label:"Instagram",url:"https://www.instagram.com/fazfrio/"},{label:"View on Maps",url:"https://maps.google.com/?q=Faz+Frio+Rua+Dom+Pedro+V+96+Lisbon"}], notes:"⏳ ON WAITLIST for 8pm Fri 8 May · One of Lisbon's oldest restaurants (est. pre-1863) · Traditional Portuguese with modern twist · Private 'reservado' rooms, lively atmosphere · Famous for: tiger shrimp, pork cheeks, cod dishes, chocolate mousse, truffle mash · ~€20-30pp · No reservations normally — waitlist is the way in · 📞 +351 215 814 296 · 📧 fazfrio96@gmail.com · 2 min walk from hotel, perfect for rolling into the Bairro Alto crawl after.", booked:false },
+    { title:"🍻 Bairro Alto Crawl → Pink Street finale", type:"🍻 Drinks", time:"22:00", location:"Bairro Alto → Cais do Sodré", links:[{label:"Stop 1: Bar da Vera",url:"https://www.instagram.com/bardaverabyshortys/"},{label:"Stop 2: Jay'z Bar",url:"https://www.instagram.com/jayz_bar"},{label:"Stop 3: Jimmy's Bar",url:"https://maps.google.com/?cid=2101315264414116739"},{label:"Stop 4: Spot Bairro Alto",url:"https://maps.google.com/?cid=14433836855413236586"},{label:"Stop 5: Pensão Amor",url:"https://maps.google.com/?cid=9882671449491607982"}], notes:"Flow naturally downhill from Bairro Alto to Cais do Sodré.\n\n🍹 Stop 1 — Bar da Vera by SHORTYS (Rua da Rosa 154) · ⭐4.9 · Incredible shots, caipirinhas, passion fruit cocktails. Open till 3am.\n\n🎸 Stop 2 — Jay'z Bar (Rua da Atalaia 26) · ⭐5.0 · Live guitar, Pablo plays ANY song. Host Jay is legendary. Open till 2am.\n\n📺 Stop 3 — Jimmy's Bar #1 (Rua da Barroca 43) · ⭐4.9 · 80s MTV, cheap drinks, brilliant host Jimmy. Open till 3am.\n\n🎉 Stop 4 — Spot Bairro Alto (Rua da Atalaia 25) · ⭐4.3 · 30 seconds from Jimmy's. Tech house DJ, owner fantastic, great atmosphere. 'Visited for a stag — came every night.' Open till 3am.\n\n🏚️ Stop 5 — Pensão Amor (Rua Nova do Carvalho 38, Pink Street) · ⭐4.4 · LATE FINISH · 10 min walk downhill to Cais do Sodré. Former brothel, iconic bar, multiple rooms, live shows, open till 4am Fri. Perfect stag finale.", booked:false },
   ],
   "2026-05-09": [
     { title:"😴 Gentle start — late morning", type:"🛏️ Free Time", time:"10:00", location:"Flores Guest House", links:[], notes:"No rush. Recovery morning after Friday night. Brunch at Dear Breakfast (~10:30am) then head to Caparica.", booked:false },
     { title:"☕ Brunch — Dear Breakfast", type:"🍽️ Dinner", time:"10:30", location:"Dear Breakfast · Rua das Gaivotas 17, Santos", links:[{label:"View on Maps",url:"https://maps.google.com/?q=Dear+Breakfast+Lisbon+Santos"}], notes:"Rated #1 brunch in Lisbon. Eggs-focused, great pancakes, good coffee. Walk in — no reservations.", booked:false },
     { title:"🚗 Uber to Costa da Caparica", type:"🚌 Transfer", time:"12:00", location:"Lisbon → Costa da Caparica", links:[], notes:"~25–30 min, ~€20–25. Much closer than Cascais. Drop straight at the beach.", booked:false },
-    { title:"🏄 Surf lesson — Costa da Caparica", type:"🏄 Activity", time:"12:30", location:"Costa da Caparica beach", links:[{label:"Surf School Caparica",url:"https://surfschoolcostadacaparica.com"},{label:"Gecko Surf School",url:"https://geckosurfschool.com/en/"},{label:"Breakthrough Surf",url:"https://breakthroughsurfschool.com"}], notes:"⚠️ NEEDS BOOKING · ~2hrs · ~€50pp for group of 6 · All equipment included (board & wetsuit).\n\n🥇 Surf School Costa da Caparica — surfschoolcostadacaparica.com — private group lesson for 6, uncrowded beach, certified instructors, max 6pp per coach. Highly reviewed.\n🥈 Gecko Surf School — geckosurfschool.com — certified, all levels, great reviews.\n🥉 Breakthrough Surf School — breakthroughsurfschool.com — private lessons, changing rooms, secure storage, outdoor shower.", booked:false },
+    { title:"🏄 Surf lesson — Surf Wave Lisbon", type:"🏄 Activity", time:"11:45", location:"Costa da Caparica beach", links:[{label:"Surf Wave Lisbon",url:"https://surfwavelisbon.com"},{label:"View on Maps",url:"https://maps.google.com/?q=Surf+Wave+Lisbon+Costa+da+Caparica"}], notes:"✅ BOOKED · Private group lesson · 6 people · Arrive 11:45 · Lesson starts 12:00 · 1.5hrs · €210 total (€35pp) · Paid by Harry ✅ · All equipment included (board & wetsuit).", booked:true },
     { title:"🏐 Beach sports on the sand", type:"🏄 Activity", time:"12:00", location:"Costa da Caparica beach", links:[], notes:"Post-surf wind-down before lunch. Volleyball nets along the beach — informal games. Frisbee, football, whatever the group fancies. Free.", booked:false },
     { title:"🍽️ Lunch — Restaurante Praia do Rei", type:"🍽️ Dinner", time:"13:30", location:"Estrada das Matas Nacionais, Costa da Caparica", links:[{label:"Instagram",url:"https://www.instagram.com/restaurantepraiadorei/"},{label:"View on Maps",url:"https://maps.google.com/?q=Restaurante+Praia+do+Rei+Costa+da+Caparica"}], notes:"⚠️ Worth calling ahead for a group of 6 · Local institution since 1990 · Traditional Portuguese grilled fish over charcoal · Sea terrace · ⭐4.5 (428 reviews) · Great value, proper local lunch · Open Sat till 20:30.\n📞 +351 21 297 0038 / +351 965 696 182", booked:false },
     { title:"🏐 Beach sports + afternoon hang", type:"🏄 Activity", time:"15:00", location:"Costa da Caparica beach", links:[], notes:"Volleyball nets along the beach — informal games, no booking needed. Frisbee, football, whatever. Then settle in at one of the beach clubs nearby.", booked:false },
@@ -276,12 +276,16 @@ const INITIAL_ITINERARY = {
     { title:"Harry — last evening solo", type:"🍻 Drinks", time:"20:00", location:"Chiado / Alfama", links:[{label:"Chiado on Maps",url:"https://maps.google.com/?q=Chiado+Lisbon"}], notes:"Quieter final evening. Explore Chiado or Alfama.", booked:false },
   ],
   "2026-05-11": [
-    { title:"Checkout / luggage", type:"🛏️ Free Time", time:"09:00", location:"Flores Guest House", links:[{label:"Call hotel",url:"tel:+351213461884"},{label:"Email hotel",url:"mailto:welcome@floresguesthouse.com"}], notes:"⚠️ Room booked until Sun 10 May — arrange extension or luggage storage with hotel.", booked:false },
+    { title:"Checkout — Flores Guest House", type:"🛏️ Free Time", time:"09:00", location:"Flores Guest House", links:[{label:"Call hotel",url:"tel:+351213461884"},{label:"Email hotel",url:"mailto:welcome@floresguesthouse.com"}], notes:"Checkout Mon 11 May. Extended stay confirmed.", booked:true },
     { title:"Harry departs — TAP TP1352 LIS→LHR", type:"✈️ Travel", time:"09:00", location:"Lisbon Airport (LIS) Terminal 1", links:[{label:"Track TP1352",url:"https://www.flightradar24.com/data/flights/tp1352"}], notes:"TP1352 dep 10:00, arr LHR T2 12:45. Last check-in 09:00 — leave hotel by 08:00. Then TP6919 LHR T4→AUH dep 14:45.", booked:true },
   ],
 };
-const ROOM1_WED_HARRY = 133;       // Harry's solo Wednesday night (room €125 + city tax €8)
-const ROOM1_THU_SUN_TOTAL = 399;   // Thu–Sun Room 1 total (€375 room + €24 city tax)
+// Room 1: €590 total (€266 deposit + €324 balance, paid in full by Harry)
+// Wed 6 May: Harry alone (~€118)
+// Thu-Sun: Harry & Benjie (3 nights ~€354 split)
+// Sun 10 May: Harry alone (~€118, Harry covers this night himself)
+const ROOM1_WED_HARRY = 118;
+const ROOM1_THU_SUN_TOTAL = 354;
 
 const ALL_NAMES = ["Harry","Benjie","Laurie","Amon","Paul","John"]; // display order
 const PAYERS = ["Harry","Laurie","Amon","Paul","John"]; // Benjie always €0
@@ -293,15 +297,16 @@ const SUN_PRESENT = ["Harry","Benjie","Laurie","Amon","Paul","John"];
 // For hotel: use perPersonOverride for custom logic
 const EXPENSES = [
   // Hotel — correctly separated
-  { label:"Room 1 — Wed night (Harry solo)", category:"🏨 Hotel", total:ROOM1_WED_HARRY, present:["Harry"], note:"Harry's solo night Wed 6 May before Benjie arrives. €125 room + €8 city tax." },
-  { label:"Room 1 — Thu–Sun (Harry & Benjie, 3 nights)", category:"🏨 Hotel", total:ROOM1_THU_SUN_TOTAL, present:["Harry","Benjie","Laurie","Amon","Paul","John"], note:"Harry pays his half (€199.50). Benjie's half (€199.50) split across all 6 payers." },
+  { label:"Room 1 — Wed night (Harry solo)", category:"🏨 Hotel", total:118, present:["Harry"], note:"Harry solo Wed 6 May before Benjie arrives. Paid by Harry." },
+  { label:"Room 1 — Thu–Sun (Harry & Benjie, 3 nights)", category:"🏨 Hotel", total:ROOM1_THU_SUN_TOTAL, present:["Harry","Benjie","Laurie","Amon","Paul","John"], note:"Harry pays his half. Benjie's half split across all 5 payers." },
+  { label:"Room 1 — Sun night (Harry solo)", category:"🏨 Hotel", total:118, present:["Harry"], note:"Harry solo Sun 10 May after group departs. Paid by Harry." },
   { label:"Room 2 — Laurie & Amon (Thu–Sun, 3 nights)", category:"🏨 Hotel", total:369, present:FRI_PRESENT, note:"Laurie & Amon pay their share. Benjie's notional share split across all 6." },
   { label:"Room 3 — Paul & John (Fri–Sun, 2 nights)", category:"🏨 Hotel", total:246, present:FRI_PRESENT, note:"Paul & John pay their share. Benjie's notional share split across all 6." },
   // Activities
   { label:"Bar do Binho — port tasting & lunch", category:"🍷 Sintra", total:120, present:["Harry","Benjie"], note:"~€60pp est · Harry & Benjie only · Harry covers Benjie's share" },
   { label:"Escala25 climbing (climbers only)", category:"🧗 Climbing", ppCost:12, present:["Harry","Benjie","Laurie","Amon"], note:"~€12pp · Benjie share split across 3 payers attending" },
   { label:"Beer Tasting Tuk tour", category:"🍺 Fri Activity", ppCost:null, present:FRI_PRESENT, note:"Price TBC · Ref #76 · Lisbon Tuk Tuk Tours · 2h30 · all 6" },
-  { label:"Surf lesson — Cascais/Guincho", category:"🏄 Surf", ppCost:45, present:FRI_PRESENT, note:"~€45pp est · 2hrs · all 6 · Salty Souls or Moana Surf School" },
+  { label:"Surf lesson — Surf Wave Lisbon", category:"🏄 Surf", total:210, present:FRI_PRESENT, note:"€210 total · €35pp · 1.5hrs · ✅ Paid by Harry" },
   { label:"Beach club — sunbeds & drinks (Cascais)", category:"🏄 Surf", ppCost:30, present:FRI_PRESENT, note:"~€30pp est for sunbed + afternoon drinks · Rainha or Panorama Beach Club" },
 
   { label:"Fri group dinner (Bairro Alto)", category:"🍽️ Dinners", ppCost:45, present:FRI_PRESENT, note:"~€45pp est · A Nossa Casa or similar" },
@@ -326,10 +331,6 @@ function calcExp(exp) {
   return { ...exp, perPerson, totalEst };
 }
 
-
-
-// ── HELPERS ──────────────────────────────────────────────────────────────────
-
 function e(tag, attrs, ...children) {
   const el = document.createElement(tag);
   if (attrs) Object.entries(attrs).forEach(([k,v]) => {
@@ -345,9 +346,7 @@ function e(tag, attrs, ...children) {
   return el;
 }
 
-function tag(cls, text) {
-  return e('span', {className: 'tag ' + cls}, text);
-}
+function tag(cls, text) { return e('span', {className:'tag '+cls}, text); }
 
 function linkify(text) {
   if (!text) return document.createTextNode('');
@@ -372,8 +371,6 @@ function linkify(text) {
   return div;
 }
 
-// ── TABS ──────────────────────────────────────────────────────────────────────
-
 function showTab(id) {
   document.querySelectorAll('.tab-btn').forEach((b,i) => {
     const ids = ['itin','contacts','hotel','flights','crew','info'];
@@ -382,334 +379,219 @@ function showTab(id) {
   document.querySelectorAll('[id^="tab-"]').forEach(el => el.classList.add('hidden'));
   const target = document.getElementById('tab-' + id);
   target.classList.remove('hidden');
-  if (!target.dataset.rendered) {
-    renders[id]();
-    target.dataset.rendered = '1';
-  }
+  if (!target.dataset.rendered) { renders[id](); target.dataset.rendered = '1'; }
 }
 
-// ── ITINERARY ────────────────────────────────────────────────────────────────
-
 function renderItin() {
-  const container = document.getElementById('tab-itin');
-  container.appendChild(e('h2', {style:{fontFamily:"Cormorant Garamond,serif",fontSize:'24px',marginBottom:'4px'}}, 'Itinerary'));
-  container.appendChild(e('div', {className:'warning-banner'}, '⚠️ ', e('b',{},'Still to book:'), ' Escala25 climbing · Surf lesson (Sat) · Group dinners Fri & Sat · VIP late night Sat'));
-
+  const con = document.getElementById('tab-itin');
+  con.appendChild(e('h2', {style:{fontFamily:"Cormorant Garamond,serif",fontSize:'24px',marginBottom:'4px'}}, 'Itinerary'));
+  con.appendChild(e('div', {className:'warning-banner'}, e('b',{},'Still to book:'), ' Escala25 climbing - Group dinners Fri & Sat - VIP late night Sat'));
   DAYS.forEach(day => {
     const evs = INITIAL_ITINERARY[day.date] || [];
     const booked = evs.filter(ev => ev.booked).length;
-    
     const dayCard = e('div', {className:'card', style:{marginBottom:'14px'}});
     const hdr = e('div', {className:'card-header'});
     hdr.appendChild(e('div', {style:{display:'flex',gap:'10px',alignItems:'center',flexWrap:'wrap'}},
       e('span', {style:{fontFamily:"Cormorant Garamond,serif",fontSize:'18px',fontWeight:'700'}}, day.label),
       e('span', {style:{fontSize:'10px',color:'var(--green-mid)',letterSpacing:'1px',textTransform:'uppercase'}}, day.theme)
     ));
-    hdr.appendChild(e('span', {style:{fontSize:'11px',color:'var(--text-soft)'}}, booked + '/' + evs.length + ' booked'));
+    hdr.appendChild(e('span', {style:{fontSize:'11px',color:'var(--text-soft)'}}, booked+'/'+evs.length+' booked'));
     dayCard.appendChild(hdr);
-
     evs.forEach(ev => {
-      const needsBooking = !ev.booked && ev.notes && ev.notes.includes('NEEDS BOOKING');
-      const evEl = e('div', {className:'event' + (ev.booked ? ' booked' : needsBooking ? ' needs-booking' : '')});
+      const nb = !ev.booked && ev.notes && ev.notes.includes('NEEDS BOOKING');
+      const evEl = e('div', {className:'event'+(ev.booked?' booked':nb?' needs-booking':'')});
       evEl.appendChild(e('div', {className:'event-icon'}, ev.type.split(' ')[0]));
       const body = e('div', {className:'event-body'});
-      
-      const titleRow = e('div', {className:'event-title'});
-      titleRow.appendChild(document.createTextNode(ev.title));
-      if (ev.time) titleRow.appendChild(e('span', {className:'event-time'}, ev.time));
-      if (ev.booked) titleRow.appendChild(tag('tag-green', '✓ Booked'));
-      else if (needsBooking) titleRow.appendChild(tag('tag-red', '⚠️ Book Now'));
-      else titleRow.appendChild(tag('tag-grey', 'TBC'));
-      body.appendChild(titleRow);
-      
-      if (ev.location) body.appendChild(e('div', {className:'event-location'}, '📍 ' + ev.location));
-      if (ev.notes) {
-        const notes = e('div', {className:'event-notes'});
-        notes.appendChild(linkify(ev.notes));
-        body.appendChild(notes);
-      }
+      const tr = e('div', {className:'event-title'});
+      tr.appendChild(document.createTextNode(ev.title));
+      if (ev.time) tr.appendChild(e('span', {className:'event-time'}, ev.time));
+      if (ev.booked) tr.appendChild(tag('tag-green','Booked'));
+      else if (nb) tr.appendChild(tag('tag-red','Book Now'));
+      else tr.appendChild(tag('tag-grey','TBC'));
+      body.appendChild(tr);
+      if (ev.location) body.appendChild(e('div', {className:'event-location'}, ev.location));
+      if (ev.notes) { const n = e('div', {className:'event-notes'}); n.appendChild(linkify(ev.notes)); body.appendChild(n); }
       if (ev.links && ev.links.length) {
         const chips = e('div', {className:'link-chips'});
-        ev.links.forEach(l => {
-          const a = e('a', {className:'link-chip', href:l.url, target:'_blank'}, l.label + ' ↗');
-          chips.appendChild(a);
-        });
+        ev.links.forEach(l => chips.appendChild(e('a', {className:'link-chip', href:l.url, target:'_blank'}, l.label)));
         body.appendChild(chips);
       }
       evEl.appendChild(body);
       dayCard.appendChild(evEl);
     });
-    container.appendChild(dayCard);
+    con.appendChild(dayCard);
   });
 }
-
-// ── CONTACTS ─────────────────────────────────────────────────────────────────
 
 function renderContacts() {
-  const container = document.getElementById('tab-contacts');
-  container.appendChild(e('h2', {style:{fontFamily:"Cormorant Garamond,serif",fontSize:'24px',marginBottom:'4px'}}, 'Contacts'));
-  container.appendChild(e('p', {style:{fontSize:'13px',color:'var(--text-soft)',marginBottom:'18px'}}, 'Tap to call, email or open in maps.'));
-
+  const con = document.getElementById('tab-contacts');
+  con.appendChild(e('h2', {style:{fontFamily:"Cormorant Garamond,serif",fontSize:'24px',marginBottom:'4px'}}, 'Contacts'));
+  con.appendChild(e('p', {style:{fontSize:'13px',color:'var(--text-soft)',marginBottom:'18px'}}, 'Tap to call, email or open in maps.'));
   const categories = [...new Set(CONTACTS.map(c => c.category))];
   categories.forEach(cat => {
-    container.appendChild(e('div', {className:'section-label', style:{marginTop:'16px'}}, cat));
+    con.appendChild(e('div', {className:'section-label', style:{marginTop:'16px'}}, cat));
     CONTACTS.filter(c => c.category === cat).forEach(c => {
-      const card = e('div', {className:'contact-card' + (c.booked ? ' booked' : '')});
+      const card = e('div', {className:'contact-card'+(c.booked?' booked':'')});
       card.appendChild(e('div', {style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'6px'}},
-        e('div', {},
-          e('div', {className:'contact-name'}, c.name),
-          e('div', {className:'contact-role'}, c.role)
-        ),
-        c.booked ? tag('tag-green','✓ Confirmed') : tag('tag-red','⚠️ Book Now')
+        e('div', {}, e('div', {className:'contact-name'}, c.name), e('div', {className:'contact-role'}, c.role)),
+        c.booked ? tag('tag-green','Confirmed') : tag('tag-red','Book Now')
       ));
-      if (c.address) card.appendChild(e('div', {className:'contact-address'}, '📍 ' + c.address));
-      const links = e('div', {className:'contact-links'});
-      if (c.phone) links.appendChild(e('a', {className:'contact-link phone', href:'tel:'+c.phone}, '📞 ' + c.phone));
-      if (c.email) links.appendChild(e('a', {className:'contact-link email', href:'mailto:'+c.email}, '📧 ' + c.email));
-      if (c.web) links.appendChild(e('a', {className:'contact-link web', href:c.web, target:'_blank'}, '🔗 Website ↗'));
-      if (c.maps) links.appendChild(e('a', {className:'contact-link maps', href:c.maps, target:'_blank'}, '🗺 Maps ↗'));
-      card.appendChild(links);
+      if (c.address) card.appendChild(e('div', {className:'contact-address'}, c.address));
+      const lnks = e('div', {className:'contact-links'});
+      if (c.phone) lnks.appendChild(e('a', {className:'contact-link phone', href:'tel:'+c.phone}, c.phone));
+      if (c.email) lnks.appendChild(e('a', {className:'contact-link email', href:'mailto:'+c.email}, c.email));
+      if (c.web) lnks.appendChild(e('a', {className:'contact-link web', href:c.web, target:'_blank'}, 'Website'));
+      if (c.maps) lnks.appendChild(e('a', {className:'contact-link maps', href:c.maps, target:'_blank'}, 'Maps'));
+      card.appendChild(lnks);
       if (c.note) card.appendChild(e('div', {className:'contact-note'}, c.note));
-      container.appendChild(card);
+      con.appendChild(card);
     });
   });
 }
-
-// ── HOTEL ────────────────────────────────────────────────────────────────────
 
 function renderHotel() {
-  const container = document.getElementById('tab-hotel');
-  container.appendChild(e('h2', {style:{fontFamily:"Cormorant Garamond,serif",fontSize:'24px',marginBottom:'6px'}}, 'Flores Guest House'));
-
-  const links = e('div', {style:{display:'flex',gap:'8px',flexWrap:'wrap',marginBottom:'14px'}});
-  [
-    {cls:'web', href:'https://www.floresguesthouse.com', label:'🔗 floresguesthouse.com ↗'},
-    {cls:'maps', href:'https://maps.google.com/?q=Rua+de+São+Marçal+30+Lisbon', label:'🗺 Maps ↗'},
-    {cls:'phone', href:'tel:+351213461884', label:'📞 +351 213 461 884'},
-    {cls:'email', href:'mailto:welcome@floresguesthouse.com', label:'📧 Email hotel'},
-  ].forEach(l => links.appendChild(e('a', {className:'contact-link '+l.cls, href:l.href, target: l.href.startsWith('http') ? '_blank':undefined}, l.label)));
-  container.appendChild(links);
-  container.appendChild(e('div', {style:{background:'var(--red-light)',border:'1px solid #cc000033',borderRadius:'10px',padding:'10px 14px',fontSize:'12px',color:'var(--red)',marginBottom:'10px'}}, "⚠️ Harry's checkout is Sun 10 May but he leaves Mon 11 May — arrange extension or luggage storage with hotel."));
-  container.appendChild(e('div', {style:{background:'var(--green-light)',border:'1px solid #00660033',borderRadius:'10px',padding:'10px 14px',fontSize:'12px',color:'var(--green)',marginBottom:'14px'}}, '✅ All deposits paid. Balance due at property on check-in.'));
-
-  const totalHotel = ROOMS.reduce((s,r) => s+r.total, 0);
-  const totalDeposit = ROOMS.reduce((s,r) => s+r.deposit, 0);
-  const summaryGrid = e('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(130px,1fr))',gap:'10px',marginBottom:'16px',background:'var(--surface)',border:'1px solid var(--border)',borderRadius:'12px',padding:'14px'}});
-  [
-    {l:'Total Cost', v:'€'+totalHotel},
-    {l:'Deposits Paid', v:'€'+Math.round(totalDeposit)},
-    {l:'Balance at Property', v:'€'+Math.round(totalHotel-totalDeposit)},
-    {l:'Per Person (est)', v:'~€'+Math.round(totalHotel/6)},
-  ].forEach(({l,v}) => {
-    summaryGrid.appendChild(e('div', {},
-      e('div', {style:{fontSize:'10px',color:'var(--text-soft)',letterSpacing:'1px',textTransform:'uppercase',marginBottom:'2px'}}, l),
-      e('div', {style:{fontFamily:"Cormorant Garamond,serif",fontSize:'20px',color:'var(--gold)',fontWeight:'700'}}, v)
-    ));
+  const con = document.getElementById('tab-hotel');
+  con.appendChild(e('h2', {style:{fontFamily:"Cormorant Garamond,serif",fontSize:'24px',marginBottom:'6px'}}, 'Flores Guest House'));
+  const lnks = e('div', {style:{display:'flex',gap:'8px',flexWrap:'wrap',marginBottom:'14px'}});
+  [['web','https://www.floresguesthouse.com','Website'],['maps','https://maps.google.com/?q=Flores+Guest+House+Lisbon','Maps'],['phone','tel:+351213461884','+351 213 461 884'],['email','mailto:welcome@floresguesthouse.com','Email hotel']].forEach(([cls,href,label]) => {
+    lnks.appendChild(e('a', {className:'contact-link '+cls, href:href, target:href.startsWith('http')?'_blank':undefined}, label));
   });
-  container.appendChild(summaryGrid);
-
+  con.appendChild(lnks);
+  con.appendChild(e('div', {style:{background:'var(--green-light)',border:'1px solid #00660033',borderRadius:'10px',padding:'10px 14px',fontSize:'12px',color:'var(--green)',marginBottom:'10px'}}, "Extended stay confirmed — Harry checks out Mon 11 May."));
+  con.appendChild(e('div', {style:{background:'var(--green-light)',border:'1px solid #00660033',borderRadius:'10px',padding:'10px 14px',fontSize:'12px',color:'var(--green)',marginBottom:'14px'}}, 'All deposits paid. Balance due at property on check-in.'));
+  const th = ROOMS.reduce((s,r)=>s+r.total,0), tdep = ROOMS.reduce((s,r)=>s+r.deposit,0);
+  const sg = e('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(130px,1fr))',gap:'10px',marginBottom:'16px',background:'var(--surface)',border:'1px solid var(--border)',borderRadius:'12px',padding:'14px'}});
+  [['Total Cost','€'+th],['Deposits Paid','€'+Math.round(tdep)],['Balance','€'+Math.round(th-tdep)],['Per Person','~€'+Math.round(th/6)]].forEach(([l,v])=>{
+    sg.appendChild(e('div',{},e('div',{style:{fontSize:'10px',color:'var(--text-soft)',letterSpacing:'1px',textTransform:'uppercase',marginBottom:'2px'}},l),e('div',{style:{fontFamily:"Cormorant Garamond,serif",fontSize:'20px',color:'var(--gold)',fontWeight:'700'}},v)));
+  });
+  con.appendChild(sg);
   ROOMS.forEach(r => {
-    const card = e('div', {className:'room-card'});
-    const hdr = e('div', {className:'room-header'});
-    hdr.appendChild(e('div', {},
-      e('div', {className:'room-title'}, 'Room ' + r.id + ' — ' + r.guests.join(' & ')),
-      e('div', {className:'room-type'}, '🛏 ' + r.type + ' · ' + r.nights + ' nights')
-    ));
-    hdr.appendChild(e('div', {style:{textAlign:'right'}},
-      e('div', {className:'room-total'}, '€' + r.total),
-      e('div', {style:{fontSize:'11px',color:'var(--text-soft)'}}, 'inc. city tax')
-    ));
-    card.appendChild(hdr);
-    const grid = e('div', {className:'room-grid'});
-    [
-      {l:'Booking ID', v:r.bookingId, cls:'room-id'},
-      {l:'Check-in', v:r.checkIn},
-      {l:'Check-out', v:r.checkOut},
-      {l:'Deposit', v:r.depositDue},
-    ].forEach(({l,v,cls}) => {
-      grid.appendChild(e('div', {},
-        e('div', {className:'room-field-label'}, l),
-        e('div', {className:'room-field-value '+(cls||'')}, v)
-      ));
+    const rc = e('div',{className:'room-card'});
+    const rh = e('div',{className:'room-header'});
+    rh.appendChild(e('div',{},e('div',{className:'room-title'},'Room '+r.id+' — '+r.guests.join(' & ')),e('div',{className:'room-type'},r.type+' · '+r.nights+' nights')));
+    rh.appendChild(e('div',{style:{textAlign:'right'}},e('div',{className:'room-total'},'€'+r.total),e('div',{style:{fontSize:'11px',color:'var(--text-soft)'}},'inc. city tax')));
+    rc.appendChild(rh);
+    const grid = e('div',{className:'room-grid'});
+    [['Booking ID',r.bookingId,'room-id'],['Check-in',r.checkIn,''],['Check-out',r.checkOut,''],['Deposit',r.depositDue,'']].forEach(([l,v,cls])=>{
+      grid.appendChild(e('div',{},e('div',{className:'room-field-label'},l),e('div',{className:'room-field-value '+(cls||'')},v)));
     });
-    card.appendChild(grid);
-    if (r.warning) card.appendChild(e('div', {className:'room-warning'}, r.warning));
-    container.appendChild(card);
+    rc.appendChild(grid);
+    if (r.warning) rc.appendChild(e('div',{className:'room-warning'},r.warning));
+    con.appendChild(rc);
   });
 }
-
-// ── FLIGHTS ──────────────────────────────────────────────────────────────────
 
 function renderFlights() {
-  const container = document.getElementById('tab-flights');
-  container.appendChild(e('h2', {style:{fontFamily:"Cormorant Garamond,serif",fontSize:'24px',marginBottom:'4px'}}, 'Flights'));
-  container.appendChild(e('p', {style:{fontSize:'13px',color:'var(--text-soft)',marginBottom:'18px'}}, 'Tap flight number to track live on FlightRadar24.'));
-
-  [
-    {label:'✈️ ARRIVALS', data: FLIGHTS_IN},
-    {label:'🛫 DEPARTURES', data: FLIGHTS_OUT},
-  ].forEach(({label, data}) => {
-    container.appendChild(e('div', {className:'section-label', style:{marginTop:'16px'}}, label));
+  const con = document.getElementById('tab-flights');
+  con.appendChild(e('h2',{style:{fontFamily:"Cormorant Garamond,serif",fontSize:'24px',marginBottom:'4px'}},'Flights'));
+  con.appendChild(e('p',{style:{fontSize:'13px',color:'var(--text-soft)',marginBottom:'18px'}},'Tap flight number to track live on FlightRadar24.'));
+  [['ARRIVALS',FLIGHTS_IN],['DEPARTURES',FLIGHTS_OUT]].forEach(([label,data]) => {
+    con.appendChild(e('div',{className:'section-label',style:{marginTop:'16px'}},label));
     data.forEach(f => {
-      const row = e('div', {className:'flight-row' + (f.status==='confirmed'?' confirmed':'')});
-      const info = e('div', {style:{minWidth:'120px',flexShrink:'0'}});
-      info.appendChild(e('div', {className:'flight-name'}, f.name));
-      info.appendChild(e('div', {className:'flight-time'}, f.datetime));
-      if (f.note) info.appendChild(e('div', {style:{fontSize:'11px',color:'var(--text-soft)',fontStyle:'italic'}}, f.note));
+      const row = e('div',{className:'flight-row'+(f.status==='confirmed'?' confirmed':'')});
+      const info = e('div',{style:{minWidth:'120px',flexShrink:'0'}});
+      info.appendChild(e('div',{className:'flight-name'},f.name));
+      info.appendChild(e('div',{className:'flight-time'},f.datetime));
+      if (f.note) info.appendChild(e('div',{style:{fontSize:'11px',color:'var(--text-soft)',fontStyle:'italic'}},f.note));
       row.appendChild(info);
-      const right = e('div', {style:{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}});
-      const flightUrl = 'https://www.flightradar24.com/data/flights/' + f.flight.toLowerCase().replace(/\s/g,'');
-      right.appendChild(e('a', {className:'flight-num', href:flightUrl, target:'_blank'}, f.flight + ' ↗'));
-      right.appendChild(e('span', {className:'flight-route'}, f.route));
-      right.appendChild(f.status==='confirmed' ? tag('tag-green','✓') : tag('tag-grey','TBC'));
+      const right = e('div',{style:{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}});
+      right.appendChild(e('a',{className:'flight-num',href:'https://www.flightradar24.com/data/flights/'+f.flight.toLowerCase().replace(/\s/g,''),target:'_blank'},f.flight));
+      right.appendChild(e('span',{className:'flight-route'},f.route));
+      right.appendChild(f.status==='confirmed'?tag('tag-green','Confirmed'):tag('tag-grey','TBC'));
       row.appendChild(right);
-      container.appendChild(row);
+      con.appendChild(row);
     });
   });
 }
 
-// ── CREW ─────────────────────────────────────────────────────────────────────
-
 function renderCrew() {
-  const container = document.getElementById('tab-crew');
-  container.appendChild(e('h2', {style:{fontFamily:"Cormorant Garamond,serif",fontSize:'24px',marginBottom:'14px'}}, 'The Crew'));
-  
-  const rIcon = {groom:'💍',organiser:'🗂️',guest:'🙋'};
+  const con = document.getElementById('tab-crew');
+  con.appendChild(e('h2',{style:{fontFamily:"Cormorant Garamond,serif",fontSize:'24px',marginBottom:'14px'}},'The Crew'));
   const rLabel = {groom:'GROOM',organiser:'ORGANISER'};
-
   CREW.forEach(p => {
-    const card = e('div', {className:'crew-card' + (p.role==='groom'?' groom':'')});
-    const row = e('div', {style:{display:'flex',gap:'10px',alignItems:'flex-start',flexWrap:'wrap'}});
-    row.appendChild(e('div', {style:{fontSize:'20px',width:'32px',textAlign:'center',flexShrink:'0',marginTop:'2px'}}, rIcon[p.role]||'🙋'));
-    const body = e('div', {style:{flex:'1',minWidth:'150px'}});
-    const nameRow = e('div', {style:{display:'flex',flexWrap:'wrap',gap:'6px',alignItems:'center',marginBottom:'4px'}});
-    nameRow.appendChild(e('span', {className:'crew-name'}, p.name));
-    if (rLabel[p.role]) nameRow.appendChild(tag('tag-gold', rLabel[p.role]));
-    nameRow.appendChild(p.confirmed ? tag('tag-green','✓ Confirmed') : tag('tag-grey','Pending'));
-    body.appendChild(nameRow);
-    if (p.arrival) body.appendChild(e('div', {style:{fontSize:'12px',color:'var(--text-soft)'}}, '🛬 Arrives: ' + p.arrival));
-    if (p.departure) body.appendChild(e('div', {style:{fontSize:'12px',color:'var(--text-soft)'}}, '🛫 Departs: ' + p.departure));
-    if (p.flightIn && p.flightIn.flight !== 'TBC') {
-      body.appendChild(e('div', {className:'crew-flight'}, '✈️ In: ' + p.flightIn.flight + ' · ' + p.flightIn.from + '→' + p.flightIn.to + ' · dep ' + p.flightIn.dep + ' arr ' + p.flightIn.arr));
-    }
-    if (p.flightOut && p.flightOut.flight !== 'TBC') {
-      body.appendChild(e('div', {className:'crew-flight', style:{marginTop:'4px'}}, '🛫 Out: ' + p.flightOut.flight + ' · ' + p.flightOut.from + '→' + p.flightOut.to + ' · dep ' + p.flightOut.dep));
-    }
-    if (p.notes) body.appendChild(e('div', {style:{fontSize:'11px',color:'var(--text-soft)',marginTop:'4px',fontStyle:'italic'}}, p.notes));
+    const card = e('div',{className:'crew-card'+(p.role==='groom'?' groom':'')});
+    const row = e('div',{style:{display:'flex',gap:'10px',alignItems:'flex-start',flexWrap:'wrap'}});
+    const body = e('div',{style:{flex:'1',minWidth:'150px'}});
+    const nr = e('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',alignItems:'center',marginBottom:'4px'}});
+    nr.appendChild(e('span',{className:'crew-name'},p.name));
+    if (rLabel[p.role]) nr.appendChild(tag('tag-gold',rLabel[p.role]));
+    nr.appendChild(p.confirmed?tag('tag-green','Confirmed'):tag('tag-grey','Pending'));
+    body.appendChild(nr);
+    if (p.arrival) body.appendChild(e('div',{style:{fontSize:'12px',color:'var(--text-soft)'}},'Arrives: '+p.arrival));
+    if (p.departure) body.appendChild(e('div',{style:{fontSize:'12px',color:'var(--text-soft)'}},'Departs: '+p.departure));
+    if (p.flightIn && p.flightIn.flight !== 'TBC') body.appendChild(e('div',{className:'crew-flight'},'In: '+p.flightIn.flight+' '+p.flightIn.from+'->'+p.flightIn.to+' dep '+p.flightIn.dep+' arr '+p.flightIn.arr));
+    if (p.flightOut && p.flightOut.flight !== 'TBC') body.appendChild(e('div',{className:'crew-flight',style:{marginTop:'4px'}},'Out: '+p.flightOut.flight+' '+p.flightOut.from+'->'+p.flightOut.to+' dep '+p.flightOut.dep));
+    if (p.notes) body.appendChild(e('div',{style:{fontSize:'11px',color:'var(--text-soft)',marginTop:'4px',fontStyle:'italic'}},p.notes));
     row.appendChild(body);
     card.appendChild(row);
-    container.appendChild(card);
+    con.appendChild(card);
   });
 }
 
-// ── INFO & BUDGET ────────────────────────────────────────────────────────────
-
 function renderInfo() {
-  const container = document.getElementById('tab-info');
-  container.appendChild(e('h2', {style:{fontFamily:"Cormorant Garamond,serif",fontSize:'24px',marginBottom:'4px'}}, 'Info & Budget'));
-  container.appendChild(e('p', {style:{fontSize:'13px',color:'var(--text-soft)',marginBottom:'18px'}}, 'Per-person costs · Benjie pays nothing · estimates only'));
-
-  const infoGrid = e('div', {className:'info-grid'});
-  [
-    {icon:'🌡️', title:'Weather', text:'May: 18-24°C, sunny. Light jacket evenings.'},
-    {icon:'💶', title:'Currency', text:'Euro (€). Cards everywhere. ATMs plentiful.'},
-    {icon:'🚕', title:'Transport', text:'Uber/Bolt cheap. Airport to hotel ~€20.'},
-    {icon:'🏨', title:'Hotel', text:'Contact Flores GH 48hrs before. No lift!'},
-    {icon:'⏰', title:'Time Zone', text:'WET (UTC+1 in May) = same as UK/BST.'},
-    {icon:'🚨', title:'Emergency', text:'112 · UK Embassy: +351 21 392 4000'},
-  ].forEach(c => {
-    const card = e('div', {className:'info-card'});
-    card.appendChild(e('div', {className:'info-card-icon'}, c.icon));
-    card.appendChild(e('div', {className:'info-card-title'}, c.title));
-    card.appendChild(e('div', {className:'info-card-text'}, c.text));
-    infoGrid.appendChild(card);
+  const con = document.getElementById('tab-info');
+  con.appendChild(e('h2',{style:{fontFamily:"Cormorant Garamond,serif",fontSize:'24px',marginBottom:'4px'}},'Info & Budget'));
+  con.appendChild(e('p',{style:{fontSize:'13px',color:'var(--text-soft)',marginBottom:'18px'}},'Per-person costs - Benjie pays nothing - estimates only'));
+  const ig = e('div',{className:'info-grid'});
+  [['Weather','May: 18-24C, sunny. Light jacket evenings.'],['Currency','Euro. Cards everywhere. ATMs plentiful.'],['Transport','Uber/Bolt cheap. Airport to hotel ~20 mins.'],['Hotel','Contact Flores GH 48hrs before. No lift!'],['Time Zone','Same as UK/BST. No jet lag!'],['Emergency','112 - UK Embassy: +351 21 392 4000']].forEach(([title,text]) => {
+    const card = e('div',{className:'info-card'});
+    card.appendChild(e('div',{className:'info-card-title'},title));
+    card.appendChild(e('div',{className:'info-card-text'},text));
+    ig.appendChild(card);
   });
-  container.appendChild(infoGrid);
-
-  // Budget per person
+  con.appendChild(ig);
   const costs = EXPENSES.map(calcExp);
   const totals = {};
   ALL_NAMES.forEach(n => { totals[n] = costs.reduce((s,ex) => s+(ex.perPerson[n]||0), 0); });
-
-  container.appendChild(e('div', {style:{fontSize:'11px',color:'var(--green)',fontWeight:'700',letterSpacing:'1px',textTransform:'uppercase',marginBottom:'10px'}}, '💶 Estimated Total Per Person'));
-  const summGrid = e('div', {className:'summary-grid'});
+  const sg = e('div',{className:'summary-grid'});
   ALL_NAMES.forEach(name => {
-    const isBenjie = name === 'Benjie';
-    const card = e('div', {className:'summary-card' + (isBenjie?' benjie':'')});
-    card.appendChild(e('div', {className:'summary-label'+(isBenjie?' benjie':'')}, isBenjie ? '💍 Benjie' : name.split(' ')[0]));
-    card.appendChild(e('div', {className:'summary-value'+(isBenjie?' benjie':'')}, isBenjie ? '€0' : '~€'+Math.round(totals[name])));
-    card.appendChild(e('div', {className:'summary-sub'}, isBenjie ? 'Groom goes free 🎉' : 'estimated'));
-    summGrid.appendChild(card);
+    const isB = name === 'Benjie';
+    const card = e('div',{className:'summary-card'+(isB?' benjie':'')});
+    card.appendChild(e('div',{className:'summary-label'+(isB?' benjie':'')},isB?'Benjie (Groom)':name.split(' ')[0]));
+    card.appendChild(e('div',{className:'summary-value'+(isB?' benjie':'')},isB?'€0':'~€'+Math.round(totals[name])));
+    card.appendChild(e('div',{className:'summary-sub'},isB?'Groom goes free':'estimated'));
+    sg.appendChild(card);
   });
-  container.appendChild(summGrid);
-
-  // Breakdown by category
+  con.appendChild(sg);
   const categories = [...new Set(EXPENSES.map(ex => ex.category))];
   categories.forEach(cat => {
-    const card = e('div', {className:'card', style:{marginBottom:'12px', overflowX:'auto'}});
-    const hdr = e('div', {style:{background:'var(--green-light)',padding:'10px 16px',borderBottom:'1px solid var(--border)'}});
-    hdr.appendChild(e('span', {style:{fontFamily:"Cormorant Garamond,serif",fontSize:'17px',fontWeight:'700'}}, cat));
+    const card = e('div',{className:'card',style:{marginBottom:'12px',overflowX:'auto'}});
+    const hdr = e('div',{style:{background:'var(--green-light)',padding:'10px 16px',borderBottom:'1px solid var(--border)'}});
+    hdr.appendChild(e('span',{style:{fontFamily:"Cormorant Garamond,serif",fontSize:'17px',fontWeight:'700'}},cat));
     card.appendChild(hdr);
-    
-    const table = e('table', {className:'budget-table'});
-    const thead = e('thead');
-    const hrow = e('tr');
-    hrow.appendChild(e('th', {style:{textAlign:'left'}}, 'Expense'));
-    ALL_NAMES.forEach(n => hrow.appendChild(e('th', {style:{color: n==='Benjie'?'var(--green)':'var(--text-soft)'}}, n==='Benjie'?'💍':n.split(' ')[0])));
-    hrow.appendChild(e('th', {}, 'Total'));
-    thead.appendChild(hrow);
-    table.appendChild(thead);
-    
+    const table = e('table',{className:'budget-table'});
+    const thead = e('thead'), hr = e('tr');
+    hr.appendChild(e('th',{style:{textAlign:'left'}},'Expense'));
+    ALL_NAMES.forEach(n => hr.appendChild(e('th',{style:{color:n==='Benjie'?'var(--green)':'var(--text-soft)'}},n==='Benjie'?'Benjie':n.split(' ')[0])));
+    hr.appendChild(e('th',{},'Total'));
+    thead.appendChild(hr); table.appendChild(thead);
     const tbody = e('tbody');
-    costs.filter(ex => ex.category === cat).forEach(ex => {
-      const row = e('tr');
-      const td = e('td', {});
-      td.appendChild(e('div', {style:{color:'var(--text-mid)',fontSize:'11px'}}, ex.label));
-      if (ex.note) td.appendChild(e('div', {style:{color:'var(--text-soft)',fontSize:'10px',marginTop:'2px'}}, ex.note));
+    costs.filter(ex=>ex.category===cat).forEach(ex => {
+      const row = e('tr'), td = e('td',{});
+      td.appendChild(e('div',{style:{color:'var(--text-mid)',fontSize:'11px'}},ex.label));
+      if (ex.note) td.appendChild(e('div',{style:{color:'var(--text-soft)',fontSize:'10px',marginTop:'2px'}},ex.note));
       row.appendChild(td);
       ALL_NAMES.forEach(n => {
-        const val = ex.perPerson[n]||0;
-        const isBenjie = n==='Benjie';
-        row.appendChild(e('td', {}, 
-          isBenjie ? e('span', {style:{color:'var(--green)',fontWeight:'700'}}, '€0') :
-          val > 0 ? e('span', {style:{color:'var(--gold)',fontWeight:'600'}}, '€'+Math.round(val)) :
-          e('span', {style:{color:'var(--border-mid)'}}, '—')
-        ));
+        const val = ex.perPerson[n]||0, isB = n==='Benjie';
+        row.appendChild(e('td',{},isB?e('span',{style:{color:'var(--green)',fontWeight:'700'}},'€0'):val>0?e('span',{style:{color:'var(--gold)',fontWeight:'600'}},'€'+Math.round(val)):e('span',{style:{color:'var(--border-mid)'}},'—')));
       });
-      row.appendChild(e('td', {style:{color:'var(--text-soft)',fontWeight:'600'}}, ex.totalEst ? '~€'+Math.round(ex.totalEst) : 'TBC'));
+      row.appendChild(e('td',{style:{color:'var(--text-soft)',fontWeight:'600'}},ex.totalEst?'~€'+Math.round(ex.totalEst):'TBC'));
       tbody.appendChild(row);
     });
-    
-    // Subtotal row
-    const subrow = e('tr', {className:'budget-subtotal'});
-    subrow.appendChild(e('td', {style:{color:'var(--text-soft)',fontSize:'11px',fontWeight:'700',paddingLeft:'14px'}}, 'Subtotal'));
+    const sr = e('tr',{className:'budget-subtotal'});
+    sr.appendChild(e('td',{style:{color:'var(--text-soft)',fontSize:'11px',fontWeight:'700',paddingLeft:'14px'}},'Subtotal'));
     ALL_NAMES.forEach(n => {
-      const sub = costs.filter(ex => ex.category===cat).reduce((s,ex) => s+(ex.perPerson[n]||0), 0);
-      const isBenjie = n==='Benjie';
-      subrow.appendChild(e('td', {style:{color:isBenjie?'var(--green)':sub>0?'var(--text-mid)':'var(--border-mid)',fontWeight:'700'}},
-        isBenjie ? '€0' : sub>0 ? '~€'+Math.round(sub) : '—'
-      ));
+      const sub=costs.filter(ex=>ex.category===cat).reduce((s,ex)=>s+(ex.perPerson[n]||0),0), isB=n==='Benjie';
+      sr.appendChild(e('td',{style:{color:isB?'var(--green)':sub>0?'var(--text-mid)':'var(--border-mid)',fontWeight:'700'}},isB?'€0':sub>0?'~€'+Math.round(sub):'—'));
     });
-    subrow.appendChild(e('td', {}));
-    tbody.appendChild(subrow);
-    table.appendChild(tbody);
-    card.appendChild(table);
-    container.appendChild(card);
+    sr.appendChild(e('td',{})); tbody.appendChild(sr); table.appendChild(tbody);
+    card.appendChild(table); con.appendChild(card);
   });
 }
 
-// ── RENDER MAP ────────────────────────────────────────────────────────────────
-const renders = {
-  itin: renderItin,
-  contacts: renderContacts,
-  hotel: renderHotel,
-  flights: renderFlights,
-  crew: renderCrew,
-  info: renderInfo,
-};
-
-// Initial render
+const renders = {itin:renderItin,contacts:renderContacts,hotel:renderHotel,flights:renderFlights,crew:renderCrew,info:renderInfo};
 renderItin();
+
 </script>
 
 </body>
