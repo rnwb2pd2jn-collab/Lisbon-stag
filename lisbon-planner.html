@@ -280,37 +280,41 @@ const INITIAL_ITINERARY = {
     { title:"Harry departs — TAP TP1352 LIS→LHR", type:"✈️ Travel", time:"09:00", location:"Lisbon Airport (LIS) Terminal 1", links:[{label:"Track TP1352",url:"https://www.flightradar24.com/data/flights/tp1352"}], notes:"TP1352 dep 10:00, arr LHR T2 12:45. Last check-in 09:00 — leave hotel by 08:00. Then TP6919 LHR T4→AUH dep 14:45.", booked:true },
   ],
 };
-// Room 1: €590 total (€266 deposit + €324 balance, paid in full by Harry)
-// Wed 6 May: Harry alone (~€118)
-// Thu-Sun: Harry & Benjie (3 nights ~€354 split)
-// Sun 10 May: Harry alone (~€118, Harry covers this night himself)
-const ROOM1_WED_HARRY = 118;
-const ROOM1_THU_SUN_TOTAL = 354;
+// ── HOTEL COSTS ─────────────────────────────────────────────────────────────
+// Actual costs from booking confirmations:
+// Room 1 (Harry & Benjie, balcony): €532 original (Wed-Sun 4 nights) + €58 extra night (Sun-Mon) = €590 total
+//   Per night: €532/4 = €133/night (inc city tax)
+//   Wed night (Harry solo): €133 — Harry pays in full
+//   Thu/Fri/Sat (3 shared nights with Benjie): 3 × €133 = €399 — Harry pays 50% = €199.50
+//   Sun night (Harry solo, extended): €58 — Harry pays in full
+//   Benjie's share of Room 1 (50% of 3 shared nights): €199.50 → split across 5 payers = €39.90 each
+// Room 2 (Laurie & Amon): €369 / 2 = €184.50 each
+// Room 3 (Paul & John): €246 / 2 = €123 each
+
+const ROOM1_HARRY_WED = 133;
+const ROOM1_HARRY_SHARED = 199.50;
+const ROOM1_HARRY_SUN = 58;
 
 const ALL_NAMES = ["Harry","Benjie","Laurie","Amon","Paul","John"]; // display order
 const PAYERS = ["Harry","Laurie","Amon","Paul","John"]; // Benjie always €0
 const FRI_PRESENT = ["Harry","Benjie","Laurie","Amon","Paul","John"];
 const SUN_PRESENT = ["Harry","Benjie","Laurie","Amon","Paul","John"];
 
-// Each expense: present = who attends (incl Benjie where applicable)
-// Benjie's share always redistributed equally among other payers present
-// For hotel: use perPersonOverride for custom logic
 const EXPENSES = [
-  // Hotel — correctly separated
-  { label:"Room 1 — Wed night (Harry solo)", category:"🏨 Hotel", total:118, present:["Harry"], note:"Harry solo Wed 6 May before Benjie arrives. Paid by Harry." },
-  { label:"Room 1 — Thu–Sun (Harry & Benjie, 3 nights)", category:"🏨 Hotel", total:ROOM1_THU_SUN_TOTAL, present:["Harry","Benjie","Laurie","Amon","Paul","John"], note:"Harry pays his half. Benjie's half split across all 5 payers." },
-  { label:"Room 1 — Sun night (Harry solo)", category:"🏨 Hotel", total:118, present:["Harry"], note:"Harry solo Sun 10 May after group departs. Paid by Harry." },
-  { label:"Room 2 — Laurie & Amon (Thu–Sun, 3 nights)", category:"🏨 Hotel", total:369, present:FRI_PRESENT, note:"Laurie & Amon pay their share. Benjie's notional share split across all 6." },
-  { label:"Room 3 — Paul & John (Fri–Sun, 2 nights)", category:"🏨 Hotel", total:246, present:FRI_PRESENT, note:"Paul & John pay their share. Benjie's notional share split across all 6." },
-  // Activities
+  // ── HOTEL ── Clean split: each room charged to occupants, Benjie's share separate
+  { label:"Room 1 — Harry (Wed solo night)", category:"🏨 Hotel", total:ROOM1_HARRY_WED, present:["Harry"], note:"Harry alone Wed 6 May. €133 inc city tax. Harry pays in full." },
+  { label:"Room 1 — Harry (50% of 3 shared nights Thu-Sat)", category:"🏨 Hotel", total:ROOM1_HARRY_SHARED, present:["Harry"], note:"Harry's half of shared nights with Benjie. €199.50." },
+  { label:"Room 1 — Harry (Sun solo, extended stay)", category:"🏨 Hotel", total:ROOM1_HARRY_SUN, present:["Harry"], note:"Harry alone Sun night. €58 inc city tax. Harry pays in full." },
+  { label:"Room 2 — Laurie & Amon (3 nights, €369 total)", category:"🏨 Hotel", total:369, present:["Laurie","Amon"], note:"€184.50 each. Thu–Sun." },
+  { label:"Room 3 — Paul & John (2 nights, €246 total)", category:"🏨 Hotel", total:246, present:["Paul (PeeWee)","John (Gilmore)"], note:"€123 each. Fri–Sun." },
+  // ── ACTIVITIES ──
   { label:"Bar do Binho — port tasting & lunch", category:"🍷 Sintra", total:120, present:["Harry","Benjie"], note:"~€60pp est · Harry & Benjie only · Harry covers Benjie's share" },
   { label:"Escala25 climbing (climbers only)", category:"🧗 Climbing", ppCost:12, present:["Harry","Benjie","Laurie","Amon"], note:"~€12pp · Benjie share split across 3 payers attending" },
   { label:"Beer Tasting Tuk tour", category:"🍺 Fri Activity", ppCost:null, present:FRI_PRESENT, note:"Price TBC · Ref #76 · Lisbon Tuk Tuk Tours · 2h30 · all 6" },
-  { label:"Surf lesson — Surf Wave Lisbon", category:"🏄 Surf", total:210, present:FRI_PRESENT, note:"€210 total · €35pp · 1.5hrs · ✅ Paid by Harry" },
-  { label:"Beach club — sunbeds & drinks (Cascais)", category:"🏄 Surf", ppCost:30, present:FRI_PRESENT, note:"~€30pp est for sunbed + afternoon drinks · Rainha or Panorama Beach Club" },
-
-  { label:"Fri group dinner (Bairro Alto)", category:"🍽️ Dinners", ppCost:45, present:FRI_PRESENT, note:"~€45pp est · A Nossa Casa or similar" },
-  { label:"Sat final stag dinner", category:"🍽️ Dinners", ppCost:55, present:FRI_PRESENT, note:"~€55pp est · Cervejaria Ramiro (seafood) or Solar dos Presuntos" },
+  { label:"Surf lesson — Surf Wave Lisbon", category:"🏄 Surf", total:210, present:FRI_PRESENT, note:"€210 total · €35pp · 1.5hrs · Paid by Harry" },
+  { label:"Beach club — sunbeds & drinks", category:"🏄 Surf", ppCost:30, present:FRI_PRESENT, note:"~€30pp est · Costa da Caparica" },
+  { label:"Fri group dinner", category:"🍽️ Dinners", ppCost:45, present:FRI_PRESENT, note:"~€45pp est · Faz Frio (waitlist) or alternative" },
+  { label:"Sat final stag dinner", category:"🍽️ Dinners", ppCost:55, present:FRI_PRESENT, note:"~€55pp est · Cervejaria Ramiro or similar" },
 ];
 
 function calcExp(exp) {
